@@ -1,69 +1,2616 @@
-<div id="messages" class="page">
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MTA Social</title>
 
-    <div class="card">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-        <h1>💬 Повідомлення</h1>
+<style>
+*{box-sizing:border-box}
 
-        <p class="muted">
-            Обери друга, щоб почати спілкування.
-        </p>
+body{
+    margin:0;
+    background:#080b12;
+    color:#fff;
+    font-family:Arial,sans-serif;
+}
 
-        <div id="chatFriends">
-            <div class="empty">
-                Завантаження друзів...
-            </div>
-        </div>
+button,input,textarea{
+    font:inherit;
+}
 
-    </div>
+button{
+    cursor:pointer;
+}
 
-    <div
-        id="chatWindow"
-        class="card"
-        style="display:none"
-    >
+.auth{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
 
-        <h2 id="chatTitle">
-            💬 Чат
-        </h2>
+.auth-box{
+    width:400px;
+    max-width:100%;
+    background:#101620;
+    border:1px solid #202838;
+    border-radius:22px;
+    padding:30px;
+}
 
-        <div
-            id="chatMessages"
-            style="
-            height:350px;
-            overflow-y:auto;
-            background:#080b12;
-            border-radius:12px;
-            padding:15px;
-            "
-        ></div>
+.logo{
+    color:#4da3ff;
+    font-size:27px;
+    font-weight:800;
+}
 
-        <div
-            style="
-            display:flex;
-            gap:10px;
-            margin-top:12px;
-            "
-        >
+.muted{
+    color:#8994a7;
+}
 
-            <input
-                id="messageInput"
-                placeholder="Напиши повідомлення..."
-                style="margin:0"
-            >
+input,textarea{
+    width:100%;
+    padding:14px;
+    margin-top:12px;
+    background:#080b12;
+    border:1px solid #303b50;
+    border-radius:11px;
+    color:white;
+    outline:none;
+}
 
-            <button
-                onclick="sendMessage()"
-                style="
-                width:auto;
-                margin:0;
-                padding:12px 18px;
-                "
-            >
-                📤
-            </button>
+textarea{
+    min-height:100px;
+    resize:none;
+}
 
-        </div>
+.main-btn{
+    width:100%;
+    padding:14px;
+    margin-top:12px;
+    border:0;
+    border-radius:11px;
+    background:#4da3ff;
+    color:white;
+    font-weight:bold;
+}
 
-    </div>
+.dark-btn{
+    background:#182130;
+}
+
+#message{
+    margin-top:15px;
+    color:#4da3ff;
+}
+
+#app{
+    display:none;
+}
+
+header{
+    height:70px;
+    background:#0d111a;
+    border-bottom:1px solid #202838;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 22px;
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+header button{
+    width:auto;
+    margin:0;
+}
+
+.layout{
+    max-width:1100px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:210px 1fr;
+    gap:20px;
+    padding:25px 15px;
+}
+
+.menu{
+    background:#101620;
+    border:1px solid #202838;
+    border-radius:18px;
+    padding:12px;
+    height:max-content;
+    position:sticky;
+    top:90px;
+}
+
+.menu button{
+    width:100%;
+    background:transparent;
+    color:#aeb8c9;
+    text-align:left;
+    border:0;
+    padding:13px;
+    border-radius:10px;
+    margin:2px 0;
+}
+
+.menu button:hover{
+    background:#182130;
+    color:white;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+.card{
+    background:#101620;
+    border:1px solid #202838;
+    border-radius:18px;
+    padding:22px;
+    margin-bottom:18px;
+}
+
+.cover{
+    height:150px;
+    background:linear-gradient(135deg,#16355d,#4da3ff);
+    border-radius:15px 15px 0 0;
+}
+
+.profile-body{
+    padding:0 22px 22px;
+}
+
+.avatar{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    background:#4da3ff;
+    border:5px solid #101620;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:38px;
+    font-weight:bold;
+    margin-top:-45px;
+}
+
+.profile-name{
+    font-size:27px;
+    font-weight:bold;
+    margin-top:12px;
+}
+
+.stats{
+    display:flex;
+    gap:35px;
+    border-top:1px solid #202838;
+    margin-top:20px;
+    padding-top:20px;
+}
+
+.stat b{
+    font-size:20px;
+}
+
+.result{
+    background:#182130;
+    border-radius:13px;
+    padding:15px;
+    margin-top:12px;
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.result-info{
+    flex:1;
+}
+
+.result button{
+    width:auto;
+    margin:0;
+    padding:10px 15px;
+}
+
+.small-avatar{
+    width:48px;
+    height:48px;
+    min-width:48px;
+    border-radius:50%;
+    background:#4da3ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.friend-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:#182130;
+    padding:13px;
+    border-radius:12px;
+    margin-top:10px;
+}
+
+.friend-info{
+    flex:1;
+}
+
+.status{
+    color:#4dff88;
+    font-size:13px;
+}
+
+.empty{
+    padding:20px;
+    text-align:center;
+    color:#8994a7;
+}
+
+.request-buttons{
+    display:flex;
+    gap:8px;
+}
+
+.request-buttons button{
+    width:auto;
+    margin:0;
+    padding:9px 12px;
+}
+
+.chat-friend{
+    cursor:pointer;
+}
+
+.chat-friend:hover{
+    background:#202d40;
+}
+
+#chatMessages{
+    height:380px;
+    overflow-y:auto;
+    background:#080b12;
+    border-radius:12px;
+    padding:15px;
+}
+
+.chat-input{
+    display:flex;
+    gap:10px;
+    margin-top:12px;
+}
+
+.chat-input input{
+    margin:0;
+    flex:1;
+}
+
+.chat-input button{
+    width:auto;
+    margin:0;
+    padding:12px 18px;
+}
+
+.my-message{
+    display:flex;
+    justify-content:flex-end;
+    margin:8px 0;
+}
+
+.other-message{
+    display:flex;
+    justify-content:flex-start;
+    margin:8px 0;
+}
+
+.message-bubble{
+    max-width:75%;
+    padding:10px 14px;
+    border-radius:14px;
+    word-break:break-word;
+}
+
+.my-message .message-bubble{
+    background:#4da3ff;
+}
+
+.other-message .message-bubble{
+    background:#182130;
+}
+
+.message-time{
+    font-size:10px;
+    opacity:.65;
+    margin-top:4px;
+}
+
+.unread{
+    background:#4da3ff;
+    border-radius:50%;
+    width:20px;
+    height:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+}
+
+@media(max-width:700px){
+
+    .layout{
+        grid-template-columns:1fr;
+    }
+
+    .menu{
+        position:sticky;
+        top:70px;
+        z-index:5;
+        display:flex;
+        overflow-x:auto;
+    }
+
+    .menu button{
+        min-width:115px;
+        white-space:nowrap;
+    }
+
+    .result{
+        flex-wrap:wrap;
+    }
+
+    .result button{
+        width:100%;
+    }
+
+    .stats{
+        gap:18px;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+
+<!-- ================================================= -->
+<!-- AUTH -->
+<!-- ================================================= -->
+
+<div id="auth" class="auth">
+
+<div class="auth-box">
+
+<div class="logo">
+MTA SOCIAL
+</div>
+
+<h1>
+Ласкаво просимо 👋
+</h1>
+
+<p class="muted">
+Твоя соціальна мережа MTA.
+</p>
+
+<input
+id="email"
+type="email"
+placeholder="Email"
+>
+
+<input
+id="password"
+type="password"
+placeholder="Пароль"
+>
+
+<button
+class="main-btn"
+onclick="register()"
+>
+Створити акаунт
+</button>
+
+<button
+class="main-btn dark-btn"
+onclick="login()"
+>
+Увійти
+</button>
+
+<p id="message"></p>
 
 </div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- APP -->
+<!-- ================================================= -->
+
+<div id="app">
+
+<header>
+
+<div class="logo">
+MTA SOCIAL
+</div>
+
+<button
+class="main-btn dark-btn"
+onclick="logout()"
+>
+Вийти
+</button>
+
+</header>
+
+
+<div class="layout">
+
+
+<!-- ================================================= -->
+<!-- MENU -->
+<!-- ================================================= -->
+
+<div class="menu">
+
+<button onclick="openPage('home')">
+🏠 Головна
+</button>
+
+<button onclick="openPage('profile')">
+👤 Профіль
+</button>
+
+<button onclick="openPage('friends')">
+👥 Друзі
+</button>
+
+<button onclick="openPage('messages')">
+💬 Повідомлення
+</button>
+
+<button onclick="openPage('notifications')">
+🔔 Сповіщення
+</button>
+
+<button onclick="openPage('mta')">
+🎮 MTA
+</button>
+
+</div>
+
+
+<div>
+
+
+<!-- ================================================= -->
+<!-- HOME -->
+<!-- ================================================= -->
+
+<div
+id="home"
+class="page active"
+>
+
+<div class="card">
+
+<h1>
+🏠 MTA Social
+</h1>
+
+<p class="muted">
+Ласкаво просимо до твоєї соціальної мережі.
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>
+🚀 MTA Social
+</h2>
+
+<p class="muted">
+Тут будуть пости, фотографії,
+лайки, коментарі, друзі та чати.
+</p>
+
+</div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- PROFILE -->
+<!-- ================================================= -->
+
+<div
+id="profile"
+class="page"
+>
+
+<div class="card">
+
+<div class="cover"></div>
+
+<div class="profile-body">
+
+<div
+id="avatar"
+class="avatar"
+>
+A
+</div>
+
+<div
+id="profileName"
+class="profile-name"
+>
+Користувач
+</div>
+
+<div
+id="profileEmail"
+class="muted"
+>
+email
+</div>
+
+<p
+id="profileBio"
+class="muted"
+>
+Тут поки немає опису.
+</p>
+
+
+<div class="stats">
+
+<div class="stat">
+
+<b id="postsCount">
+0
+</b>
+
+<div class="muted">
+Пости
+</div>
+
+</div>
+
+<div class="stat">
+
+<b id="friendsCount">
+0
+</b>
+
+<div class="muted">
+Друзі
+</div>
+
+</div>
+
+<div class="stat">
+
+<b>
+0
+</b>
+
+<div class="muted">
+Підписники
+</div>
+
+</div>
+
+</div>
+
+
+<button
+class="main-btn"
+onclick="toggleEdit()"
+>
+✏️ Редагувати профіль
+</button>
+
+
+<div
+id="editProfile"
+style="display:none"
+>
+
+<input
+id="nickname"
+placeholder="Нік"
+>
+
+<textarea
+id="bio"
+placeholder="Опис профілю"
+></textarea>
+
+<button
+class="main-btn"
+onclick="saveProfile()"
+>
+💾 Зберегти
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- FRIENDS -->
+<!-- ================================================= -->
+
+<div
+id="friends"
+class="page"
+>
+
+<div class="card">
+
+<h1>
+👥 Друзі
+</h1>
+
+<p class="muted">
+Знайди користувача за ніком.
+</p>
+
+<input
+id="friendSearch"
+placeholder="🔎 Введи нік..."
+oninput="searchUsers()"
+>
+
+<div id="searchResults"></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+📨 Запити в друзі
+</h2>
+
+<div id="friendRequests">
+
+<div class="empty">
+Поки немає запитів.
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+🤝 Мої друзі
+</h2>
+
+<div id="myFriends">
+
+<div class="empty">
+Поки немає друзів.
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- MESSAGES -->
+<!-- ================================================= -->
+
+<div
+id="messages"
+class="page"
+>
+
+<div class="card">
+
+<h1>
+💬 Повідомлення
+</h1>
+
+<p class="muted">
+Обери друга, щоб почати спілкування.
+</p>
+
+<div id="chatFriends">
+
+<div class="empty">
+Завантаження друзів...
+</div>
+
+</div>
+
+</div>
+
+
+<div
+id="chatWindow"
+class="card"
+style="display:none"
+>
+
+<h2 id="chatTitle">
+💬 Чат
+</h2>
+
+<div id="chatMessages">
+
+<div class="empty">
+Поки немає повідомлень 👋
+</div>
+
+</div>
+
+
+<div class="chat-input">
+
+<input
+id="messageInput"
+placeholder="Напиши повідомлення..."
+onkeydown="handleMessageKey(event)"
+>
+
+<button onclick="sendMessage()">
+📤
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- NOTIFICATIONS -->
+<!-- ================================================= -->
+
+<div
+id="notifications"
+class="page"
+>
+
+<div class="card">
+
+<h1>
+🔔 Сповіщення
+</h1>
+
+<p class="muted">
+Тут будуть нові запити в друзі,
+повідомлення та інші події.
+</p>
+
+</div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- MTA -->
+<!-- ================================================= -->
+
+<div
+id="mta"
+class="page"
+>
+
+<div class="card">
+
+<h1>
+🎮 MTA
+</h1>
+
+<p class="muted">
+Підключення до MTA-сервера.
+</p>
+
+<button
+class="main-btn"
+onclick="mtaConnect()"
+>
+Підключити MTA
+</button>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+📊 Статистика
+</h2>
+
+<p class="muted">
+Рівень: —
+</p>
+
+<p class="muted">
+Гроші: —
+</p>
+
+<p class="muted">
+Автомобілі: —
+</p>
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* ================================================= */
+/* SUPABASE */
+/* ================================================= */
+
+const SUPABASE_URL =
+"https://ifsqesikynpsdgucaljc.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_B3EZXy-9dWui5rDwEHEZhQ_HqfMIP4p";
+
+const supabaseClient =
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+let currentUser = null;
+let selectedFriend = null;
+
+
+/* ================================================= */
+/* REGISTER */
+/* ================================================= */
+
+async function register(){
+
+const email =
+document
+.getElementById("email")
+.value
+.trim();
+
+const password =
+document
+.getElementById("password")
+.value;
+
+const message =
+document
+.getElementById("message");
+
+
+if(!email || !password){
+
+message.textContent =
+"Введи email і пароль.";
+
+return;
+}
+
+
+if(password.length < 6){
+
+message.textContent =
+"Пароль має бути мінімум 6 символів.";
+
+return;
+}
+
+
+message.textContent =
+"Створюємо акаунт...";
+
+
+const {data,error} =
+await supabaseClient
+.auth
+.signUp({
+
+email:email,
+
+password:password,
+
+options:{
+data:{
+nickname:
+email.split("@")[0]
+}
+}
+
+});
+
+
+if(error){
+
+message.textContent =
+"Помилка: " +
+error.message;
+
+return;
+}
+
+
+message.textContent =
+"✅ Перевір email для підтвердження.";
+
+}
+
+
+/* ================================================= */
+/* LOGIN */
+/* ================================================= */
+
+async function login(){
+
+const email =
+document
+.getElementById("email")
+.value
+.trim();
+
+const password =
+document
+.getElementById("password")
+.value;
+
+
+if(!email || !password){
+
+document
+.getElementById("message")
+.textContent =
+"Введи email і пароль.";
+
+return;
+}
+
+
+const {data,error} =
+await supabaseClient
+.auth
+.signInWithPassword({
+
+email:email,
+
+password:password
+
+});
+
+
+if(error){
+
+document
+.getElementById("message")
+.textContent =
+"Помилка: " +
+error.message;
+
+return;
+}
+
+
+await showApp(data.user);
+
+}
+
+
+/* ================================================= */
+/* SHOW APP */
+/* ================================================= */
+
+async function showApp(user){
+
+currentUser = user;
+
+document
+.getElementById("auth")
+.style
+.display="none";
+
+document
+.getElementById("app")
+.style
+.display="block";
+
+await ensureProfile();
+
+await loadProfile();
+
+await loadFriends();
+
+}
+
+
+/* ================================================= */
+/* PROFILE CREATE */
+/* ================================================= */
+
+async function ensureProfile(){
+
+const {
+data
+} =
+await supabaseClient
+.from("profiles")
+.select("id")
+.eq(
+"id",
+currentUser.id
+)
+.maybeSingle();
+
+
+if(data){
+return;
+}
+
+
+const username =
+currentUser
+.user_metadata
+?.nickname
+||
+currentUser
+.email
+.split("@")[0];
+
+
+const {
+error
+} =
+await supabaseClient
+.from("profiles")
+.insert({
+
+id:currentUser.id,
+
+username:username,
+
+bio:""
+
+});
+
+
+if(error){
+
+console.log(
+"Profile error:",
+error
+);
+
+}
+
+}
+
+
+/* ================================================= */
+/* LOAD PROFILE */
+/* ================================================= */
+
+async function loadProfile(){
+
+const {
+data,
+error
+} =
+await supabaseClient
+.from("profiles")
+.select("*")
+.eq(
+"id",
+currentUser.id
+)
+.maybeSingle();
+
+
+if(error){
+
+console.log(error);
+
+return;
+}
+
+
+if(!data){
+
+return;
+}
+
+
+document
+.getElementById("profileName")
+.textContent =
+data.username;
+
+
+document
+.getElementById("profileEmail")
+.textContent =
+currentUser.email;
+
+
+document
+.getElementById("profileBio")
+.textContent =
+data.bio ||
+"Тут поки немає опису.";
+
+
+document
+.getElementById("nickname")
+.value =
+data.username;
+
+
+document
+.getElementById("bio")
+.value =
+data.bio || "";
+
+
+document
+.getElementById("avatar")
+.textContent =
+data.username
+.charAt(0)
+.toUpperCase();
+
+}
+
+
+/* ================================================= */
+/* EDIT PROFILE */
+/* ================================================= */
+
+function toggleEdit(){
+
+const box =
+document
+.getElementById("editProfile");
+
+box.style.display =
+box.style.display === "block"
+? "none"
+: "block";
+
+}
+
+
+/* ================================================= */
+/* SAVE PROFILE */
+/* ================================================= */
+
+async function saveProfile(){
+
+const username =
+document
+.getElementById("nickname")
+.value
+.trim();
+
+const bio =
+document
+.getElementById("bio")
+.value
+.trim();
+
+
+if(!username){
+
+alert("Введи нік.");
+
+return;
+}
+
+
+const {
+error
+} =
+await supabaseClient
+.from("profiles")
+.update({
+
+username:username,
+
+bio:bio
+
+})
+.eq(
+"id",
+currentUser.id
+);
+
+
+if(error){
+
+alert(
+"Помилка: " +
+error.message
+);
+
+return;
+}
+
+
+await loadProfile();
+
+
+document
+.getElementById("editProfile")
+.style
+.display="none";
+
+
+alert(
+"✅ Профіль збережено!"
+);
+
+}
+
+
+/* ================================================= */
+/* SEARCH USERS */
+/* ================================================= */
+
+async function searchUsers(){
+
+const text =
+document
+.getElementById("friendSearch")
+.value
+.trim();
+
+const results =
+document
+.getElementById("searchResults");
+
+
+if(text.length < 2){
+
+results.innerHTML =
+'<div class="empty">' +
+'Введи мінімум 2 символи.' +
+'</div>';
+
+return;
+}
+
+
+const {
+data,
+error
+} =
+await supabaseClient
+.from("profiles")
+.select(
+"id,username,bio"
+)
+.ilike(
+"username",
+"%" + text + "%"
+)
+.neq(
+"id",
+currentUser.id
+)
+.limit(10);
+
+
+if(error){
+
+console.log(error);
+
+results.innerHTML =
+'<div class="empty">' +
+'Помилка пошуку.' +
+'</div>';
+
+return;
+}
+
+
+if(!data || data.length === 0){
+
+results.innerHTML =
+'<div class="empty">' +
+'Користувачів не знайдено.' +
+'</div>';
+
+return;
+}
+
+
+results.innerHTML =
+data
+.map(user => `
+
+<div class="result">
+
+<div class="small-avatar">
+
+${escapeHtml(
+user.username
+.charAt(0)
+.toUpperCase()
+)}
+
+</div>
+
+<div class="result-info">
+
+<b>
+${escapeHtml(
+user.username
+)}
+</b>
+
+<div class="muted">
+
+${escapeHtml(
+user.bio ||
+"Без опису"
+)}
+
+</div>
+
+</div>
+
+<button
+class="main-btn"
+onclick="
+addFriend('${user.id}')
+"
+>
+➕ Додати
+</button>
+
+</div>
+
+`)
+.join("");
+
+}
+
+
+/* ================================================= */
+/* ADD FRIEND */
+/* ================================================= */
+
+async function addFriend(friendId){
+
+if(
+friendId ===
+currentUser.id
+){
+return;
+}
+
+
+const {
+data:existing,
+error:checkError
+} =
+await supabaseClient
+.from("friendships")
+.select("*")
+.or(
+"and(user_id.eq." +
+currentUser.id +
+",friend_id.eq." +
+friendId +
+"),and(user_id.eq." +
+friendId +
+",friend_id.eq." +
+currentUser.id +
+")"
+);
+
+
+if(checkError){
+
+alert(
+"Помилка: " +
+checkError.message
+);
+
+return;
+}
+
+
+if(
+existing &&
+existing.length > 0
+){
+
+alert(
+"Запит або дружба вже існує."
+);
+
+return;
+}
+
+
+const {
+error
+} =
+await supabaseClient
+.from("friendships")
+.insert({
+
+user_id:
+currentUser.id,
+
+friend_id:
+friendId,
+
+status:
+"pending"
+
+});
+
+
+if(error){
+
+alert(
+"Помилка: " +
+error.message
+);
+
+return;
+}
+
+
+alert(
+"✅ Запит у друзі відправлено!"
+);
+
+
+await loadFriends();
+
+}
+
+
+/* ================================================= */
+/* LOAD FRIENDS */
+/* ================================================= */
+
+async function loadFriends(){
+
+const {
+data,
+error
+} =
+await supabaseClient
+.from("friendships")
+.select("*")
+.or(
+"user_id.eq." +
+currentUser.id +
+",friend_id.eq." +
+currentUser.id
+);
+
+
+if(error){
+
+console.log(error);
+
+return;
+}
+
+
+const accepted =
+data.filter(
+x =>
+x.status ===
+"accepted"
+);
+
+
+const incoming =
+data.filter(
+x =>
+x.status ===
+"pending" &&
+x.friend_id ===
+currentUser.id
+);
+
+
+const outgoing =
+data.filter(
+x =>
+x.status ===
+"pending" &&
+x.user_id ===
+currentUser.id
+);
+
+
+document
+.getElementById("friendsCount")
+.textContent =
+accepted.length;
+
+
+await showFriends(
+accepted
+);
+
+await showRequests(
+incoming,
+outgoing
+);
+
+}
+
+
+/* ================================================= */
+/* SHOW FRIENDS */
+/* ================================================= */
+
+async function showFriends(list){
+
+const box =
+document
+.getElementById("myFriends");
+
+
+if(!list.length){
+
+box.innerHTML =
+'<div class="empty">' +
+'Поки немає друзів.' +
+'</div>';
+
+return;
+}
+
+
+const ids =
+list.map(item => {
+
+return item.user_id ===
+currentUser.id
+? item.friend_id
+: item.user_id;
+
+});
+
+
+const {
+data:profiles,
+error
+} =
+await supabaseClient
+.from("profiles")
+.select(
+"id,username,bio"
+)
+.in(
+"id",
+ids
+);
+
+
+if(error){
+
+console.log(error);
+
+return;
+}
+
+
+box.innerHTML =
+profiles
+.map(profile => `
+
+<div class="friend-row">
+
+<div class="small-avatar">
+
+${escapeHtml(
+profile.username
+.charAt(0)
+.toUpperCase()
+)}
+
+</div>
+
+<div class="friend-info">
+
+<b>
+${escapeHtml(
+profile.username
+)}
+</b>
+
+<div class="status">
+● Друг
+</div>
+
+</div>
+
+<button
+style="
+width:auto;
+margin:0;
+background:#182130;
+"
+onclick="
+removeFriend(
+'${profile.id}'
+)
+"
+>
+❌
+</button>
+
+</div>
+
+`)
+.join("");
+
+}
+
+
+/* ================================================= */
+/* FRIEND REQUESTS */
+/* ================================================= */
+
+async function showRequests(
+incoming,
+outgoing
+){
+
+const box =
+document
+.getElementById(
+"friendRequests"
+);
+
+let html = "";
+
+
+/* INCOMING */
+
+if(incoming.length){
+
+const ids =
+incoming.map(
+x =>
+x.user_id
+);
+
+
+const {
+data:profiles
+} =
+await supabaseClient
+.from("profiles")
+.select(
+"id,username,bio"
+)
+.in(
+"id",
+ids
+);
+
+
+profiles.forEach(
+profile => {
+
+const request =
+incoming.find(
+x =>
+x.user_id ===
+profile.id
+);
+
+
+html += `
+
+<div class="friend-row">
+
+<div class="small-avatar">
+
+${escapeHtml(
+profile.username
+.charAt(0)
+.toUpperCase()
+)}
+
+</div>
+
+<div class="friend-info">
+
+<b>
+${escapeHtml(
+profile.username
+)}
+</b>
+
+<div class="muted">
+Хоче додати тебе в друзі
+</div>
+
+</div>
+
+<div class="request-buttons">
+
+<button
+style="
+background:#4da3ff;
+"
+onclick="
+acceptFriend(
+'${request.id}'
+)
+"
+>
+✅
+</button>
+
+<button
+style="
+background:#182130;
+"
+onclick="
+rejectFriend(
+'${request.id}'
+)
+"
+>
+❌
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+/* OUTGOING */
+
+if(outgoing.length){
+
+const ids =
+outgoing.map(
+x =>
+x.friend_id
+);
+
+
+const {
+data:profiles
+} =
+await supabaseClient
+.from("profiles")
+.select(
+"id,username"
+)
+.in(
+"id",
+ids
+);
+
+
+profiles.forEach(
+profile => {
+
+html += `
+
+<div class="friend-row">
+
+<div class="small-avatar">
+
+${escapeHtml(
+profile.username
+.charAt(0)
+.toUpperCase()
+)}
+
+</div>
+
+<div class="friend-info">
+
+<b>
+${escapeHtml(
+profile.username
+)}
+</b>
+
+<div class="muted">
+🕐 Запит надіслано
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+if(!html){
+
+html =
+'<div class="empty">' +
+'Поки немає запитів.' +
+'</div>';
+
+}
+
+
+box.innerHTML =
+html;
+
+}
+
+
+/* ================================================= */
+/* ACCEPT FRIEND */
+/* ================================================= */
+
+async function acceptFriend(id){
+
+const {
+error
+} =
+await supabaseClient
+.from("friendships")
+.update({
+
+status:
+"accepted"
+
+})
+.eq(
+"id",
+id
+)
+.eq(
+"friend_id",
+currentUser.id
+);
+
+
+if(error){
+
+alert(
+"Помилка: " +
+error.message
+);
+
+return;
+}
+
+
+await loadFriends();
+
+
+alert(
+"✅ Тепер ви друзі!"
+);
+
+}
+
+
+/* ================================================= */
+/* REJECT FRIEND */
+/* ================================================= */
+
+async function rejectFriend(id){
+
+const {
+error
+} =
+await supabaseClient
+.from("friendships")
+.delete()
+.eq(
+"id",
+id
+)
+.eq(
+"friend_id",
+currentUser.id
+);
+
+
+if(error){
+
+alert(
+"Помилка: " +
+error.message
+);
+
+return;
+}
+
+
+await loadFriends();
+
+}
+
+
+/* ================================================= */
+/* REMOVE FRIEND */
+/* ================================================= */
+
+async function removeFriend(
+friendId
+){
+
+const {
+error
+} =
+await supabaseClient
+.from("friendships")
+.delete()
+.or(
+"and(user_id.eq." +
+currentUser.id +
+",friend_id.eq." +
+friendId +
+"),and(user_id.eq." +
+friendId +
+",friend_id.eq." +
+currentUser.id +
+")"
+);
+
+
+if(error){
+
+alert(
+"Помилка: " +
+error.message
+);
+
+return;
+}
+
+
+await loadFriends();
+
+}
+
+
+/* ================================================= */
+/* CHAT FRIENDS */
+/* ================================================= */
+
+async function loadChatFriends(){
+
+const box =
+document
+.getElementById(
+"chatFriends"
+);
+
+
+const {
+data,
+error
+} =
+await supabaseClient
+.from("friendships")
+.select("*")
+.or(
+"user_id.eq." +
+currentUser.id +
+",friend_id.eq." +
+currentUser.id
+)
+.eq(
+"status",
+"accepted"
+);
+
+
+if(error){
+
+console.log(error);
+
+box.innerHTML =
+'<div class="empty">' +
+'Не вдалося завантажити друзів.' +
+'</div>';
+
+return;
+}
+
+
+if(!data.length){
+
+box.innerHTML =
+'<div class="empty">' +
+'У тебе ще немає друзів.' +
+'</div>';
+
+return;
+}
+
+
+const ids =
+data.map(item => {
+
+return item.user_id ===
+currentUser.id
+? item.friend_id
+: item.user_id;
+
+});
+
+
+const {
+data:profiles,
+error:profileError
+} =
+await supabaseClient
+.from("profiles")
+.select(
+"id,username,bio"
+)
+.in(
+"id",
+ids
+);
+
+
+if(profileError){
+
+console.log(profileError);
+
+return;
+}
+
+
+box.innerHTML =
+profiles
+.map(friend => `
+
+<div
+class="friend-row chat-friend"
+onclick="
+openChat(
+'${friend.id}',
+'${escapeHtml(friend.username)}'
+)
+"
+>
+
+<div class="small-avatar">
+
+${escapeHtml(
+friend.username
+.charAt(0)
+.toUpperCase()
+)}
+
+</div>
+
+<div class="friend-info">
+
+<b>
+${escapeHtml(
+friend.username
+)}
+</b>
+
+<div class="muted">
+Натисни, щоб написати
+</div>
+
+</div>
+
+💬
+
+</div>
+
+`)
+.join("");
+
+}
+
+
+/* ================================================= */
+/* OPEN CHAT */
+/* ================================================= */
+
+async function openChat(
+friendId,
+friendName
+){
+
+selectedFriend =
+friendId;
+
+
+document
+.getElementById(
+"chatWindow"
+)
+.style
+.display="block";
+
+
+document
+.getElementById(
+"chatTitle"
+)
+.textContent =
+"💬 " +
+friendName;
+
+
+await loadMessages();
+
+
+setTimeout(
+function(){
+
+document
+.getElementById(
+"messageInput"
+)
+.focus();
+
+},
+100
+);
+
+}
+
+
+/* ================================================= */
+/* LOAD MESSAGES */
+/* ================================================= */
+
+async function loadMessages(){
+
+if(!selectedFriend){
+return;
+}
+
+
+const {
+data,
+error
+} =
+await supabaseClient
+.from("messages")
+.select("*")
+.or(
+"and(sender_id.eq." +
+currentUser.id +
+",receiver_id.eq." +
+selectedFriend +
+"),and(sender_id.eq." +
+selectedFriend +
+",receiver_id.eq." +
+currentUser.id +
+")"
+)
+.order(
+"created_at",
+{
+ascending:true
+}
+);
+
+
+if(error){
+
+console.log(error);
+
+return;
+}
+
+
+const box =
+document
+.getElementById(
+"chatMessages"
+);
+
+
+if(!data.length){
+
+box.innerHTML =
+'<div class="empty">' +
+'Поки немає повідомлень 👋' +
+'</div>';
+
+return;
+}
+
+
+box.innerHTML =
+data
+.map(message => {
+
+const mine =
+message.sender_id ===
+currentUser.id;
+
+
+const time =
+new Date(
+message.created_at
+)
+.toLocaleTimeString(
+"uk-UA",
+{
+hour:"2-digit",
+minute:"2-digit"
+}
+);
+
+
+return `
+
+<div class="${
+mine
+? "my-message"
+: "other-message"
+}">
+
+<div class="message-bubble">
+
+<div>
+${escapeHtml(
+message.content
+)}
+</div>
+
+<div class="message-time">
+${time}
+</div>
+
+</div>
+
+</div>
+
+`;
+
+})
+.join("");
+
+
+box.scrollTop =
+box.scrollHeight;
+
+}
+
+
+/* ================================================= */
+/* SEND MESSAGE */
+/* ================================================= */
+
+async function sendMessage(){
+
+if(!selectedFriend){
+
+alert(
+"Спочатку вибери друга."
+);
+
+return;
+}
+
+
+const input =
+document
+.getElementById(
+"messageInput"
+);
+
+
+const content =
+input.value.trim();
+
+
+if(!content){
+return;
+}
+
+
+const {
+error
+} =
+await supabaseClient
+.from("messages")
+.insert({
+
+sender_id:
+currentUser.id,
+
+receiver_id:
+selectedFriend,
+
+content:
+content
+
+});
+
+
+if(error){
+
+alert(
+"Помилка: " +
+error.message
+);
+
+return;
+}
+
+
+input.value="";
+
+
+await loadMessages();
+
+}
+
+
+/* ================================================= */
+/* ENTER TO SEND */
+/* ================================================= */
+
+function handleMessageKey(event){
+
+if(
+event.key ===
+"Enter"
+){
+
+event.preventDefault();
+
+sendMessage();
+
+}
+
+}
+
+
+/* ================================================= */
+/* NAVIGATION */
+/* ================================================= */
+
+function openPage(page){
+
+document
+.querySelectorAll(".page")
+.forEach(
+element =>
+element
+.classList
+.remove("active")
+);
+
+
+document
+.getElementById(page)
+.classList
+.add("active");
+
+
+if(
+page ===
+"friends"
+){
+
+loadFriends();
+
+}
+
+
+if(
+page ===
+"messages"
+){
+
+loadChatFriends();
+
+}
+
+}
+
+
+/* ================================================= */
+/* MTA */
+/* ================================================= */
+
+function mtaConnect(){
+
+alert(
+"🎮 Підключення MTA буде додано після підключення MTA-сервера."
+);
+
+}
+
+
+/* ================================================= */
+/* LOGOUT */
+/* ================================================= */
+
+async function logout(){
+
+await supabaseClient
+.auth
+.signOut();
+
+location.reload();
+
+}
+
+
+/* ================================================= */
+/* SECURITY */
+/* ================================================= */
+
+function escapeHtml(text){
+
+return String(text)
+
+.replaceAll(
+"&",
+"&amp;"
+)
+
+.replaceAll(
+"<",
+"&lt;"
+)
+
+.replaceAll(
+">",
+"&gt;"
+)
+
+.replaceAll(
+'"',
+"&quot;"
+)
+
+.replaceAll(
+"'",
+"&#039;"
+);
+
+}
+
+
+/* ================================================= */
+/* SESSION */
+/* ================================================= */
+
+async function checkUser(){
+
+const {
+data:{
+user
+}
+} =
+await supabaseClient
+.auth
+.getUser();
+
+
+if(user){
+
+await showApp(user);
+
+}
+
+}
+
+
+checkUser();
+
+
+/* ================================================= */
+/* REALTIME CHAT */
+/* ================================================= */
+
+supabaseClient
+.channel("messages-realtime")
+.on(
+"postgres_changes",
+{
+event:"INSERT",
+schema:"public",
+table:"messages"
+},
+payload => {
+
+if(!currentUser){
+return;
+}
+
+const message =
+payload.new;
+
+
+if(
+(
+message.sender_id ===
+currentUser.id &&
+message.receiver_id ===
+selectedFriend
+)
+||
+(
+message.sender_id ===
+selectedFriend &&
+message.receiver_id ===
+currentUser.id
+)
+){
+
+loadMessages();
+
+}
+
+}
+)
+.subscribe();
+
+</script>
+
+</body>
+</html>
