@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>MTA Social</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -13,8 +13,12 @@
 body{
 margin:0;
 background:#080b12;
-color:#fff;
+color:white;
 font-family:Arial,sans-serif
+}
+
+button,input,textarea{
+font:inherit
 }
 
 .auth{
@@ -26,33 +30,34 @@ padding:20px
 }
 
 .box{
-width:380px;
+width:400px;
 max-width:100%;
 background:#101620;
 border:1px solid #202838;
-border-radius:20px;
+border-radius:22px;
 padding:30px
 }
 
 .logo{
-color:#4da3ff;
-font-size:27px;
-font-weight:800
+font-size:28px;
+font-weight:800;
+color:#4da3ff
 }
 
-h1{margin-bottom:8px}
-
-.muted{color:#8994a7}
-
-input{
+input,textarea{
 width:100%;
 padding:14px;
 margin-top:12px;
 background:#080b12;
 border:1px solid #303b50;
-border-radius:10px;
+border-radius:11px;
 color:white;
-font-size:16px
+outline:none
+}
+
+textarea{
+min-height:100px;
+resize:none
 }
 
 button{
@@ -60,22 +65,28 @@ width:100%;
 padding:14px;
 margin-top:12px;
 border:0;
-border-radius:10px;
+border-radius:11px;
 background:#4da3ff;
 color:white;
 font-weight:bold;
-font-size:16px;
 cursor:pointer
 }
 
-.secondary{background:#182130}
+.secondary{
+background:#182130
+}
+
+.muted{
+color:#8994a7
+}
 
 #message{
-margin-top:15px;
 color:#4da3ff
 }
 
-#app{display:none}
+#app{
+display:none
+}
 
 header{
 height:70px;
@@ -84,55 +95,151 @@ border-bottom:1px solid #202838;
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:0 25px
+padding:0 22px;
+position:sticky;
+top:0;
+z-index:10
 }
 
 header button{
 width:auto;
-margin:0;
-padding:10px 18px
+margin:0
 }
 
-.container{
-max-width:900px;
-margin:30px auto;
-padding:20px
+.layout{
+max-width:1050px;
+margin:auto;
+display:grid;
+grid-template-columns:220px 1fr;
+gap:20px;
+padding:25px 15px
+}
+
+.menu{
+background:#101620;
+border:1px solid #202838;
+border-radius:18px;
+padding:15px;
+height:max-content
+}
+
+.menu button{
+background:transparent;
+text-align:left;
+color:#aeb8c9
+}
+
+.profile{
+background:#101620;
+border:1px solid #202838;
+border-radius:20px;
+overflow:hidden
+}
+
+.cover{
+height:150px;
+background:linear-gradient(135deg,#16355d,#4da3ff)
+}
+
+.profileBody{
+padding:25px
+}
+
+.avatar{
+width:100px;
+height:100px;
+border-radius:50%;
+background:#4da3ff;
+border:5px solid #101620;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:42px;
+font-weight:bold;
+margin-top:-70px
+}
+
+.name{
+font-size:28px;
+font-weight:bold;
+margin-top:15px
+}
+
+.email{
+color:#8994a7;
+margin-top:5px
+}
+
+.stats{
+display:flex;
+gap:35px;
+margin-top:25px;
+padding-top:20px;
+border-top:1px solid #202838
+}
+
+.stat b{
+font-size:20px
+}
+
+.edit{
+display:none;
+margin-top:25px;
+padding-top:20px;
+border-top:1px solid #202838
 }
 
 .card{
 background:#101620;
 border:1px solid #202838;
 border-radius:18px;
-padding:25px;
-margin-bottom:20px
+padding:20px;
+margin-top:20px
 }
 
-.avatar{
-width:70px;
-height:70px;
-background:#4da3ff;
-border-radius:50%;
+@media(max-width:700px){
+
+.layout{
+grid-template-columns:1fr
+}
+
+.menu{
 display:flex;
-align-items:center;
-justify-content:center;
-font-size:30px;
-font-weight:bold
+gap:5px;
+overflow:auto
+}
+
+.menu button{
+min-width:130px
+}
+
+.cover{
+height:120px
+}
+
+.profileBody{
+padding:20px
+}
 }
 </style>
 </head>
 
 <body>
 
+<!-- AUTH -->
+
 <div id="auth" class="auth">
 
 <div class="box">
 
-<div class="logo">MTA SOCIAL</div>
+<div class="logo">
+MTA SOCIAL
+</div>
 
-<h1>Ласкаво просимо 👋</h1>
+<h1>Вітаємо 👋</h1>
 
 <p class="muted">
-Створи акаунт або увійди.
+Увійди або створи акаунт.
 </p>
 
 <input
@@ -165,6 +272,8 @@ onclick="login()"
 </div>
 
 
+<!-- APP -->
+
 <div id="app">
 
 <header>
@@ -183,44 +292,169 @@ onclick="logout()"
 </header>
 
 
-<div class="container">
+<div class="layout">
+
+<!-- MENU -->
+
+<div class="menu">
+
+<button>
+🏠 Головна
+</button>
+
+<button>
+🔎 Пошук
+</button>
+
+<button>
+💬 Повідомлення
+</button>
+
+<button>
+🔔 Сповіщення
+</button>
+
+<button onclick="scrollProfile()">
+👤 Профіль
+</button>
+
+<button>
+🎮 MTA
+</button>
+
+</div>
+
+
+<!-- PROFILE -->
+
+<div>
+
+<div class="profile">
+
+<div class="cover"></div>
+
+<div class="profileBody">
+
+<div
+class="avatar"
+id="avatar"
+>
+A
+</div>
+
+<div
+class="name"
+id="profileName"
+>
+Користувач
+</div>
+
+<div
+class="email"
+id="profileEmail"
+>
+email
+</div>
+
+<p
+class="muted"
+id="profileBio"
+>
+Тут поки немає опису.
+</p>
+
+
+<div class="stats">
+
+<div class="stat">
+<b>0</b>
+<div class="muted">
+Пости
+</div>
+</div>
+
+<div class="stat">
+<b>0</b>
+<div class="muted">
+Друзі
+</div>
+</div>
+
+<div class="stat">
+<b>0</b>
+<div class="muted">
+Підписники
+</div>
+</div>
+
+</div>
+
+
+<button onclick="toggleEdit()">
+✏️ Редагувати профіль
+</button>
+
+
+<div
+class="edit"
+id="edit"
+>
+
+<h3>
+Редагування профілю
+</h3>
+
+<input
+id="nickname"
+placeholder="Твій нік"
+>
+
+<textarea
+id="bio"
+placeholder="Розкажи щось про себе..."
+></textarea>
+
+<button onclick="saveProfile()">
+💾 Зберегти
+</button>
+
+</div>
+
+</div>
+
+</div>
+
 
 <div class="card">
 
-<div class="avatar" id="avatar">
-M
-</div>
-
-<h2 id="userEmail">
-Користувач
+<h2>
+🎮 MTA профіль
 </h2>
 
 <p class="muted">
-Твій профіль MTA Social
+Пізніше тут можна буде підключити MTA-акаунт,
+показувати сервер, рівень, гроші, автомобілі
+та статистику.
 </p>
+
+<button>
+Підключити MTA
+</button>
 
 </div>
 
 
 <div class="card">
 
-<h2>🏠 Головна</h2>
+<h2>
+🏠 Стрічка
+</h2>
 
 <p class="muted">
-Тут буде твоя стрічка постів.
+Тут будуть твої пости та пости друзів.
 </p>
 
 </div>
-
-
-<div class="card">
-
-<h2>🎮 MTA</h2>
-
-<p class="muted">
-Профіль гравця, статистика,
-сервери та досягнення.
-</p>
 
 </div>
 
@@ -244,34 +478,38 @@ SUPABASE_KEY
 );
 
 
+/* REGISTER */
+
 async function register(){
 
 const email =
-document.getElementById("email").value.trim();
+document.getElementById("email")
+.value.trim();
 
 const password =
-document.getElementById("password").value;
+document.getElementById("password")
+.value;
 
 const message =
 document.getElementById("message");
 
 if(!email || !password){
 
-message.textContent =
+message.textContent=
 "Введи email і пароль.";
 
 return;
 }
 
-if(password.length < 6){
+if(password.length<6){
 
-message.textContent =
-"Пароль має бути мінімум 6 символів.";
+message.textContent=
+"Пароль мінімум 6 символів.";
 
 return;
 }
 
-message.textContent =
+message.textContent=
 "Створюємо акаунт...";
 
 const {data,error} =
@@ -282,38 +520,39 @@ password:password
 
 if(error){
 
-message.textContent =
-"Помилка: " + error.message;
+message.textContent=
+"Помилка: "+error.message;
 
 return;
 }
 
-message.textContent =
-"✅ Акаунт створено! Перевір email для підтвердження.";
+message.textContent=
+"✅ Перевір email для підтвердження.";
 }
 
+
+/* LOGIN */
 
 async function login(){
 
 const email =
-document.getElementById("email").value.trim();
+document.getElementById("email")
+.value.trim();
 
 const password =
-document.getElementById("password").value;
+document.getElementById("password")
+.value;
 
 const message =
 document.getElementById("message");
 
 if(!email || !password){
 
-message.textContent =
+message.textContent=
 "Введи email і пароль.";
 
 return;
 }
-
-message.textContent =
-"Входимо...";
 
 const {data,error} =
 await supabaseClient.auth.signInWithPassword({
@@ -323,8 +562,8 @@ password:password
 
 if(error){
 
-message.textContent =
-"Помилка: " + error.message;
+message.textContent=
+"Помилка: "+error.message;
 
 return;
 }
@@ -333,22 +572,122 @@ showApp(data.user);
 }
 
 
+/* SHOW APP */
+
 function showApp(user){
 
-document.getElementById("auth").style.display="none";
+document.getElementById("auth")
+.style.display="none";
 
-document.getElementById("app").style.display="block";
+document.getElementById("app")
+.style.display="block";
 
-const email =
-user.email || "Користувач";
-
-document.getElementById("userEmail")
-.textContent=email;
-
-document.getElementById("avatar")
-.textContent=email.charAt(0).toUpperCase();
+loadProfile(user);
 }
 
+
+/* LOAD PROFILE */
+
+async function loadProfile(user){
+
+const metadata =
+user.user_metadata || {};
+
+const nickname =
+metadata.nickname ||
+"Користувач";
+
+const bio =
+metadata.bio ||
+"Тут поки немає опису.";
+
+document.getElementById("profileName")
+.textContent=nickname;
+
+document.getElementById("profileEmail")
+.textContent=user.email;
+
+document.getElementById("profileBio")
+.textContent=bio;
+
+document.getElementById("nickname")
+.value=nickname==="Користувач"?"":nickname;
+
+document.getElementById("bio")
+.value=metadata.bio || "";
+
+document.getElementById("avatar")
+.textContent=
+nickname.charAt(0).toUpperCase();
+}
+
+
+/* EDIT */
+
+function toggleEdit(){
+
+const edit =
+document.getElementById("edit");
+
+if(edit.style.display==="block"){
+
+edit.style.display="none";
+
+}else{
+
+edit.style.display="block";
+
+}
+
+}
+
+
+/* SAVE PROFILE */
+
+async function saveProfile(){
+
+const nickname =
+document.getElementById("nickname")
+.value.trim();
+
+const bio =
+document.getElementById("bio")
+.value.trim();
+
+if(!nickname){
+
+alert("Введи нік.");
+
+return;
+}
+
+const {data,error} =
+await supabaseClient.auth.updateUser({
+
+data:{
+nickname:nickname,
+bio:bio
+}
+
+});
+
+if(error){
+
+alert("Помилка: "+error.message);
+
+return;
+}
+
+loadProfile(data.user);
+
+document.getElementById("edit")
+.style.display="none";
+
+alert("✅ Профіль збережено!");
+}
+
+
+/* LOGOUT */
 
 async function logout(){
 
@@ -357,6 +696,8 @@ await supabaseClient.auth.signOut();
 location.reload();
 }
 
+
+/* CHECK SESSION */
 
 async function checkUser(){
 
@@ -368,6 +709,15 @@ if(user){
 showApp(user);
 
 }
+
+}
+
+function scrollProfile(){
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
 
 }
 
