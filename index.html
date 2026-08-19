@@ -3,7 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MTA Social</title>
+<meta name="description" content="Ukraine GTA Social — соціальна мережа для гравців Ukraine GTA: друзі, пости, фото, повідомлення, профілі та ігровий розділ.">
+<meta name="keywords" content="Ukraine GTA, Ukraine GTA Social, Укр GTA, Україна GTA, GTA Ukraine, соцмережа Ukraine GTA">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Ukraine GTA Social">
+<link rel="canonical" href="https://ukrgtaprofit.github.io/mta-social/">
+<meta property="og:title" content="Ukraine GTA Social">
+<meta property="og:description" content="Соціальна мережа для гравців Ukraine GTA.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ukrgtaprofit.github.io/mta-social/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ukraine GTA Social">
+<meta name="twitter:description" content="Соціальна мережа для гравців Ukraine GTA.">
+<title>Ukraine GTA Social — соціальна мережа Ukraine GTA</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 const UKR_GTA_SERVERS = [
   {name:"Центральна Україна", online:601, max:900},
@@ -26,41 +38,35 @@ function renderUkrGtaDashboard(){
   const news = document.getElementById("ugtNews");
   const updated = document.getElementById("ugtUpdated");
 
-  if(!box || !news) return;
+  if(!box) return;
 
-  box.innerHTML = UKR_GTA_SERVERS.map(s=>{
-    const percent = Math.round((s.online/s.max)*100);
-    return `
-      <div class="ugt-server">
-        <div class="ugt-server-head">
-          <div class="ugt-server-name">${escapeHtml(s.name)}</div>
-          <div class="ugt-server-count">${s.online}/${s.max}</div>
-        </div>
-        <div class="ugt-bar">
-          <div class="ugt-fill" style="width:${percent}%"></div>
-        </div>
-      </div>
-    `;
+  box.innerHTML = UKR_GTA_SERVERS.map(function(s){
+    const percent = Math.max(0, Math.min(100, Math.round((s.online / s.max) * 100)));
+    return '<div class="ugt-server">' +
+      '<div class="ugt-server-head">' +
+        '<div class="ugt-server-name">' + escapeHtml(s.name) + '</div>' +
+        '<div class="ugt-server-count">' + s.online + '/' + s.max + '</div>' +
+      '</div>' +
+      '<div class="ugt-bar"><div class="ugt-fill" style="width:' + percent + '%"></div></div>' +
+    '</div>';
   }).join("");
 
-  news.innerHTML = UKR_GTA_NEWS.map(n=>`
-    <div class="ugt-news">
-      <div class="ugt-news-title">${escapeHtml(n.title)}</div>
-      <div class="ugt-news-date">${escapeHtml(n.date)}</div>
-    </div>
-  `).join("");
+  if(news){
+    news.innerHTML = UKR_GTA_NEWS.map(function(n){
+      return '<div class="ugt-news">' +
+        '<div class="ugt-news-title">' + escapeHtml(n.title) + '</div>' +
+        '<div class="ugt-news-date">' + escapeHtml(n.date) + '</div>' +
+      '</div>';
+    }).join("");
+  }
 
-  updated.textContent =
-    "Дані взяті з офіційної сторінки Ukraine GTA; для автоматичного оновлення потрібен офіційний API.";
+  if(updated){
+    updated.textContent = "Останнє оновлення даних: 19.08.2026";
+  }
 }
 
-const oldRefreshGameData = refreshGameData;
-refreshGameData = async function(){
-  renderUkrGtaDashboard();
-  await oldRefreshGameData();
+await oldRefreshGameData();
 };
-
-renderUkrGtaDashboard();
 
 </script>
 <style>
@@ -578,8 +584,58 @@ class="page"
   <h2>🖥️ Сервери Ukraine GTA</h2>
   <div class="muted">Показники, опубліковані на офіційному сайті Ukraine GTA.</div>
   <div class="ugt-dashboard" id="ugtServers">
-    <div class="empty">Завантаження серверів...</div>
+
+  <div class="ugt-server">
+    <div class="ugt-server-head">
+      <div class="ugt-server-name">Центральна Україна</div>
+      <div class="ugt-server-count">601/900</div>
+    </div>
+    <div class="ugt-bar">
+      <div class="ugt-fill" style="width:67%"></div>
+    </div>
   </div>
+
+  <div class="ugt-server">
+    <div class="ugt-server-head">
+      <div class="ugt-server-name">Західна Україна</div>
+      <div class="ugt-server-count">524/900</div>
+    </div>
+    <div class="ugt-bar">
+      <div class="ugt-fill" style="width:58%"></div>
+    </div>
+  </div>
+
+  <div class="ugt-server">
+    <div class="ugt-server-head">
+      <div class="ugt-server-name">Східна Україна</div>
+      <div class="ugt-server-count">446/900</div>
+    </div>
+    <div class="ugt-bar">
+      <div class="ugt-fill" style="width:50%"></div>
+    </div>
+  </div>
+
+  <div class="ugt-server">
+    <div class="ugt-server-head">
+      <div class="ugt-server-name">Північна Україна</div>
+      <div class="ugt-server-count">366/900</div>
+    </div>
+    <div class="ugt-bar">
+      <div class="ugt-fill" style="width:41%"></div>
+    </div>
+  </div>
+
+  <div class="ugt-server">
+    <div class="ugt-server-head">
+      <div class="ugt-server-name">Чорноморський край</div>
+      <div class="ugt-server-count">369/900</div>
+    </div>
+    <div class="ugt-bar">
+      <div class="ugt-fill" style="width:41%"></div>
+    </div>
+  </div>
+
+</div>
   <div class="muted" id="ugtUpdated" style="margin-top:12px"></div>
 </div>
 
