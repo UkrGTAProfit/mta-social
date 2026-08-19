@@ -18,14 +18,13 @@ font-family:Arial,sans-serif
 }
 
 button,input,textarea{font:inherit}
-
 button{cursor:pointer}
 
 .auth{
 min-height:100vh;
 display:flex;
-justify-content:center;
 align-items:center;
+justify-content:center;
 padding:20px
 }
 
@@ -92,7 +91,7 @@ justify-content:space-between;
 padding:0 22px;
 position:sticky;
 top:0;
-z-index:10
+z-index:20
 }
 
 header button{
@@ -132,11 +131,10 @@ margin:2px 0
 
 .menu button:hover{
 background:#182130;
-color:white
+color:#fff
 }
 
 .page{display:none}
-
 .page.active{display:block}
 
 .card{
@@ -146,6 +144,8 @@ border-radius:18px;
 padding:22px;
 margin-bottom:18px
 }
+
+/* PROFILE */
 
 .cover{
 height:150px;
@@ -186,6 +186,8 @@ padding-top:20px
 }
 
 .stat b{font-size:20px}
+
+/* FRIENDS */
 
 .result{
 background:#182130;
@@ -288,14 +290,15 @@ display:block
 
 .post-content{
 padding:16px;
-line-height:1.5
+line-height:1.5;
+white-space:pre-wrap
 }
 
 .post-actions{
 display:flex;
-gap:25px;
+gap:22px;
 padding:0 16px 16px;
-color:#aeb8c9
+border-bottom:1px solid #202838
 }
 
 .post-actions button{
@@ -303,16 +306,11 @@ background:none;
 border:0;
 color:#aeb8c9;
 padding:0;
-width:auto;
-margin:0
+width:auto
 }
 
 .post-actions button:hover{
-color:white
-}
-
-.create-post textarea{
-margin-top:0
+color:#fff
 }
 
 .preview{
@@ -337,6 +335,34 @@ border:0;
 border-radius:50%;
 background:#080b12;
 color:white
+}
+
+.comments{
+padding:0 16px 16px
+}
+
+.comment{
+background:#182130;
+padding:10px;
+border-radius:10px;
+margin-top:8px
+}
+
+.comment-form{
+display:flex;
+gap:8px;
+margin-top:10px
+}
+
+.comment-form input{
+margin:0;
+flex:1
+}
+
+.comment-form button{
+width:auto;
+margin:0;
+padding:10px 15px
 }
 
 /* CHAT */
@@ -366,13 +392,8 @@ margin:0;
 padding:12px 18px
 }
 
-.chat-friend{
-cursor:pointer
-}
-
-.chat-friend:hover{
-background:#202d40
-}
+.chat-friend{cursor:pointer}
+.chat-friend:hover{background:#202d40}
 
 .my-message{
 display:flex;
@@ -416,7 +437,7 @@ grid-template-columns:1fr
 .menu{
 position:sticky;
 top:70px;
-z-index:5;
+z-index:10;
 display:flex;
 overflow-x:auto
 }
@@ -444,19 +465,15 @@ gap:18px
 
 <body>
 
-<!-- AUTH -->
+<!-- ================= AUTH ================= -->
 
 <div id="auth" class="auth">
 
 <div class="auth-box">
 
-<div class="logo">
-MTA SOCIAL
-</div>
+<div class="logo">MTA SOCIAL</div>
 
-<h1>
-Ласкаво просимо 👋
-</h1>
+<h1>Ласкаво просимо 👋</h1>
 
 <p class="muted">
 Твоя соціальна мережа MTA.
@@ -491,19 +508,16 @@ onclick="login()"
 <p id="message"></p>
 
 </div>
-
 </div>
 
 
-<!-- APP -->
+<!-- ================= APP ================= -->
 
 <div id="app">
 
 <header>
 
-<div class="logo">
-MTA SOCIAL
-</div>
+<div class="logo">MTA SOCIAL</div>
 
 <button
 class="main-btn dark-btn"
@@ -552,18 +566,13 @@ onclick="logout()"
 <div>
 
 
-<!-- HOME -->
+<!-- ================= HOME ================= -->
 
-<div
-id="home"
-class="page active"
->
+<div id="home" class="page active">
 
 <div class="card">
 
-<h1>
-🏠 MTA Social
-</h1>
+<h1>🏠 MTA Social</h1>
 
 <p class="muted">
 Що нового?
@@ -574,17 +583,14 @@ class="page active"
 
 <!-- CREATE POST -->
 
-<div class="card create-post">
+<div class="card">
 
-<h2>
-✍️ Створити пост
-</h2>
+<h2>✍️ Створити пост</h2>
 
 <textarea
 id="postText"
 placeholder="Що нового?"
 ></textarea>
-
 
 <input
 id="postImage"
@@ -592,7 +598,6 @@ type="file"
 accept="image/*"
 onchange="previewImage()"
 >
-
 
 <div
 id="imagePreview"
@@ -611,7 +616,6 @@ onclick="removePhoto()"
 
 </div>
 
-
 <button
 class="main-btn"
 onclick="createPost()"
@@ -619,15 +623,10 @@ onclick="createPost()"
 📤 Опублікувати
 </button>
 
-<p
-id="postMessage"
-class="muted"
-></p>
+<p id="postMessage" class="muted"></p>
 
 </div>
 
-
-<!-- FEED -->
 
 <div id="feed">
 
@@ -640,12 +639,9 @@ class="muted"
 </div>
 
 
-<!-- PROFILE -->
+<!-- ================= PROFILE ================= -->
 
-<div
-id="profile"
-class="page"
->
+<div id="profile" class="page">
 
 <div class="card">
 
@@ -653,42 +649,27 @@ class="page"
 
 <div class="profile-body">
 
-<div
-id="avatar"
-class="avatar"
->
+<div id="avatar" class="avatar">
 A
 </div>
 
-<div
-id="profileName"
-class="profile-name"
->
+<div id="profileName" class="profile-name">
 Користувач
 </div>
 
-<div
-id="profileEmail"
-class="muted"
->
+<div id="profileEmail" class="muted">
 email
 </div>
 
-<p
-id="profileBio"
-class="muted"
->
+<p id="profileBio" class="muted">
 Тут поки немає опису.
 </p>
-
 
 <div class="stats">
 
 <div class="stat">
 
-<b id="postsCount">
-0
-</b>
+<b id="postsCount">0</b>
 
 <div class="muted">
 Пости
@@ -698,9 +679,7 @@ class="muted"
 
 <div class="stat">
 
-<b id="friendsCount">
-0
-</b>
+<b id="friendsCount">0</b>
 
 <div class="muted">
 Друзі
@@ -710,9 +689,7 @@ class="muted"
 
 <div class="stat">
 
-<b>
-0
-</b>
+<b>0</b>
 
 <div class="muted">
 Підписники
@@ -722,14 +699,12 @@ class="muted"
 
 </div>
 
-
 <button
 class="main-btn"
 onclick="toggleEdit()"
 >
 ✏️ Редагувати профіль
 </button>
-
 
 <div
 id="editProfile"
@@ -756,24 +731,17 @@ onclick="saveProfile()"
 </div>
 
 </div>
-
+</div>
 </div>
 
-</div>
 
+<!-- ================= FRIENDS ================= -->
 
-<!-- FRIENDS -->
-
-<div
-id="friends"
-class="page"
->
+<div id="friends" class="page">
 
 <div class="card">
 
-<h1>
-👥 Друзі
-</h1>
+<h1>👥 Друзі</h1>
 
 <input
 id="friendSearch"
@@ -788,9 +756,7 @@ oninput="searchUsers()"
 
 <div class="card">
 
-<h2>
-📨 Запити
-</h2>
+<h2>📨 Запити в друзі</h2>
 
 <div id="friendRequests">
 
@@ -805,9 +771,7 @@ oninput="searchUsers()"
 
 <div class="card">
 
-<h2>
-🤝 Мої друзі
-</h2>
+<h2>🤝 Мої друзі</h2>
 
 <div id="myFriends">
 
@@ -822,18 +786,13 @@ oninput="searchUsers()"
 </div>
 
 
-<!-- MESSAGES -->
+<!-- ================= MESSAGES ================= -->
 
-<div
-id="messages"
-class="page"
->
+<div id="messages" class="page">
 
 <div class="card">
 
-<h1>
-💬 Повідомлення
-</h1>
+<h1>💬 Повідомлення</h1>
 
 <div id="chatFriends">
 
@@ -864,7 +823,6 @@ style="display:none"
 
 </div>
 
-
 <div class="chat-input">
 
 <input
@@ -884,21 +842,16 @@ onkeydown="handleMessageKey(event)"
 </div>
 
 
-<!-- NOTIFICATIONS -->
+<!-- ================= NOTIFICATIONS ================= -->
 
-<div
-id="notifications"
-class="page"
->
+<div id="notifications" class="page">
 
 <div class="card">
 
-<h1>
-🔔 Сповіщення
-</h1>
+<h1>🔔 Сповіщення</h1>
 
 <p class="muted">
-Нові події будуть тут.
+Тут будуть нові події.
 </p>
 
 </div>
@@ -906,18 +859,13 @@ class="page"
 </div>
 
 
-<!-- MTA -->
+<!-- ================= MTA ================= -->
 
-<div
-id="mta"
-class="page"
->
+<div id="mta" class="page">
 
 <div class="card">
 
-<h1>
-🎮 MTA
-</h1>
+<h1>🎮 MTA</h1>
 
 <p class="muted">
 Підключення до MTA-сервера.
@@ -936,15 +884,13 @@ onclick="mtaConnect()"
 
 
 </div>
-
 </div>
-
 </div>
 
 
 <script>
 
-/* SUPABASE */
+/* ================= SUPABASE ================= */
 
 const SUPABASE_URL =
 "https://ifsqesikynpsdgucaljc.supabase.co";
@@ -962,20 +908,22 @@ let currentUser=null;
 let selectedFriend=null;
 
 
-/* AUTH */
+/* ================= AUTH ================= */
 
 async function register(){
 
-const email =
-document.getElementById("email").value.trim();
+const email=
+document.getElementById("email")
+.value.trim();
 
-const password =
-document.getElementById("password").value;
+const password=
+document.getElementById("password")
+.value;
 
-const message =
+const message=
 document.getElementById("message");
 
-if(!email || !password){
+if(!email||!password){
 
 message.textContent=
 "Введи email і пароль.";
@@ -994,12 +942,11 @@ return;
 message.textContent=
 "Створюємо акаунт...";
 
-const {data,error} =
+const {data,error}=
 await supabaseClient.auth.signUp({
 
-email:email,
-
-password:password,
+email,
+password,
 
 options:{
 data:{
@@ -1026,13 +973,15 @@ message.textContent=
 
 async function login(){
 
-const email =
-document.getElementById("email").value.trim();
+const email=
+document.getElementById("email")
+.value.trim();
 
-const password =
-document.getElementById("password").value;
+const password=
+document.getElementById("password")
+.value;
 
-if(!email || !password){
+if(!email||!password){
 
 document.getElementById("message")
 .textContent=
@@ -1041,13 +990,12 @@ document.getElementById("message")
 return;
 }
 
-const {data,error} =
-await supabaseClient.auth.signInWithPassword({
-
-email:email,
-
-password:password
-
+const {data,error}=
+await supabaseClient
+.auth
+.signInWithPassword({
+email,
+password
 });
 
 if(error){
@@ -1075,19 +1023,18 @@ document.getElementById("app")
 .style.display="block";
 
 await ensureProfile();
-
 await loadProfile();
-
 await loadFriends();
-
 await loadFeed();
 
 }
 
 
+/* ================= PROFILE ================= */
+
 async function ensureProfile(){
 
-const {data} =
+const {data}=
 await supabaseClient
 .from("profiles")
 .select("id")
@@ -1096,7 +1043,7 @@ await supabaseClient
 
 if(data)return;
 
-const username =
+const username=
 currentUser.user_metadata?.nickname
 ||
 currentUser.email.split("@")[0];
@@ -1106,9 +1053,7 @@ await supabaseClient
 .insert({
 
 id:currentUser.id,
-
-username:username,
-
+username,
 bio:""
 
 });
@@ -1116,23 +1061,16 @@ bio:""
 }
 
 
-/* PROFILE */
-
 async function loadProfile(){
 
-const {data,error} =
+const {data,error}=
 await supabaseClient
 .from("profiles")
 .select("*")
 .eq("id",currentUser.id)
 .maybeSingle();
 
-if(error){
-console.log(error);
-return;
-}
-
-if(!data)return;
+if(error||!data)return;
 
 document.getElementById("profileName")
 .textContent=data.username;
@@ -1142,8 +1080,7 @@ document.getElementById("profileEmail")
 
 document.getElementById("profileBio")
 .textContent=
-data.bio ||
-"Тут поки немає опису.";
+data.bio||"Тут поки немає опису.";
 
 document.getElementById("nickname")
 .value=data.username;
@@ -1153,7 +1090,9 @@ document.getElementById("bio")
 
 document.getElementById("avatar")
 .textContent=
-data.username.charAt(0).toUpperCase();
+data.username
+.charAt(0)
+.toUpperCase();
 
 }
 
@@ -1184,26 +1123,21 @@ document.getElementById("bio")
 if(!username){
 
 alert("Введи нік.");
-
 return;
 }
 
-const {error} =
+const {error}=
 await supabaseClient
 .from("profiles")
 .update({
-
-username:username,
-
-bio:bio
-
+username,
+bio
 })
 .eq("id",currentUser.id);
 
 if(error){
 
-alert("Помилка: "+error.message);
-
+alert(error.message);
 return;
 }
 
@@ -1212,35 +1146,30 @@ await loadProfile();
 document.getElementById("editProfile")
 .style.display="none";
 
-alert("✅ Профіль збережено!");
-
 }
 
 
-/* POSTS */
+/* ================= POSTS ================= */
 
 function previewImage(){
 
 const input=
 document.getElementById("postImage");
 
-const preview=
-document.getElementById("preview");
-
 const box=
 document.getElementById("imagePreview");
+
+const preview=
+document.getElementById("preview");
 
 if(!input.files.length){
 
 box.style.display="none";
-
 return;
 }
 
 preview.src=
-URL.createObjectURL(
-input.files[0]
-);
+URL.createObjectURL(input.files[0]);
 
 box.style.display="block";
 
@@ -1249,10 +1178,8 @@ box.style.display="block";
 
 function removePhoto(){
 
-const input=
-document.getElementById("postImage");
-
-input.value="";
+document.getElementById("postImage")
+.value="";
 
 document.getElementById("imagePreview")
 .style.display="none";
@@ -1273,7 +1200,7 @@ document.getElementById("postImage")
 const message=
 document.getElementById("postMessage");
 
-if(!text && !file){
+if(!text&&!file){
 
 message.textContent=
 "Додай текст або фото.";
@@ -1286,12 +1213,9 @@ message.textContent=
 
 let imageUrl=null;
 
-
-/* UPLOAD PHOTO */
-
 if(file){
 
-if(file.size > 8*1024*1024){
+if(file.size>8*1024*1024){
 
 message.textContent=
 "Фото має бути менше 8 МБ.";
@@ -1308,50 +1232,38 @@ currentUser.id+
 Date.now()+
 "."+extension;
 
-const {error:uploadError} =
+const {error}=
 await supabaseClient.storage
 .from("post-images")
-.upload(
-path,
-file
-);
+.upload(path,file);
 
-if(uploadError){
+if(error){
+
+console.log(error);
 
 message.textContent=
 "Помилка завантаження фото.";
 
-console.log(uploadError);
-
 return;
 }
 
-const {data:urlData} =
+const {data}=
 supabaseClient.storage
 .from("post-images")
 .getPublicUrl(path);
 
-imageUrl=
-urlData.publicUrl;
+imageUrl=data.publicUrl;
 
 }
 
-
-/* CREATE POST */
-
-const {error} =
+const {error}=
 await supabaseClient
 .from("posts")
 .insert({
 
-user_id:
-currentUser.id,
-
-content:
-text,
-
-image_url:
-imageUrl
+user_id:currentUser.id,
+content:text,
+image_url:imageUrl
 
 });
 
@@ -1369,7 +1281,7 @@ document.getElementById("postText")
 removePhoto();
 
 message.textContent=
-"✅ Пост опубліковано!";
+"✅ Опубліковано!";
 
 await loadFeed();
 
@@ -1381,23 +1293,19 @@ async function loadFeed(){
 const feed=
 document.getElementById("feed");
 
-const {data:posts,error} =
+const {data:posts,error}=
 await supabaseClient
 .from("posts")
 .select("*")
 .order(
 "created_at",
-{
-ascending:false
-}
+{ascending:false}
 );
 
 if(error){
 
-console.log(error);
-
 feed.innerHTML=
-'<div class="empty">Не вдалося завантажити пости.</div>';
+'<div class="empty">Помилка завантаження.</div>';
 
 return;
 }
@@ -1407,20 +1315,15 @@ if(!posts.length){
 feed.innerHTML=
 '<div class="card empty">Поки немає постів. Створи перший! 🚀</div>';
 
-document.getElementById("postsCount")
-.textContent="0";
-
 return;
 }
 
 const ids=
 [...new Set(
-posts.map(
-post=>post.user_id
-)
+posts.map(p=>p.user_id)
 )];
 
-const {data:profiles} =
+const {data:profiles}=
 await supabaseClient
 .from("profiles")
 .select("id,username")
@@ -1428,11 +1331,24 @@ await supabaseClient
 
 const profileMap={};
 
-(profiles||[]).forEach(
-profile=>{
-profileMap[profile.id]=profile;
-}
-);
+(profiles||[]).forEach(p=>{
+profileMap[p.id]=p;
+});
+
+const postIds=
+posts.map(p=>p.id);
+
+const {data:likes}=
+await supabaseClient
+.from("post_likes")
+.select("post_id,user_id")
+.in("post_id",postIds);
+
+const {data:comments}=
+await supabaseClient
+.from("post_comments")
+.select("post_id")
+.in("post_id",postIds);
 
 feed.innerHTML=
 posts.map(post=>{
@@ -1441,21 +1357,26 @@ const author=
 profileMap[post.user_id];
 
 const username=
-author
-?author.username
-:"Користувач";
+author?.username||"Користувач";
 
-const letter=
-username
-.charAt(0)
-.toUpperCase();
+const postLikes=
+(likes||[]).filter(
+x=>x.post_id===post.id
+);
+
+const liked=
+postLikes.some(
+x=>x.user_id===currentUser.id
+);
+
+const commentCount=
+(comments||[]).filter(
+x=>x.post_id===post.id
+).length;
 
 const date=
-new Date(
-post.created_at
-).toLocaleString(
-"uk-UA"
-);
+new Date(post.created_at)
+.toLocaleString("uk-UA");
 
 return `
 
@@ -1464,9 +1385,9 @@ return `
 <div class="post-head">
 
 <div class="post-avatar">
-
-${escapeHtml(letter)}
-
+${escapeHtml(
+username.charAt(0).toUpperCase()
+)}
 </div>
 
 <div>
@@ -1490,7 +1411,6 @@ post.image_url
 <img
 class="post-image"
 src="${escapeHtml(post.image_url)}"
-alt="Фото поста"
 >
 `
 :""
@@ -1509,12 +1429,17 @@ ${escapeHtml(post.content)}
 
 <div class="post-actions">
 
-<button>
-❤️ Лайк
+<button
+onclick="toggleLike('${post.id}')"
+>
+${liked?"❤️":"🤍"}
+${postLikes.length}
 </button>
 
-<button>
-💬 Коментар
+<button
+onclick="toggleComments('${post.id}')"
+>
+💬 ${commentCount}
 </button>
 
 ${
@@ -1524,11 +1449,39 @@ post.user_id===currentUser.id
 <button
 onclick="deletePost('${post.id}')"
 >
-🗑️ Видалити
+🗑️
 </button>
 `
 :""
 }
+
+</div>
+
+<div
+id="comments-${post.id}"
+class="comments"
+style="display:none"
+>
+
+<div
+id="comment-list-${post.id}"
+>
+</div>
+
+<div class="comment-form">
+
+<input
+id="comment-input-${post.id}"
+placeholder="Напиши коментар..."
+>
+
+<button
+onclick="addComment('${post.id}')"
+>
+📤
+</button>
+
+</div>
 
 </div>
 
@@ -1544,11 +1497,199 @@ document.getElementById("postsCount")
 }
 
 
+/* ================= LIKES ================= */
+
+async function toggleLike(postId){
+
+const {data:existing}=
+await supabaseClient
+.from("post_likes")
+.select("id")
+.eq("post_id",postId)
+.eq("user_id",currentUser.id)
+.maybeSingle();
+
+if(existing){
+
+await supabaseClient
+.from("post_likes")
+.delete()
+.eq("id",existing.id);
+
+}else{
+
+const {error}=
+await supabaseClient
+.from("post_likes")
+.insert({
+
+post_id:postId,
+user_id:currentUser.id
+
+});
+
+if(error){
+
+alert(error.message);
+return;
+}
+
+}
+
+await loadFeed();
+
+}
+
+
+/* ================= COMMENTS ================= */
+
+async function toggleComments(postId){
+
+const box=
+document.getElementById(
+"comments-"+postId
+);
+
+if(box.style.display==="none"){
+
+box.style.display="block";
+
+await loadComments(postId);
+
+}else{
+
+box.style.display="none";
+
+}
+
+}
+
+
+async function loadComments(postId){
+
+const box=
+document.getElementById(
+"comment-list-"+postId
+);
+
+const {data,error}=
+await supabaseClient
+.from("post_comments")
+.select("*")
+.eq("post_id",postId)
+.order(
+"created_at",
+{ascending:true}
+);
+
+if(error){
+
+box.innerHTML=
+'<div class="muted">Помилка.</div>';
+
+return;
+}
+
+if(!data.length){
+
+box.innerHTML=
+'<div class="muted">Поки немає коментарів.</div>';
+
+return;
+}
+
+const ids=
+[...new Set(
+data.map(x=>x.user_id)
+)];
+
+const {data:profiles}=
+await supabaseClient
+.from("profiles")
+.select("id,username")
+.in("id",ids);
+
+const map={};
+
+(profiles||[]).forEach(p=>{
+map[p.id]=p.username;
+});
+
+box.innerHTML=
+data.map(comment=>`
+
+<div class="comment">
+
+<b>
+${escapeHtml(
+map[comment.user_id]||
+"Користувач"
+)}
+</b>
+
+<div>
+${escapeHtml(comment.content)}
+</div>
+
+<div class="muted">
+${new Date(
+comment.created_at
+).toLocaleString("uk-UA")}
+</div>
+
+</div>
+
+`).join("");
+
+}
+
+
+async function addComment(postId){
+
+const input=
+document.getElementById(
+"comment-input-"+postId
+);
+
+const content=
+input.value.trim();
+
+if(!content)return;
+
+const {error}=
+await supabaseClient
+.from("post_comments")
+.insert({
+
+post_id:postId,
+user_id:currentUser.id,
+content
+
+});
+
+if(error){
+
+alert(error.message);
+return;
+}
+
+input.value="";
+
+await loadComments(postId);
+await loadFeed();
+
+}
+
+
+/* ================= DELETE POST ================= */
+
 async function deletePost(id){
 
-if(!confirm("Видалити цей пост?"))return;
+if(!confirm(
+"Видалити цей пост?"
+))return;
 
-const {error} =
+const {error}=
 await supabaseClient
 .from("posts")
 .delete()
@@ -1557,11 +1698,7 @@ await supabaseClient
 
 if(error){
 
-alert(
-"Помилка: "+
-error.message
-);
-
+alert(error.message);
 return;
 }
 
@@ -1570,7 +1707,7 @@ await loadFeed();
 }
 
 
-/* FRIENDS */
+/* ================= FRIENDS ================= */
 
 async function searchUsers(){
 
@@ -1589,7 +1726,7 @@ results.innerHTML=
 return;
 }
 
-const {data,error} =
+const {data,error}=
 await supabaseClient
 .from("profiles")
 .select("id,username,bio")
@@ -1606,7 +1743,7 @@ currentUser.id
 if(error){
 
 results.innerHTML=
-'<div class="empty">Помилка пошуку.</div>';
+'<div class="empty">Помилка.</div>';
 
 return;
 }
@@ -1625,12 +1762,9 @@ data.map(user=>`
 <div class="result">
 
 <div class="small-avatar">
-
 ${escapeHtml(
-user.username.charAt(0)
-.toUpperCase()
+user.username.charAt(0).toUpperCase()
 )}
-
 </div>
 
 <div class="result-info">
@@ -1661,7 +1795,7 @@ onclick="addFriend('${user.id}')"
 
 async function addFriend(friendId){
 
-const {data:existing} =
+const {data:existing}=
 await supabaseClient
 .from("friendships")
 .select("*")
@@ -1677,7 +1811,7 @@ currentUser.id+
 ")"
 );
 
-if(existing&&existing.length){
+if(existing?.length){
 
 alert(
 "Запит або дружба вже існує."
@@ -1686,31 +1820,24 @@ alert(
 return;
 }
 
-const {error} =
+const {error}=
 await supabaseClient
 .from("friendships")
 .insert({
 
 user_id:currentUser.id,
-
 friend_id:friendId,
-
 status:"pending"
 
 });
 
 if(error){
 
-alert(
-"Помилка: "+error.message
-);
-
+alert(error.message);
 return;
 }
 
-alert(
-"✅ Запит відправлено!"
-);
+alert("✅ Запит відправлено!");
 
 await loadFriends();
 
@@ -1719,7 +1846,7 @@ await loadFriends();
 
 async function loadFriends(){
 
-const {data,error} =
+const {data,error}=
 await supabaseClient
 .from("friendships")
 .select("*")
@@ -1733,21 +1860,19 @@ currentUser.id
 if(error)return;
 
 const accepted=
-data.filter(
-x=>x.status==="accepted"
-);
+data.filter(x=>x.status==="accepted");
 
 const incoming=
 data.filter(
 x=>
-x.status==="pending" &&
+x.status==="pending"&&
 x.friend_id===currentUser.id
 );
 
 const outgoing=
 data.filter(
 x=>
-x.status==="pending" &&
+x.status==="pending"&&
 x.user_id===currentUser.id
 );
 
@@ -1755,7 +1880,6 @@ document.getElementById("friendsCount")
 .textContent=accepted.length;
 
 await showFriends(accepted);
-
 await showRequests(
 incoming,
 outgoing
@@ -1784,7 +1908,7 @@ item.user_id===currentUser.id
 :item.user_id
 );
 
-const {data:profiles} =
+const {data:profiles}=
 await supabaseClient
 .from("profiles")
 .select("id,username,bio")
@@ -1796,12 +1920,9 @@ profiles.map(profile=>`
 <div class="friend-row">
 
 <div class="small-avatar">
-
 ${escapeHtml(
-profile.username.charAt(0)
-.toUpperCase()
+profile.username.charAt(0).toUpperCase()
 )}
-
 </div>
 
 <div class="friend-info">
@@ -1847,10 +1968,10 @@ if(incoming.length){
 const ids=
 incoming.map(x=>x.user_id);
 
-const {data:profiles} =
+const {data:profiles}=
 await supabaseClient
 .from("profiles")
-.select("id,username,bio")
+.select("id,username")
 .in("id",ids);
 
 profiles.forEach(profile=>{
@@ -1865,12 +1986,9 @@ html+=`
 <div class="friend-row">
 
 <div class="small-avatar">
-
 ${escapeHtml(
-profile.username.charAt(0)
-.toUpperCase()
+profile.username.charAt(0).toUpperCase()
 )}
-
 </div>
 
 <div class="friend-info">
@@ -1916,7 +2034,7 @@ if(outgoing.length){
 const ids=
 outgoing.map(x=>x.friend_id);
 
-const {data:profiles} =
+const {data:profiles}=
 await supabaseClient
 .from("profiles")
 .select("id,username")
@@ -1929,12 +2047,9 @@ html+=`
 <div class="friend-row">
 
 <div class="small-avatar">
-
 ${escapeHtml(
-profile.username.charAt(0)
-.toUpperCase()
+profile.username.charAt(0).toUpperCase()
 )}
-
 </div>
 
 <div class="friend-info">
@@ -1971,7 +2086,7 @@ box.innerHTML=html;
 
 async function acceptFriend(id){
 
-const {error} =
+const {error}=
 await supabaseClient
 .from("friendships")
 .update({
@@ -1985,24 +2100,20 @@ currentUser.id
 
 if(error){
 
-alert(
-"Помилка: "+error.message
-);
-
+alert(error.message);
 return;
 }
 
 await loadFriends();
 
-alert(
-"✅ Тепер ви друзі!"
-);
+alert("✅ Тепер ви друзі!");
 
 }
 
 
 async function rejectFriend(id){
 
+const {error}=
 await supabaseClient
 .from("friendships")
 .delete()
@@ -2012,6 +2123,12 @@ await supabaseClient
 currentUser.id
 );
 
+if(error){
+
+alert(error.message);
+return;
+}
+
 await loadFriends();
 
 }
@@ -2019,7 +2136,7 @@ await loadFriends();
 
 async function removeFriend(friendId){
 
-const {error} =
+const {error}=
 await supabaseClient
 .from("friendships")
 .delete()
@@ -2037,10 +2154,7 @@ currentUser.id+
 
 if(error){
 
-alert(
-"Помилка: "+error.message
-);
-
+alert(error.message);
 return;
 }
 
@@ -2049,7 +2163,7 @@ await loadFriends();
 }
 
 
-/* CHAT */
+/* ================= CHAT ================= */
 
 async function loadChatFriends(){
 
@@ -2058,7 +2172,7 @@ document.getElementById(
 "chatFriends"
 );
 
-const {data,error} =
+const {data,error}=
 await supabaseClient
 .from("friendships")
 .select("*")
@@ -2068,15 +2182,12 @@ currentUser.id+
 ",friend_id.eq."+
 currentUser.id
 )
-.eq(
-"status",
-"accepted"
-);
+.eq("status","accepted");
 
 if(error){
 
 box.innerHTML=
-'<div class="empty">Помилка завантаження.</div>';
+'<div class="empty">Помилка.</div>';
 
 return;
 }
@@ -2096,7 +2207,7 @@ item.user_id===currentUser.id
 :item.user_id
 );
 
-const {data:profiles} =
+const {data:profiles}=
 await supabaseClient
 .from("profiles")
 .select("id,username")
@@ -2111,12 +2222,9 @@ onclick="openChat('${friend.id}','${escapeHtml(friend.username)}')"
 >
 
 <div class="small-avatar">
-
 ${escapeHtml(
-friend.username.charAt(0)
-.toUpperCase()
+friend.username.charAt(0).toUpperCase()
 )}
-
 </div>
 
 <div class="friend-info">
@@ -2165,7 +2273,7 @@ async function loadMessages(){
 
 if(!selectedFriend)return;
 
-const {data,error} =
+const {data,error}=
 await supabaseClient
 .from("messages")
 .select("*")
@@ -2182,9 +2290,7 @@ currentUser.id+
 )
 .order(
 "created_at",
-{
-ascending:true
-}
+{ascending:true}
 );
 
 if(error)return;
@@ -2210,9 +2316,8 @@ message.sender_id===
 currentUser.id;
 
 const time=
-new Date(
-message.created_at
-).toLocaleTimeString(
+new Date(message.created_at)
+.toLocaleTimeString(
 "uk-UA",
 {
 hour:"2-digit",
@@ -2223,9 +2328,7 @@ minute:"2-digit"
 return `
 
 <div class="${
-mine
-?"my-message"
-:"other-message"
+mine?"my-message":"other-message"
 }">
 
 <div class="message-bubble">
@@ -2246,8 +2349,7 @@ ${time}
 
 }).join("");
 
-box.scrollTop=
-box.scrollHeight;
+box.scrollTop=box.scrollHeight;
 
 }
 
@@ -2266,28 +2368,20 @@ input.value.trim();
 
 if(!content)return;
 
-const {error} =
+const {error}=
 await supabaseClient
 .from("messages")
 .insert({
 
-sender_id:
-currentUser.id,
-
-receiver_id:
-selectedFriend,
-
-content:
+sender_id:currentUser.id,
+receiver_id:selectedFriend,
 content
 
 });
 
 if(error){
 
-alert(
-"Помилка: "+error.message
-);
-
+alert(error.message);
 return;
 }
 
@@ -2311,7 +2405,7 @@ sendMessage();
 }
 
 
-/* NAVIGATION */
+/* ================= NAVIGATION ================= */
 
 function openPage(page){
 
@@ -2319,9 +2413,7 @@ document
 .querySelectorAll(".page")
 .forEach(
 element=>
-element.classList.remove(
-"active"
-)
+element.classList.remove("active")
 );
 
 document
@@ -2343,7 +2435,7 @@ loadFeed();
 }
 
 
-/* MTA */
+/* ================= MTA ================= */
 
 function mtaConnect(){
 
@@ -2354,7 +2446,7 @@ alert(
 }
 
 
-/* LOGOUT */
+/* ================= LOGOUT ================= */
 
 async function logout(){
 
@@ -2367,7 +2459,7 @@ location.reload();
 }
 
 
-/* SECURITY */
+/* ================= SECURITY ================= */
 
 function escapeHtml(text){
 
@@ -2381,52 +2473,58 @@ return String(text)
 }
 
 
-/* SESSION */
-
-async function checkUser(){
-
-const {
-data:{user}
-} =
-await supabaseClient
-.auth
-.getUser();
-
-if(user){
-
-await showApp(user);
-
-}
-
-}
-
-
-/* REALTIME POSTS */
+/* ================= REALTIME ================= */
 
 supabaseClient
-.channel("posts-realtime")
+.channel("posts-live")
 .on(
 "postgres_changes",
 {
-event:"INSERT",
+event:"*",
 schema:"public",
 table:"posts"
 },
-payload=>{
-
-if(currentUser){
-loadFeed();
-}
-
+()=>{
+if(currentUser)loadFeed();
 }
 )
 .subscribe();
 
 
-/* REALTIME CHAT */
+supabaseClient
+.channel("likes-live")
+.on(
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"post_likes"
+},
+()=>{
+if(currentUser)loadFeed();
+}
+)
+.subscribe();
+
 
 supabaseClient
-.channel("messages-realtime")
+.channel("comments-live")
+.on(
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"post_comments"
+},
+()=>{
+if(currentUser)loadFeed();
+}
+)
+.subscribe();
+
+
+supabaseClient
+.channel("messages-live")
 .on(
 "postgres_changes",
 {
@@ -2438,22 +2536,17 @@ payload=>{
 
 if(!currentUser)return;
 
-const msg=
-payload.new;
+const msg=payload.new;
 
 if(
 (
-msg.sender_id===
-currentUser.id &&
-msg.receiver_id===
-selectedFriend
+msg.sender_id===currentUser.id&&
+msg.receiver_id===selectedFriend
 )
 ||
 (
-msg.sender_id===
-selectedFriend &&
-msg.receiver_id===
-currentUser.id
+msg.sender_id===selectedFriend&&
+msg.receiver_id===currentUser.id
 )
 ){
 
@@ -2465,6 +2558,25 @@ loadMessages();
 )
 .subscribe();
 
+
+/* ================= SESSION ================= */
+
+async function checkUser(){
+
+const {
+data:{user}
+}=
+await supabaseClient
+.auth
+.getUser();
+
+if(user){
+
+await showApp(user);
+
+}
+
+}
 
 checkUser();
 
