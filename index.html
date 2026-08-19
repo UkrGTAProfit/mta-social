@@ -1,0 +1,545 @@
+```html
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MTA Social</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    background:#080b12;
+    color:#fff;
+    font-family:Arial,sans-serif
+}
+
+.app{
+    max-width:1100px;
+    margin:auto
+}
+
+.top{
+    height:68px;
+    border-bottom:1px solid #202838;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 22px;
+    background:#0d111a;
+    position:sticky;
+    top:0
+}
+
+.logo{
+    font-size:25px;
+    font-weight:800;
+    color:#4da3ff
+}
+
+.actions{
+    display:flex;
+    gap:10px
+}
+
+.btn{
+    border:0;
+    border-radius:10px;
+    padding:11px 16px;
+    background:#4da3ff;
+    color:white;
+    font-weight:700;
+    cursor:pointer
+}
+
+.btn.alt{
+    background:#182130
+}
+
+.main{
+    display:grid;
+    grid-template-columns:220px 1fr 220px;
+    gap:20px;
+    padding:25px 18px
+}
+
+.side,.post,.profile{
+    background:#101620;
+    border:1px solid #202838;
+    border-radius:16px;
+    padding:18px
+}
+
+.side a{
+    display:block;
+    color:#aeb8c9;
+    text-decoration:none;
+    padding:12px 8px;
+    border-radius:9px
+}
+
+.side a:hover{
+    background:#182130;
+    color:#fff
+}
+
+.post{
+    margin-bottom:16px
+}
+
+.user{
+    display:flex;
+    gap:12px;
+    align-items:center
+}
+
+.avatar{
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    background:#4da3ff;
+    display:grid;
+    place-items:center;
+    font-weight:800
+}
+
+.muted{
+    color:#8994a7
+}
+
+.text{
+    line-height:1.55;
+    margin:16px 0
+}
+
+.post-actions{
+    color:#9aa5b7
+}
+
+.friend{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    margin:14px 0
+}
+
+.small{
+    width:34px;
+    height:34px
+}
+
+.login{
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    padding:20px
+}
+
+.loginbox{
+    width:380px;
+    max-width:100%;
+    background:#101620;
+    border:1px solid #202838;
+    border-radius:20px;
+    padding:30px
+}
+
+.input{
+    width:100%;
+    padding:14px;
+    margin:8px 0;
+    background:#080b12;
+    border:1px solid #303b50;
+    border-radius:10px;
+    color:white;
+    outline:none
+}
+
+.loginbox h1{
+    margin-top:20px
+}
+
+.hide{
+    display:none
+}
+
+@media(max-width:850px){
+
+    .main{
+        grid-template-columns:1fr
+    }
+
+    .left,.right{
+        display:none
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="login" class="login">
+
+    <div class="loginbox">
+
+        <div class="logo">
+            MTA SOCIAL
+        </div>
+
+        <h1>
+            Ласкаво просимо 👋
+        </h1>
+
+        <p class="muted">
+            Створи свій профіль у MTA Social.
+        </p>
+
+        <input
+            class="input"
+            id="name"
+            placeholder="Твій нік"
+        >
+
+        <input
+            class="input"
+            id="phone"
+            placeholder="Номер телефону"
+        >
+
+        <button
+            class="btn"
+            style="width:100%;margin-top:8px"
+            onclick="enter()"
+        >
+            Увійти
+        </button>
+
+        <button
+            class="btn alt"
+            style="width:100%;margin-top:10px"
+            onclick="register()"
+        >
+            Створити акаунт
+        </button>
+
+        <p id="msg" class="muted"></p>
+
+    </div>
+
+</div>
+
+
+<div id="app" class="hide">
+
+<header class="top">
+
+    <div class="logo">
+        MTA SOCIAL
+    </div>
+
+    <div class="actions">
+
+        <button
+            class="btn alt"
+            onclick="logout()"
+        >
+            Вийти
+        </button>
+
+    </div>
+
+</header>
+
+
+<main class="main">
+
+
+<aside class="side left">
+
+    <a href="#">
+        🏠 Головна
+    </a>
+
+    <a href="#">
+        🔎 Пошук
+    </a>
+
+    <a href="#">
+        💬 Повідомлення
+    </a>
+
+    <a href="#">
+        🔔 Сповіщення
+    </a>
+
+    <a href="#">
+        👤 Профіль
+    </a>
+
+    <a href="#">
+        🎮 MTA
+    </a>
+
+</aside>
+
+
+<section>
+
+<div class="post">
+
+    <div class="user">
+
+        <div
+            class="avatar"
+            id="avatar"
+        >
+            A
+        </div>
+
+        <div>
+
+            <b id="userName">
+                Артур
+            </b>
+
+            <div class="muted">
+                щойно
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="text">
+
+        Ласкаво просимо до
+        <b>MTA Social</b>! 🚀
+
+        Тут буде твоя стрічка,
+        друзі, чати та MTA-профіль.
+
+    </div>
+
+
+    <div class="post-actions">
+
+        ❤️ 0 &nbsp;&nbsp;
+        💬 0 &nbsp;&nbsp;
+        ↗ Поділитися
+
+    </div>
+
+</div>
+
+
+<div class="post">
+
+    <div class="user">
+
+        <div class="avatar">
+            M
+        </div>
+
+        <div>
+
+            <b>
+                MTA News
+            </b>
+
+            <div class="muted">
+                сьогодні
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="text">
+
+        Скоро тут з'являться
+        справжні пости користувачів.
+
+    </div>
+
+
+    <div class="post-actions">
+
+        ❤️ 24 &nbsp;&nbsp;
+        💬 7
+
+    </div>
+
+</div>
+
+</section>
+
+
+<aside class="right">
+
+<div class="profile">
+
+    <h3>
+        🎮 MTA профіль
+    </h3>
+
+    <p class="muted">
+        Гравець ще не підключений
+    </p>
+
+    <button
+        class="btn"
+        style="width:100%"
+    >
+        Підключити
+    </button>
+
+</div>
+
+
+<div
+    class="profile"
+    style="margin-top:16px"
+>
+
+    <h3>
+        👥 Друзі
+    </h3>
+
+    <div class="friend">
+
+        <div class="avatar small">
+            D
+        </div>
+
+        Даня
+
+    </div>
+
+
+    <div class="friend">
+
+        <div class="avatar small">
+            N
+        </div>
+
+        Назар
+
+    </div>
+
+</div>
+
+</aside>
+
+</main>
+
+</div>
+
+
+<script>
+
+function enter(){
+
+    const n =
+        document
+        .getElementById("name")
+        .value
+        .trim();
+
+    if(!n){
+
+        document
+        .getElementById("msg")
+        .textContent =
+        "Введи нік";
+
+        return;
+    }
+
+    localStorage.setItem(
+        "mta_name",
+        n
+    );
+
+    show(n);
+}
+
+
+function register(){
+
+    const n =
+        document
+        .getElementById("name")
+        .value
+        .trim();
+
+    if(!n){
+
+        document
+        .getElementById("msg")
+        .textContent =
+        "Введи нік для реєстрації";
+
+        return;
+    }
+
+    localStorage.setItem(
+        "mta_name",
+        n
+    );
+
+    show(n);
+}
+
+
+function show(n){
+
+    document
+    .getElementById("login")
+    .classList
+    .add("hide");
+
+    document
+    .getElementById("app")
+    .classList
+    .remove("hide");
+
+    document
+    .getElementById("userName")
+    .textContent = n;
+
+    document
+    .getElementById("avatar")
+    .textContent =
+    n[0].toUpperCase();
+}
+
+
+function logout(){
+
+    localStorage.removeItem(
+        "mta_name"
+    );
+
+    location.reload();
+}
+
+
+const saved =
+    localStorage.getItem(
+        "mta_name"
+    );
+
+if(saved){
+
+    show(saved);
+}
+
+</script>
+
+</body>
+</html>
+```
