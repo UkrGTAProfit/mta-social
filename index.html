@@ -3,45 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>MTA Social</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+box-sizing:border-box;
+}
 
 body{
 margin:0;
 background:#080b12;
 color:white;
-font-family:Arial,sans-serif
+font-family:Arial,sans-serif;
 }
 
 button,input,textarea{
-font:inherit
+font:inherit;
+}
+
+button{
+cursor:pointer;
 }
 
 .auth{
 min-height:100vh;
 display:flex;
-justify-content:center;
 align-items:center;
-padding:20px
+justify-content:center;
+padding:20px;
 }
 
-.box{
+.auth-box{
 width:400px;
 max-width:100%;
 background:#101620;
 border:1px solid #202838;
 border-radius:22px;
-padding:30px
+padding:30px;
 }
 
 .logo{
-font-size:28px;
+font-size:27px;
 font-weight:800;
-color:#4da3ff
+color:#4da3ff;
+}
+
+.muted{
+color:#8994a7;
 }
 
 input,textarea{
@@ -52,15 +64,15 @@ background:#080b12;
 border:1px solid #303b50;
 border-radius:11px;
 color:white;
-outline:none
+outline:none;
 }
 
 textarea{
 min-height:100px;
-resize:none
+resize:none;
 }
 
-button{
+.main-btn{
 width:100%;
 padding:14px;
 margin-top:12px;
@@ -69,23 +81,19 @@ border-radius:11px;
 background:#4da3ff;
 color:white;
 font-weight:bold;
-cursor:pointer
 }
 
-.secondary{
-background:#182130
-}
-
-.muted{
-color:#8994a7
+.dark-btn{
+background:#182130;
 }
 
 #message{
-color:#4da3ff
+margin-top:15px;
+color:#4da3ff;
 }
 
 #app{
-display:none
+display:none;
 }
 
 header{
@@ -98,148 +106,207 @@ justify-content:space-between;
 padding:0 22px;
 position:sticky;
 top:0;
-z-index:10
+z-index:10;
 }
 
 header button{
 width:auto;
-margin:0
+margin:0;
+padding:10px 18px;
 }
 
 .layout{
-max-width:1050px;
+max-width:1100px;
 margin:auto;
 display:grid;
-grid-template-columns:220px 1fr;
+grid-template-columns:210px 1fr;
 gap:20px;
-padding:25px 15px
+padding:25px 15px;
 }
 
 .menu{
 background:#101620;
 border:1px solid #202838;
 border-radius:18px;
-padding:15px;
-height:max-content
+padding:12px;
+height:max-content;
+position:sticky;
+top:90px;
 }
 
 .menu button{
+width:100%;
 background:transparent;
+color:#aeb8c9;
 text-align:left;
-color:#aeb8c9
+border:0;
+padding:13px;
+border-radius:10px;
+margin:2px 0;
 }
 
-.profile{
-background:#101620;
-border:1px solid #202838;
-border-radius:20px;
-overflow:hidden
+.menu button:hover{
+background:#182130;
+color:white;
 }
 
-.cover{
-height:150px;
-background:linear-gradient(135deg,#16355d,#4da3ff)
-}
-
-.profileBody{
-padding:25px
-}
-
-.avatar{
-width:100px;
-height:100px;
-border-radius:50%;
-background:#4da3ff;
-border:5px solid #101620;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:42px;
-font-weight:bold;
-margin-top:-70px
-}
-
-.name{
-font-size:28px;
-font-weight:bold;
-margin-top:15px
-}
-
-.email{
-color:#8994a7;
-margin-top:5px
-}
-
-.stats{
-display:flex;
-gap:35px;
-margin-top:25px;
-padding-top:20px;
-border-top:1px solid #202838
-}
-
-.stat b{
-font-size:20px
-}
-
-.edit{
+.page{
 display:none;
-margin-top:25px;
-padding-top:20px;
-border-top:1px solid #202838
+}
+
+.page.active{
+display:block;
 }
 
 .card{
 background:#101620;
 border:1px solid #202838;
 border-radius:18px;
+padding:22px;
+margin-bottom:18px;
+}
+
+.cover{
+height:150px;
+background:linear-gradient(135deg,#16355d,#4da3ff);
+border-radius:15px 15px 0 0;
+}
+
+.profile-body{
+padding:0 22px 22px;
+}
+
+.avatar{
+width:90px;
+height:90px;
+border-radius:50%;
+background:#4da3ff;
+border:5px solid #101620;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:38px;
+font-weight:bold;
+margin-top:-45px;
+}
+
+.profile-name{
+font-size:27px;
+font-weight:bold;
+margin-top:12px;
+}
+
+.stats{
+display:flex;
+gap:35px;
+border-top:1px solid #202838;
+margin-top:20px;
+padding-top:20px;
+}
+
+.stat b{
+font-size:20px;
+}
+
+.result{
+background:#182130;
+border-radius:13px;
+padding:15px;
+margin-top:12px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:15px;
+}
+
+.result button{
+width:auto;
+margin:0;
+padding:10px 15px;
+}
+
+.small-avatar{
+width:48px;
+height:48px;
+border-radius:50%;
+background:#4da3ff;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+}
+
+.friend-row{
+display:flex;
+align-items:center;
+gap:12px;
+background:#182130;
+padding:13px;
+border-radius:12px;
+margin-top:10px;
+}
+
+.friend-info{
+flex:1;
+}
+
+.status{
+color:#4dff88;
+font-size:13px;
+}
+
+.empty{
 padding:20px;
-margin-top:20px
+text-align:center;
+color:#8994a7;
 }
 
 @media(max-width:700px){
 
 .layout{
-grid-template-columns:1fr
+grid-template-columns:1fr;
 }
 
 .menu{
+position:sticky;
+top:70px;
+z-index:5;
 display:flex;
-gap:5px;
-overflow:auto
+overflow-x:auto;
 }
 
 .menu button{
-min-width:130px
+min-width:120px;
+white-space:nowrap;
 }
 
-.cover{
-height:120px
 }
 
-.profileBody{
-padding:20px
-}
-}
 </style>
 </head>
 
+
 <body>
 
+
+<!-- ========================= -->
 <!-- AUTH -->
+<!-- ========================= -->
 
 <div id="auth" class="auth">
 
-<div class="box">
+<div class="auth-box">
 
 <div class="logo">
 MTA SOCIAL
 </div>
 
-<h1>Вітаємо 👋</h1>
+<h1>
+Ласкаво просимо 👋
+</h1>
 
 <p class="muted">
-Увійди або створи акаунт.
+Твоя соціальна мережа MTA.
 </p>
 
 <input
@@ -254,12 +321,15 @@ type="password"
 placeholder="Пароль"
 >
 
-<button onclick="register()">
+<button
+class="main-btn"
+onclick="register()"
+>
 Створити акаунт
 </button>
 
 <button
-class="secondary"
+class="main-btn dark-btn"
 onclick="login()"
 >
 Увійти
@@ -272,9 +342,12 @@ onclick="login()"
 </div>
 
 
+<!-- ========================= -->
 <!-- APP -->
+<!-- ========================= -->
 
 <div id="app">
+
 
 <header>
 
@@ -283,7 +356,7 @@ MTA SOCIAL
 </div>
 
 <button
-class="secondary"
+class="main-btn dark-btn"
 onclick="logout()"
 >
 Вийти
@@ -294,71 +367,120 @@ onclick="logout()"
 
 <div class="layout">
 
+
+<!-- ========================= -->
 <!-- MENU -->
+<!-- ========================= -->
 
 <div class="menu">
 
-<button>
+<button onclick="openPage('home')">
 🏠 Головна
 </button>
 
-<button>
-🔎 Пошук
-</button>
-
-<button>
-💬 Повідомлення
-</button>
-
-<button>
-🔔 Сповіщення
-</button>
-
-<button onclick="scrollProfile()">
+<button onclick="openPage('profile')">
 👤 Профіль
 </button>
 
-<button>
+<button onclick="openPage('friends')">
+👥 Друзі
+</button>
+
+<button onclick="openPage('messages')">
+💬 Повідомлення
+</button>
+
+<button onclick="openPage('notifications')">
+🔔 Сповіщення
+</button>
+
+<button onclick="openPage('mta')">
 🎮 MTA
 </button>
 
 </div>
 
 
-<!-- PROFILE -->
+<!-- ========================= -->
+<!-- CONTENT -->
+<!-- ========================= -->
 
 <div>
 
-<div class="profile">
+
+<!-- HOME -->
+
+<div
+id="home"
+class="page active"
+>
+
+<div class="card">
+
+<h1>
+🏠 MTA Social
+</h1>
+
+<p class="muted">
+Ласкаво просимо до твоєї соціальної мережі.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+🚀 Скоро тут
+</h2>
+
+<p class="muted">
+Пости, фотографії, лайки, коментарі
+та багато іншого.
+</p>
+
+</div>
+
+</div>
+
+
+<!-- PROFILE -->
+
+<div
+id="profile"
+class="page"
+>
+
+<div class="card">
 
 <div class="cover"></div>
 
-<div class="profileBody">
+<div class="profile-body">
 
 <div
-class="avatar"
 id="avatar"
+class="avatar"
 >
 A
 </div>
 
 <div
-class="name"
 id="profileName"
+class="profile-name"
 >
 Користувач
 </div>
 
 <div
-class="email"
 id="profileEmail"
+class="muted"
 >
 email
 </div>
 
 <p
-class="muted"
 id="profileBio"
+class="muted"
 >
 Тут поки немає опису.
 </p>
@@ -367,54 +489,73 @@ id="profileBio"
 <div class="stats">
 
 <div class="stat">
-<b>0</b>
+
+<b id="postsCount">
+0
+</b>
+
 <div class="muted">
 Пости
 </div>
+
 </div>
 
+
 <div class="stat">
-<b>0</b>
+
+<b id="friendsCount">
+0
+</b>
+
 <div class="muted">
 Друзі
 </div>
+
 </div>
 
+
 <div class="stat">
-<b>0</b>
+
+<b id="followersCount">
+0
+</b>
+
 <div class="muted">
 Підписники
 </div>
-</div>
 
 </div>
 
+</div>
 
-<button onclick="toggleEdit()">
+
+<button
+class="main-btn"
+onclick="toggleEdit()"
+>
 ✏️ Редагувати профіль
 </button>
 
 
 <div
-class="edit"
-id="edit"
+id="editProfile"
+style="display:none"
 >
-
-<h3>
-Редагування профілю
-</h3>
 
 <input
 id="nickname"
-placeholder="Твій нік"
+placeholder="Нік"
 >
 
 <textarea
 id="bio"
-placeholder="Розкажи щось про себе..."
+placeholder="Опис профілю"
 ></textarea>
 
-<button onclick="saveProfile()">
+<button
+class="main-btn"
+onclick="saveProfile()"
+>
 💾 Зберегти
 </button>
 
@@ -424,20 +565,135 @@ placeholder="Розкажи щось про себе..."
 
 </div>
 
+</div>
+
+
+<!-- FRIENDS -->
+
+<div
+id="friends"
+class="page"
+>
+
+<div class="card">
+
+<h1>
+👥 Друзі
+</h1>
+
+<p class="muted">
+Знайди користувача за ніком.
+</p>
+
+<input
+id="friendSearch"
+placeholder="🔎 Введи нік..."
+oninput="searchUsers()"
+>
+
+<div id="searchResults"></div>
+
+</div>
+
 
 <div class="card">
 
 <h2>
-🎮 MTA профіль
+📨 Запити
 </h2>
 
+<div id="friendRequests">
+
+<div class="empty">
+Поки немає запитів.
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+🤝 Мої друзі
+</h2>
+
+<div id="myFriends">
+
+<div class="empty">
+Поки немає друзів.
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- MESSAGES -->
+
+<div
+id="messages"
+class="page"
+>
+
+<div class="card">
+
+<h1>
+💬 Повідомлення
+</h1>
+
 <p class="muted">
-Пізніше тут можна буде підключити MTA-акаунт,
-показувати сервер, рівень, гроші, автомобілі
-та статистику.
+Особисті повідомлення з'являться тут.
 </p>
 
-<button>
+</div>
+
+</div>
+
+
+<!-- NOTIFICATIONS -->
+
+<div
+id="notifications"
+class="page"
+>
+
+<div class="card">
+
+<h1>
+🔔 Сповіщення
+</h1>
+
+<p class="muted">
+Нові сповіщення будуть тут.
+</p>
+
+</div>
+
+</div>
+
+
+<!-- MTA -->
+
+<div
+id="mta"
+class="page"
+>
+
+<div class="card">
+
+<h1>
+🎮 MTA
+</h1>
+
+<p class="muted">
+Підключення MTA-сервера.
+</p>
+
+<button class="main-btn">
 Підключити MTA
 </button>
 
@@ -447,14 +703,25 @@ placeholder="Розкажи щось про себе..."
 <div class="card">
 
 <h2>
-🏠 Стрічка
+📊 Статистика
 </h2>
 
 <p class="muted">
-Тут будуть твої пости та пости друзів.
+Рівень: —
+</p>
+
+<p class="muted">
+Гроші: —
+</p>
+
+<p class="muted">
+Автомобілі: —
 </p>
 
 </div>
+
+</div>
+
 
 </div>
 
@@ -464,6 +731,11 @@ placeholder="Розкажи щось про себе..."
 
 
 <script>
+
+
+/* ========================= */
+/* SUPABASE */
+/* ========================= */
 
 const SUPABASE_URL =
 "https://ifsqesikynpsdgucaljc.supabase.co";
@@ -478,231 +750,606 @@ SUPABASE_KEY
 );
 
 
+let currentUser = null;
+
+
+/* ========================= */
 /* REGISTER */
+/* ========================= */
 
 async function register(){
 
 const email =
-document.getElementById("email")
-.value.trim();
+document
+.getElementById("email")
+.value
+.trim();
 
 const password =
-document.getElementById("password")
+document
+.getElementById("password")
 .value;
 
 const message =
-document.getElementById("message");
+document
+.getElementById("message");
+
 
 if(!email || !password){
 
-message.textContent=
+message.textContent =
 "Введи email і пароль.";
 
 return;
 }
 
-if(password.length<6){
 
-message.textContent=
-"Пароль мінімум 6 символів.";
+if(password.length < 6){
+
+message.textContent =
+"Пароль має бути мінімум 6 символів.";
 
 return;
 }
 
-message.textContent=
+
+message.textContent =
 "Створюємо акаунт...";
+
 
 const {data,error} =
 await supabaseClient.auth.signUp({
+
 email:email,
-password:password
+
+password:password,
+
+options:{
+data:{
+nickname:
+email.split("@")[0]
+}
+}
+
 });
+
 
 if(error){
 
-message.textContent=
-"Помилка: "+error.message;
+message.textContent =
+"Помилка: " +
+error.message;
 
 return;
 }
 
-message.textContent=
+
+message.textContent =
 "✅ Перевір email для підтвердження.";
+
 }
 
 
+/* ========================= */
 /* LOGIN */
+/* ========================= */
 
 async function login(){
 
 const email =
-document.getElementById("email")
-.value.trim();
+document
+.getElementById("email")
+.value
+.trim();
 
 const password =
-document.getElementById("password")
+document
+.getElementById("password")
 .value;
 
-const message =
-document.getElementById("message");
 
 if(!email || !password){
 
-message.textContent=
+document
+.getElementById("message")
+.textContent =
 "Введи email і пароль.";
 
 return;
 }
 
+
 const {data,error} =
-await supabaseClient.auth.signInWithPassword({
+await supabaseClient.auth
+.signInWithPassword({
+
 email:email,
+
 password:password
+
 });
+
 
 if(error){
 
-message.textContent=
-"Помилка: "+error.message;
+document
+.getElementById("message")
+.textContent =
+"Помилка: " +
+error.message;
 
 return;
 }
 
+
 showApp(data.user);
+
 }
 
 
+/* ========================= */
 /* SHOW APP */
+/* ========================= */
 
-function showApp(user){
+async function showApp(user){
 
-document.getElementById("auth")
-.style.display="none";
+currentUser = user;
 
-document.getElementById("app")
-.style.display="block";
+document
+.getElementById("auth")
+.style
+.display="none";
 
-loadProfile(user);
+document
+.getElementById("app")
+.style
+.display="block";
+
+
+await loadProfile();
+
+await loadFriends();
+
 }
 
 
-/* LOAD PROFILE */
+/* ========================= */
+/* PROFILE */
+/* ========================= */
 
-async function loadProfile(user){
+async function loadProfile(){
 
-const metadata =
-user.user_metadata || {};
+const {
+data,
+error
+} =
+await supabaseClient
+.from("profiles")
+.select("*")
+.eq("id",currentUser.id)
+.maybeSingle();
 
-const nickname =
-metadata.nickname ||
-"Користувач";
 
-const bio =
-metadata.bio ||
+if(error){
+
+console.log(error);
+
+return;
+}
+
+
+if(!data){
+
+return;
+}
+
+
+document
+.getElementById("profileName")
+.textContent =
+data.username;
+
+
+document
+.getElementById("profileEmail")
+.textContent =
+currentUser.email;
+
+
+document
+.getElementById("profileBio")
+.textContent =
+data.bio ||
 "Тут поки немає опису.";
 
-document.getElementById("profileName")
-.textContent=nickname;
 
-document.getElementById("profileEmail")
-.textContent=user.email;
+document
+.getElementById("nickname")
+.value =
+data.username;
 
-document.getElementById("profileBio")
-.textContent=bio;
 
-document.getElementById("nickname")
-.value=nickname==="Користувач"?"":nickname;
+document
+.getElementById("bio")
+.value =
+data.bio || "";
 
-document.getElementById("bio")
-.value=metadata.bio || "";
 
-document.getElementById("avatar")
-.textContent=
-nickname.charAt(0).toUpperCase();
+document
+.getElementById("avatar")
+.textContent =
+data.username
+.charAt(0)
+.toUpperCase();
+
 }
 
 
-/* EDIT */
+/* ========================= */
+/* EDIT PROFILE */
+/* ========================= */
 
 function toggleEdit(){
 
-const edit =
-document.getElementById("edit");
+const box =
+document
+.getElementById("editProfile");
 
-if(edit.style.display==="block"){
 
-edit.style.display="none";
+if(box.style.display === "block"){
+
+box.style.display="none";
 
 }else{
 
-edit.style.display="block";
+box.style.display="block";
 
 }
 
 }
 
 
+/* ========================= */
 /* SAVE PROFILE */
+/* ========================= */
 
 async function saveProfile(){
 
-const nickname =
-document.getElementById("nickname")
-.value.trim();
+const username =
+document
+.getElementById("nickname")
+.value
+.trim();
 
 const bio =
-document.getElementById("bio")
-.value.trim();
+document
+.getElementById("bio")
+.value
+.trim();
 
-if(!nickname){
+
+if(!username){
 
 alert("Введи нік.");
 
 return;
 }
 
-const {data,error} =
-await supabaseClient.auth.updateUser({
 
-data:{
-nickname:nickname,
+const {
+error
+} =
+await supabaseClient
+.from("profiles")
+.update({
+
+username:username,
+
 bio:bio
-}
 
-});
+})
+.eq("id",currentUser.id);
+
 
 if(error){
 
-alert("Помилка: "+error.message);
+alert(
+"Помилка: " +
+error.message
+);
 
 return;
 }
 
-loadProfile(data.user);
 
-document.getElementById("edit")
-.style.display="none";
+await loadProfile();
+
+
+document
+.getElementById("editProfile")
+.style
+.display="none";
+
 
 alert("✅ Профіль збережено!");
+
 }
 
 
+/* ========================= */
+/* SEARCH USERS */
+/* ========================= */
+
+async function searchUsers(){
+
+const text =
+document
+.getElementById("friendSearch")
+.value
+.trim();
+
+
+const results =
+document
+.getElementById("searchResults");
+
+
+if(text.length < 2){
+
+results.innerHTML =
+'<div class="empty">Введи мінімум 2 символи.</div>';
+
+return;
+}
+
+
+const {
+data,
+error
+} =
+await supabaseClient
+.from("profiles")
+.select("id,username,bio")
+.ilike(
+"username",
+"%" + text + "%"
+)
+.neq(
+"id",
+currentUser.id
+)
+.limit(10);
+
+
+if(error){
+
+console.log(error);
+
+results.innerHTML =
+'<div class="empty">Помилка пошуку.</div>';
+
+return;
+}
+
+
+if(!data || data.length === 0){
+
+results.innerHTML =
+'<div class="empty">Користувачів не знайдено.</div>';
+
+return;
+}
+
+
+results.innerHTML =
+data
+.map(user => `
+
+<div class="result">
+
+<div
+class="small-avatar"
+>
+${escapeHtml(
+user.username
+.charAt(0)
+.toUpperCase()
+)}
+</div>
+
+<div
+style="flex:1"
+>
+
+<b>
+${escapeHtml(
+user.username
+)}
+</b>
+
+<div class="muted">
+${escapeHtml(
+user.bio || "Без опису"
+)}
+</div>
+
+</div>
+
+<button
+class="main-btn"
+onclick="addFriend('${user.id}')"
+>
+➕ Додати
+</button>
+
+</div>
+
+`)
+.join("");
+
+}
+
+
+/* ========================= */
+/* ADD FRIEND */
+/* ========================= */
+
+async function addFriend(friendId){
+
+if(friendId === currentUser.id){
+
+return;
+}
+
+
+const {
+data,
+error
+} =
+await supabaseClient
+.from("friendships")
+.insert({
+
+user_id:currentUser.id,
+
+friend_id:friendId,
+
+status:"pending"
+
+})
+.select();
+
+
+if(error){
+
+if(error.code === "23505"){
+
+alert(
+"Запит уже відправлений."
+);
+
+}else{
+
+alert(
+"Помилка: " +
+error.message
+);
+
+}
+
+return;
+}
+
+
+alert(
+"✅ Запит у друзі відправлено!"
+);
+
+}
+
+
+/* ========================= */
+/* LOAD FRIENDS */
+/* ========================= */
+
+async function loadFriends(){
+
+const {
+data,
+error
+} =
+await supabaseClient
+.from("friendships")
+.select("*")
+.or(
+"user_id.eq." +
+currentUser.id +
+",friend_id.eq." +
+currentUser.id
+);
+
+
+if(error){
+
+console.log(error);
+
+return;
+}
+
+
+const friends =
+data.filter(
+x => x.status === "accepted"
+);
+
+
+document
+.getElementById("friendsCount")
+.textContent =
+friends.length;
+
+
+}
+
+
+/* ========================= */
+/* NAVIGATION */
+/* ========================= */
+
+function openPage(page){
+
+document
+.querySelectorAll(".page")
+.forEach(
+x =>
+x.classList.remove("active")
+);
+
+
+document
+.getElementById(page)
+.classList.add("active");
+
+
+if(page === "friends"){
+
+loadFriends();
+
+}
+
+}
+
+
+/* ========================= */
 /* LOGOUT */
+/* ========================= */
 
 async function logout(){
 
-await supabaseClient.auth.signOut();
+await supabaseClient
+.auth
+.signOut();
 
 location.reload();
+
 }
 
 
-/* CHECK SESSION */
+/* ========================= */
+/* SESSION */
+/* ========================= */
 
 async function checkUser(){
 
-const {data:{user}} =
-await supabaseClient.auth.getUser();
+const {
+data:{
+user
+}
+} =
+await supabaseClient
+.auth
+.getUser();
+
 
 if(user){
 
@@ -712,14 +1359,22 @@ showApp(user);
 
 }
 
-function scrollProfile(){
 
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
+/* ========================= */
+/* SECURITY */
+/* ========================= */
+
+function escapeHtml(text){
+
+return String(text)
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
 
 }
+
 
 checkUser();
 
