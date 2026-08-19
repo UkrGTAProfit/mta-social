@@ -26,38 +26,36 @@ function renderUkrGtaDashboard(){
   const news = document.getElementById("ugtNews");
   const updated = document.getElementById("ugtUpdated");
 
-  if(!box || !news) return;
+  if(!box) return;
 
-  box.innerHTML = UKR_GTA_SERVERS.map(s=>{
-    const percent = Math.round((s.online/s.max)*100);
-    return `
-      <div class="ugt-server">
-        <div class="ugt-server-head">
-          <div class="ugt-server-name">${escapeHtml(s.name)}</div>
-          <div class="ugt-server-count">${s.online}/${s.max}</div>
-        </div>
-        <div class="ugt-bar">
-          <div class="ugt-fill" style="width:${percent}%"></div>
-        </div>
-      </div>
-    `;
+  box.innerHTML = UKR_GTA_SERVERS.map(function(s){
+    const percent = Math.max(0, Math.min(100, Math.round((s.online / s.max) * 100)));
+    return '<div class="ugt-server">' +
+      '<div class="ugt-server-head">' +
+        '<div class="ugt-server-name">' + escapeHtml(s.name) + '</div>' +
+        '<div class="ugt-server-count">' + s.online + '/' + s.max + '</div>' +
+      '</div>' +
+      '<div class="ugt-bar"><div class="ugt-fill" style="width:' + percent + '%"></div></div>' +
+    '</div>';
   }).join("");
 
-  news.innerHTML = UKR_GTA_NEWS.map(n=>`
-    <div class="ugt-news">
-      <div class="ugt-news-title">${escapeHtml(n.title)}</div>
-      <div class="ugt-news-date">${escapeHtml(n.date)}</div>
-    </div>
-  `).join("");
+  if(news){
+    news.innerHTML = UKR_GTA_NEWS.map(function(n){
+      return '<div class="ugt-news">' +
+        '<div class="ugt-news-title">' + escapeHtml(n.title) + '</div>' +
+        '<div class="ugt-news-date">' + escapeHtml(n.date) + '</div>' +
+      '</div>';
+    }).join("");
+  }
 
-  updated.textContent =
-    "Дані взяті з офіційної сторінки Ukraine GTA; для автоматичного оновлення потрібен офіційний API.";
+  if(updated){
+    updated.textContent = "Останнє оновлення даних: 19.08.2026";
+  }
 }
 
-const oldRefreshGameData = refreshGameData;
-refreshGameData = async function(){
-  renderUkrGtaDashboard();
-  await oldRefreshGameData();
+renderUkrGtaDashboard();
+
+await oldRefreshGameData();
 };
 
 renderUkrGtaDashboard();
@@ -2554,6 +2552,7 @@ loadFeed();
 }
 
 if(page==="mta"){
+renderUkrGtaDashboard();
 refreshGameData();
 }
 
