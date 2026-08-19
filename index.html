@@ -72,14 +72,18 @@ color:white;
 font-weight:bold
 }
 
-.dark-btn{background:#182130}
+.dark-btn{
+background:#182130
+}
 
 #message{
 margin-top:15px;
 color:#4da3ff
 }
 
-#app{display:none}
+#app{
+display:none
+}
 
 header{
 height:70px;
@@ -134,8 +138,13 @@ background:#182130;
 color:#fff
 }
 
-.page{display:none}
-.page.active{display:block}
+.page{
+display:none
+}
+
+.page.active{
+display:block
+}
 
 .card{
 background:#101620;
@@ -185,7 +194,9 @@ margin-top:20px;
 padding-top:20px
 }
 
-.stat b{font-size:20px}
+.stat b{
+font-size:20px
+}
 
 /* FRIENDS */
 
@@ -199,7 +210,9 @@ align-items:center;
 gap:15px
 }
 
-.result-info{flex:1}
+.result-info{
+flex:1
+}
 
 .result button{
 width:auto;
@@ -229,7 +242,9 @@ border-radius:12px;
 margin-top:10px
 }
 
-.friend-info{flex:1}
+.friend-info{
+flex:1
+}
 
 .status{
 color:#4dff88;
@@ -392,8 +407,13 @@ margin:0;
 padding:12px 18px
 }
 
-.chat-friend{cursor:pointer}
-.chat-friend:hover{background:#202d40}
+.chat-friend{
+cursor:pointer
+}
+
+.chat-friend:hover{
+background:#202d40
+}
 
 .my-message{
 display:flex;
@@ -428,6 +448,79 @@ opacity:.65;
 margin-top:4px
 }
 
+/* UKR GTA */
+
+.game-hero{
+background:linear-gradient(
+135deg,
+#101d35,
+#16355d,
+#101620
+);
+border-radius:16px;
+padding:25px;
+border:1px solid #273753
+}
+
+.game-title{
+font-size:34px;
+font-weight:800;
+margin-bottom:8px
+}
+
+.game-subtitle{
+color:#9da9ba;
+margin-bottom:20px
+}
+
+.game-online{
+display:inline-flex;
+align-items:center;
+gap:8px;
+background:#13251d;
+border:1px solid #214f35;
+color:#4dff88;
+padding:8px 13px;
+border-radius:20px
+}
+
+.game-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+margin-top:18px
+}
+
+.game-stat{
+background:#182130;
+border-radius:14px;
+padding:18px;
+border:1px solid #273247
+}
+
+.game-stat-icon{
+font-size:25px
+}
+
+.game-stat-value{
+font-size:22px;
+font-weight:bold;
+margin-top:8px
+}
+
+.game-stat-name{
+color:#8994a7;
+font-size:13px;
+margin-top:4px
+}
+
+.car-card{
+background:#182130;
+padding:15px;
+border-radius:13px;
+margin-top:10px
+}
+
 @media(max-width:700px){
 
 .layout{
@@ -459,11 +552,16 @@ width:100%
 gap:18px
 }
 
+.game-grid{
+grid-template-columns:1fr
+}
+
 }
 </style>
 </head>
 
 <body>
+
 
 <!-- ================= AUTH ================= -->
 
@@ -471,9 +569,13 @@ gap:18px
 
 <div class="auth-box">
 
-<div class="logo">MTA SOCIAL</div>
+<div class="logo">
+MTA SOCIAL
+</div>
 
-<h1>Ласкаво просимо 👋</h1>
+<h1>
+Ласкаво просимо 👋
+</h1>
 
 <p class="muted">
 Твоя соціальна мережа MTA.
@@ -508,6 +610,7 @@ onclick="login()"
 <p id="message"></p>
 
 </div>
+
 </div>
 
 
@@ -517,7 +620,9 @@ onclick="login()"
 
 <header>
 
-<div class="logo">MTA SOCIAL</div>
+<div class="logo">
+MTA SOCIAL
+</div>
 
 <button
 class="main-btn dark-btn"
@@ -532,7 +637,7 @@ onclick="logout()"
 <div class="layout">
 
 
-<!-- MENU -->
+<!-- ================= MENU ================= -->
 
 <div class="menu">
 
@@ -557,7 +662,7 @@ onclick="logout()"
 </button>
 
 <button onclick="openPage('mta')">
-🎮 MTA
+🎮 Укр GTA
 </button>
 
 </div>
@@ -568,11 +673,16 @@ onclick="logout()"
 
 <!-- ================= HOME ================= -->
 
-<div id="home" class="page active">
+<div
+id="home"
+class="page active"
+>
 
 <div class="card">
 
-<h1>🏠 MTA Social</h1>
+<h1>
+🏠 MTA Social
+</h1>
 
 <p class="muted">
 Що нового?
@@ -581,11 +691,11 @@ onclick="logout()"
 </div>
 
 
-<!-- CREATE POST -->
-
 <div class="card">
 
-<h2>✍️ Створити пост</h2>
+<h2>
+✍️ Створити пост
+</h2>
 
 <textarea
 id="postText"
@@ -623,7 +733,10 @@ onclick="createPost()"
 📤 Опублікувати
 </button>
 
-<p id="postMessage" class="muted"></p>
+<p
+id="postMessage"
+class="muted"
+></p>
 
 </div>
 
@@ -641,7 +754,10 @@ onclick="createPost()"
 
 <!-- ================= PROFILE ================= -->
 
-<div id="profile" class="page">
+<div
+id="profile"
+class="page"
+>
 
 <div class="card">
 
@@ -649,19 +765,31 @@ onclick="createPost()"
 
 <div class="profile-body">
 
-<div id="avatar" class="avatar">
+<div
+id="avatar"
+class="avatar"
+>
 A
 </div>
 
-<div id="profileName" class="profile-name">
+<div
+id="profileName"
+class="profile-name"
+>
 Користувач
 </div>
 
-<div id="profileEmail" class="muted">
+<div
+id="profileEmail"
+class="muted"
+>
 email
 </div>
 
-<p id="profileBio" class="muted">
+<p
+id="profileBio"
+class="muted"
+>
 Тут поки немає опису.
 </p>
 
@@ -669,7 +797,9 @@ email
 
 <div class="stat">
 
-<b id="postsCount">0</b>
+<b id="postsCount">
+0
+</b>
 
 <div class="muted">
 Пости
@@ -679,7 +809,9 @@ email
 
 <div class="stat">
 
-<b id="friendsCount">0</b>
+<b id="friendsCount">
+0
+</b>
 
 <div class="muted">
 Друзі
@@ -689,7 +821,9 @@ email
 
 <div class="stat">
 
-<b>0</b>
+<b>
+0
+</b>
 
 <div class="muted">
 Підписники
@@ -732,16 +866,22 @@ onclick="saveProfile()"
 
 </div>
 </div>
+
 </div>
 
 
 <!-- ================= FRIENDS ================= -->
 
-<div id="friends" class="page">
+<div
+id="friends"
+class="page"
+>
 
 <div class="card">
 
-<h1>👥 Друзі</h1>
+<h1>
+👥 Друзі
+</h1>
 
 <input
 id="friendSearch"
@@ -756,7 +896,9 @@ oninput="searchUsers()"
 
 <div class="card">
 
-<h2>📨 Запити в друзі</h2>
+<h2>
+📨 Запити в друзі
+</h2>
 
 <div id="friendRequests">
 
@@ -771,7 +913,9 @@ oninput="searchUsers()"
 
 <div class="card">
 
-<h2>🤝 Мої друзі</h2>
+<h2>
+🤝 Мої друзі
+</h2>
 
 <div id="myFriends">
 
@@ -788,11 +932,16 @@ oninput="searchUsers()"
 
 <!-- ================= MESSAGES ================= -->
 
-<div id="messages" class="page">
+<div
+id="messages"
+class="page"
+>
 
 <div class="card">
 
-<h1>💬 Повідомлення</h1>
+<h1>
+💬 Повідомлення
+</h1>
 
 <div id="chatFriends">
 
@@ -844,11 +993,16 @@ onkeydown="handleMessageKey(event)"
 
 <!-- ================= NOTIFICATIONS ================= -->
 
-<div id="notifications" class="page">
+<div
+id="notifications"
+class="page"
+>
 
 <div class="card">
 
-<h1>🔔 Сповіщення</h1>
+<h1>
+🔔 Сповіщення
+</h1>
 
 <p class="muted">
 Тут будуть нові події.
@@ -859,23 +1013,169 @@ onkeydown="handleMessageKey(event)"
 </div>
 
 
-<!-- ================= MTA ================= -->
+<!-- ================= UKR GTA ================= -->
 
-<div id="mta" class="page">
+<div
+id="mta"
+class="page"
+>
 
 <div class="card">
 
-<h1>🎮 MTA</h1>
+<div class="game-hero">
 
-<p class="muted">
-Підключення до MTA-сервера.
-</p>
+<div class="game-title">
+🎮 Укр GTA
+</div>
+
+<div class="game-subtitle">
+Ігровий профіль
+</div>
+
+<div class="game-online">
+🟢 Сервер доступний
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+👤 Профіль гравця
+</h2>
+
+<div class="friend-row">
+
+<div class="small-avatar">
+🎮
+</div>
+
+<div class="friend-info">
+
+<b id="gameNickname">
+Не підключено
+</b>
+
+<div
+id="gameStatus"
+class="muted"
+>
+Очікується підключення
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+📊 Статистика
+</h2>
+
+<div class="game-grid">
+
+<div class="game-stat">
+
+<div class="game-stat-icon">
+👥
+</div>
+
+<div
+id="gameOnline"
+class="game-stat-value"
+>
+—
+</div>
+
+<div class="game-stat-name">
+Онлайн
+</div>
+
+</div>
+
+
+<div class="game-stat">
+
+<div class="game-stat-icon">
+⭐
+</div>
+
+<div
+id="gameLevel"
+class="game-stat-value"
+>
+—
+</div>
+
+<div class="game-stat-name">
+Рівень
+</div>
+
+</div>
+
+
+<div class="game-stat">
+
+<div class="game-stat-icon">
+💰
+</div>
+
+<div
+id="gameMoney"
+class="game-stat-value"
+>
+—
+</div>
+
+<div class="game-stat-name">
+Гроші
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+🚗 Мої автомобілі
+</h2>
+
+<div id="gameCars">
+
+<div class="empty">
+Дані автомобілів поки недоступні.
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
 
 <button
 class="main-btn"
-onclick="mtaConnect()"
+onclick="openUkrGTA()"
 >
-Підключити MTA
+▶️ Запустити Укр GTA
+</button>
+
+<button
+class="main-btn dark-btn"
+onclick="refreshGameData()"
+>
+🔄 Оновити дані
 </button>
 
 </div>
@@ -884,13 +1184,17 @@ onclick="mtaConnect()"
 
 
 </div>
+
 </div>
+
 </div>
 
 
 <script>
 
-/* ================= SUPABASE ================= */
+/* ================================================= */
+/* SUPABASE */
+/* ================================================= */
 
 const SUPABASE_URL =
 "https://ifsqesikynpsdgucaljc.supabase.co";
@@ -904,49 +1208,50 @@ SUPABASE_URL,
 SUPABASE_KEY
 );
 
-let currentUser=null;
-let selectedFriend=null;
+let currentUser = null;
+let selectedFriend = null;
 
 
-/* ================= AUTH ================= */
+/* ================================================= */
+/* REGISTER */
+/* ================================================= */
 
 async function register(){
 
-const email=
-document.getElementById("email")
-.value.trim();
+const email =
+document.getElementById("email").value.trim();
 
-const password=
-document.getElementById("password")
-.value;
+const password =
+document.getElementById("password").value;
 
-const message=
+const message =
 document.getElementById("message");
 
-if(!email||!password){
+if(!email || !password){
 
-message.textContent=
+message.textContent =
 "Введи email і пароль.";
 
 return;
 }
 
-if(password.length<6){
+if(password.length < 6){
 
-message.textContent=
+message.textContent =
 "Пароль має бути мінімум 6 символів.";
 
 return;
 }
 
-message.textContent=
+message.textContent =
 "Створюємо акаунт...";
 
-const {data,error}=
+const {data,error} =
 await supabaseClient.auth.signUp({
 
-email,
-password,
+email:email,
+
+password:password,
 
 options:{
 data:{
@@ -959,50 +1264,55 @@ email.split("@")[0]
 
 if(error){
 
-message.textContent=
-"Помилка: "+error.message;
+message.textContent =
+"Помилка: " +
+error.message;
 
 return;
 }
 
-message.textContent=
+message.textContent =
 "✅ Перевір email для підтвердження.";
 
 }
 
 
+/* ================================================= */
+/* LOGIN */
+/* ================================================= */
+
 async function login(){
 
-const email=
-document.getElementById("email")
-.value.trim();
+const email =
+document.getElementById("email").value.trim();
 
-const password=
-document.getElementById("password")
-.value;
+const password =
+document.getElementById("password").value;
 
-if(!email||!password){
+if(!email || !password){
 
 document.getElementById("message")
-.textContent=
+.textContent =
 "Введи email і пароль.";
 
 return;
 }
 
-const {data,error}=
-await supabaseClient
-.auth
-.signInWithPassword({
-email,
-password
+const {data,error} =
+await supabaseClient.auth.signInWithPassword({
+
+email:email,
+
+password:password
+
 });
 
 if(error){
 
 document.getElementById("message")
-.textContent=
-"Помилка: "+error.message;
+.textContent =
+"Помилка: " +
+error.message;
 
 return;
 }
@@ -1012,9 +1322,13 @@ await showApp(data.user);
 }
 
 
+/* ================================================= */
+/* SHOW APP */
+/* ================================================= */
+
 async function showApp(user){
 
-currentUser=user;
+currentUser = user;
 
 document.getElementById("auth")
 .style.display="none";
@@ -1023,29 +1337,35 @@ document.getElementById("app")
 .style.display="block";
 
 await ensureProfile();
+
 await loadProfile();
+
 await loadFriends();
+
 await loadFeed();
 
 }
 
 
-/* ================= PROFILE ================= */
+/* ================================================= */
+/* PROFILE */
+/* ================================================= */
 
 async function ensureProfile(){
 
-const {data}=
+const {data} =
 await supabaseClient
 .from("profiles")
 .select("id")
 .eq("id",currentUser.id)
 .maybeSingle();
 
-if(data)return;
+if(data){
+return;
+}
 
-const username=
-currentUser.user_metadata?.nickname
-||
+const username =
+currentUser.user_metadata?.nickname ||
 currentUser.email.split("@")[0];
 
 await supabaseClient
@@ -1053,7 +1373,9 @@ await supabaseClient
 .insert({
 
 id:currentUser.id,
-username,
+
+username:username,
+
 bio:""
 
 });
@@ -1063,14 +1385,16 @@ bio:""
 
 async function loadProfile(){
 
-const {data,error}=
+const {data,error} =
 await supabaseClient
 .from("profiles")
 .select("*")
 .eq("id",currentUser.id)
 .maybeSingle();
 
-if(error||!data)return;
+if(error || !data){
+return;
+}
 
 document.getElementById("profileName")
 .textContent=data.username;
@@ -1080,64 +1404,68 @@ document.getElementById("profileEmail")
 
 document.getElementById("profileBio")
 .textContent=
-data.bio||"Тут поки немає опису.";
+data.bio ||
+"Тут поки немає опису.";
 
 document.getElementById("nickname")
 .value=data.username;
 
 document.getElementById("bio")
-.value=data.bio||"";
+.value=data.bio || "";
 
 document.getElementById("avatar")
 .textContent=
-data.username
-.charAt(0)
-.toUpperCase();
+data.username.charAt(0).toUpperCase();
 
 }
 
 
 function toggleEdit(){
 
-const box=
+const box =
 document.getElementById("editProfile");
 
-box.style.display=
-box.style.display==="block"
-?"none"
-:"block";
+box.style.display =
+box.style.display === "block"
+? "none"
+: "block";
 
 }
 
 
 async function saveProfile(){
 
-const username=
+const username =
 document.getElementById("nickname")
 .value.trim();
 
-const bio=
+const bio =
 document.getElementById("bio")
 .value.trim();
 
 if(!username){
 
 alert("Введи нік.");
+
 return;
 }
 
-const {error}=
+const {error} =
 await supabaseClient
 .from("profiles")
 .update({
-username,
-bio
+
+username:username,
+
+bio:bio
+
 })
 .eq("id",currentUser.id);
 
 if(error){
 
 alert(error.message);
+
 return;
 }
 
@@ -1149,27 +1477,32 @@ document.getElementById("editProfile")
 }
 
 
-/* ================= POSTS ================= */
+/* ================================================= */
+/* POSTS */
+/* ================================================= */
 
 function previewImage(){
 
-const input=
+const input =
 document.getElementById("postImage");
 
-const box=
+const box =
 document.getElementById("imagePreview");
 
-const preview=
+const preview =
 document.getElementById("preview");
 
 if(!input.files.length){
 
 box.style.display="none";
+
 return;
 }
 
-preview.src=
-URL.createObjectURL(input.files[0]);
+preview.src =
+URL.createObjectURL(
+input.files[0]
+);
 
 box.style.display="block";
 
@@ -1189,88 +1522,96 @@ document.getElementById("imagePreview")
 
 async function createPost(){
 
-const text=
+const text =
 document.getElementById("postText")
 .value.trim();
 
-const file=
+const file =
 document.getElementById("postImage")
 .files[0];
 
-const message=
+const message =
 document.getElementById("postMessage");
 
-if(!text&&!file){
+if(!text && !file){
 
-message.textContent=
+message.textContent =
 "Додай текст або фото.";
 
 return;
 }
 
-message.textContent=
+message.textContent =
 "Публікуємо...";
 
-let imageUrl=null;
+let imageUrl = null;
 
 if(file){
 
-if(file.size>8*1024*1024){
+if(file.size > 8*1024*1024){
 
-message.textContent=
+message.textContent =
 "Фото має бути менше 8 МБ.";
 
 return;
 }
 
-const extension=
+const extension =
 file.name.split(".").pop();
 
-const path=
-currentUser.id+
-"/"+
-Date.now()+
-"."+extension;
+const path =
+currentUser.id +
+"/" +
+Date.now() +
+"." +
+extension;
 
-const {error}=
+const {error} =
 await supabaseClient.storage
 .from("post-images")
-.upload(path,file);
+.upload(
+path,
+file
+);
 
 if(error){
 
 console.log(error);
 
-message.textContent=
+message.textContent =
 "Помилка завантаження фото.";
 
 return;
 }
 
-const {data}=
+const {data} =
 supabaseClient.storage
 .from("post-images")
 .getPublicUrl(path);
 
-imageUrl=data.publicUrl;
+imageUrl =
+data.publicUrl;
 
 }
 
-const {error}=
+const {error} =
 await supabaseClient
 .from("posts")
 .insert({
 
 user_id:currentUser.id,
+
 content:text,
+
 image_url:imageUrl
 
 });
 
 if(error){
 
-message.textContent=
-"Помилка: "+error.message;
+message.textContent =
+"Помилка: " +
+error.message;
 
 return;
 }
@@ -1280,7 +1621,7 @@ document.getElementById("postText")
 
 removePhoto();
 
-message.textContent=
+message.textContent =
 "✅ Опубліковано!";
 
 await loadFeed();
@@ -1290,10 +1631,10 @@ await loadFeed();
 
 async function loadFeed(){
 
-const feed=
+const feed =
 document.getElementById("feed");
 
-const {data:posts,error}=
+const {data:posts,error} =
 await supabaseClient
 .from("posts")
 .select("*")
@@ -1304,7 +1645,7 @@ await supabaseClient
 
 if(error){
 
-feed.innerHTML=
+feed.innerHTML =
 '<div class="empty">Помилка завантаження.</div>';
 
 return;
@@ -1312,18 +1653,18 @@ return;
 
 if(!posts.length){
 
-feed.innerHTML=
+feed.innerHTML =
 '<div class="card empty">Поки немає постів. Створи перший! 🚀</div>';
 
 return;
 }
 
-const ids=
+const ids =
 [...new Set(
 posts.map(p=>p.user_id)
 )];
 
-const {data:profiles}=
+const {data:profiles} =
 await supabaseClient
 .from("profiles")
 .select("id,username")
@@ -1331,51 +1672,56 @@ await supabaseClient
 
 const profileMap={};
 
-(profiles||[]).forEach(p=>{
-profileMap[p.id]=p;
-});
+(profiles || []).forEach(
+p => profileMap[p.id]=p
+);
 
-const postIds=
+const postIds =
 posts.map(p=>p.id);
 
-const {data:likes}=
+const {data:likes} =
 await supabaseClient
 .from("post_likes")
 .select("post_id,user_id")
 .in("post_id",postIds);
 
-const {data:comments}=
+const {data:comments} =
 await supabaseClient
 .from("post_comments")
 .select("post_id")
 .in("post_id",postIds);
 
-feed.innerHTML=
-posts.map(post=>{
+feed.innerHTML =
+posts.map(post => {
 
-const author=
+const author =
 profileMap[post.user_id];
 
-const username=
-author?.username||"Користувач";
+const username =
+author?.username ||
+"Користувач";
 
-const postLikes=
-(likes||[]).filter(
+const postLikes =
+(likes || [])
+.filter(
 x=>x.post_id===post.id
 );
 
-const liked=
+const liked =
 postLikes.some(
 x=>x.user_id===currentUser.id
 );
 
-const commentCount=
-(comments||[]).filter(
+const commentCount =
+(comments || [])
+.filter(
 x=>x.post_id===post.id
 ).length;
 
-const date=
-new Date(post.created_at)
+const date =
+new Date(
+post.created_at
+)
 .toLocaleString("uk-UA");
 
 return `
@@ -1385,9 +1731,11 @@ return `
 <div class="post-head">
 
 <div class="post-avatar">
+
 ${escapeHtml(
 username.charAt(0).toUpperCase()
 )}
+
 </div>
 
 <div>
@@ -1432,7 +1780,7 @@ ${escapeHtml(post.content)}
 <button
 onclick="toggleLike('${post.id}')"
 >
-${liked?"❤️":"🤍"}
+${liked ? "❤️" : "🤍"}
 ${postLikes.length}
 </button>
 
@@ -1497,11 +1845,13 @@ document.getElementById("postsCount")
 }
 
 
-/* ================= LIKES ================= */
+/* ================================================= */
+/* LIKES */
+/* ================================================= */
 
 async function toggleLike(postId){
 
-const {data:existing}=
+const {data:existing} =
 await supabaseClient
 .from("post_likes")
 .select("id")
@@ -1518,12 +1868,13 @@ await supabaseClient
 
 }else{
 
-const {error}=
+const {error} =
 await supabaseClient
 .from("post_likes")
 .insert({
 
 post_id:postId,
+
 user_id:currentUser.id
 
 });
@@ -1531,6 +1882,7 @@ user_id:currentUser.id
 if(error){
 
 alert(error.message);
+
 return;
 }
 
@@ -1541,11 +1893,13 @@ await loadFeed();
 }
 
 
-/* ================= COMMENTS ================= */
+/* ================================================= */
+/* COMMENTS */
+/* ================================================= */
 
 async function toggleComments(postId){
 
-const box=
+const box =
 document.getElementById(
 "comments-"+postId
 );
@@ -1567,12 +1921,12 @@ box.style.display="none";
 
 async function loadComments(postId){
 
-const box=
+const box =
 document.getElementById(
 "comment-list-"+postId
 );
 
-const {data,error}=
+const {data,error} =
 await supabaseClient
 .from("post_comments")
 .select("*")
@@ -1584,7 +1938,7 @@ await supabaseClient
 
 if(error){
 
-box.innerHTML=
+box.innerHTML =
 '<div class="muted">Помилка.</div>';
 
 return;
@@ -1592,18 +1946,18 @@ return;
 
 if(!data.length){
 
-box.innerHTML=
+box.innerHTML =
 '<div class="muted">Поки немає коментарів.</div>';
 
 return;
 }
 
-const ids=
+const ids =
 [...new Set(
 data.map(x=>x.user_id)
 )];
 
-const {data:profiles}=
+const {data:profiles} =
 await supabaseClient
 .from("profiles")
 .select("id,username")
@@ -1611,18 +1965,18 @@ await supabaseClient
 
 const map={};
 
-(profiles||[]).forEach(p=>{
-map[p.id]=p.username;
-});
+(profiles || []).forEach(
+p=>map[p.id]=p.username
+);
 
-box.innerHTML=
+box.innerHTML =
 data.map(comment=>`
 
 <div class="comment">
 
 <b>
 ${escapeHtml(
-map[comment.user_id]||
+map[comment.user_id] ||
 "Користувач"
 )}
 </b>
@@ -1646,50 +2000,60 @@ comment.created_at
 
 async function addComment(postId){
 
-const input=
+const input =
 document.getElementById(
 "comment-input-"+postId
 );
 
-const content=
+const content =
 input.value.trim();
 
-if(!content)return;
+if(!content){
+return;
+}
 
-const {error}=
+const {error} =
 await supabaseClient
 .from("post_comments")
 .insert({
 
 post_id:postId,
+
 user_id:currentUser.id,
-content
+
+content:content
 
 });
 
 if(error){
 
 alert(error.message);
+
 return;
 }
 
 input.value="";
 
 await loadComments(postId);
+
 await loadFeed();
 
 }
 
 
-/* ================= DELETE POST ================= */
+/* ================================================= */
+/* DELETE POST */
+/* ================================================= */
 
 async function deletePost(id){
 
 if(!confirm(
 "Видалити цей пост?"
-))return;
+)){
+return;
+}
 
-const {error}=
+const {error} =
 await supabaseClient
 .from("posts")
 .delete()
@@ -1699,6 +2063,7 @@ await supabaseClient
 if(error){
 
 alert(error.message);
+
 return;
 }
 
@@ -1707,29 +2072,34 @@ await loadFeed();
 }
 
 
-/* ================= FRIENDS ================= */
+/* ================================================= */
+/* FRIEND SEARCH */
+/* ================================================= */
 
 async function searchUsers(){
 
-const text=
-document.getElementById("friendSearch")
+const text =
+document
+.getElementById("friendSearch")
 .value.trim();
 
-const results=
+const results =
 document.getElementById("searchResults");
 
 if(text.length<2){
 
-results.innerHTML=
+results.innerHTML =
 '<div class="empty">Введи мінімум 2 символи.</div>';
 
 return;
 }
 
-const {data,error}=
+const {data,error} =
 await supabaseClient
 .from("profiles")
-.select("id,username,bio")
+.select(
+"id,username,bio"
+)
 .ilike(
 "username",
 "%"+text+"%"
@@ -1742,7 +2112,7 @@ currentUser.id
 
 if(error){
 
-results.innerHTML=
+results.innerHTML =
 '<div class="empty">Помилка.</div>';
 
 return;
@@ -1750,21 +2120,25 @@ return;
 
 if(!data.length){
 
-results.innerHTML=
+results.innerHTML =
 '<div class="empty">Користувачів не знайдено.</div>';
 
 return;
 }
 
-results.innerHTML=
+results.innerHTML =
 data.map(user=>`
 
 <div class="result">
 
 <div class="small-avatar">
+
 ${escapeHtml(
-user.username.charAt(0).toUpperCase()
+user.username
+.charAt(0)
+.toUpperCase()
 )}
+
 </div>
 
 <div class="result-info">
@@ -1774,7 +2148,9 @@ ${escapeHtml(user.username)}
 </b>
 
 <div class="muted">
-${escapeHtml(user.bio||"Без опису")}
+${escapeHtml(
+user.bio || "Без опису"
+)}
 </div>
 
 </div>
@@ -1793,9 +2169,13 @@ onclick="addFriend('${user.id}')"
 }
 
 
+/* ================================================= */
+/* FRIENDS */
+/* ================================================= */
+
 async function addFriend(friendId){
 
-const {data:existing}=
+const {data:existing} =
 await supabaseClient
 .from("friendships")
 .select("*")
@@ -1820,13 +2200,15 @@ alert(
 return;
 }
 
-const {error}=
+const {error} =
 await supabaseClient
 .from("friendships")
 .insert({
 
 user_id:currentUser.id,
+
 friend_id:friendId,
+
 status:"pending"
 
 });
@@ -1834,10 +2216,13 @@ status:"pending"
 if(error){
 
 alert(error.message);
+
 return;
 }
 
-alert("✅ Запит відправлено!");
+alert(
+"✅ Запит відправлено!"
+);
 
 await loadFriends();
 
@@ -1846,7 +2231,7 @@ await loadFriends();
 
 async function loadFriends(){
 
-const {data,error}=
+const {data,error} =
 await supabaseClient
 .from("friendships")
 .select("*")
@@ -1857,29 +2242,39 @@ currentUser.id+
 currentUser.id
 );
 
-if(error)return;
+if(error){
+return;
+}
 
-const accepted=
-data.filter(x=>x.status==="accepted");
+const accepted =
+data.filter(
+x=>x.status==="accepted"
+);
 
-const incoming=
+const incoming =
 data.filter(
 x=>
-x.status==="pending"&&
+x.status==="pending" &&
 x.friend_id===currentUser.id
 );
 
-const outgoing=
+const outgoing =
 data.filter(
 x=>
-x.status==="pending"&&
+x.status==="pending" &&
 x.user_id===currentUser.id
 );
 
-document.getElementById("friendsCount")
-.textContent=accepted.length;
+document.getElementById(
+"friendsCount"
+)
+.textContent =
+accepted.length;
 
-await showFriends(accepted);
+await showFriends(
+accepted
+);
+
 await showRequests(
 incoming,
 outgoing
@@ -1890,45 +2285,55 @@ outgoing
 
 async function showFriends(list){
 
-const box=
-document.getElementById("myFriends");
+const box =
+document.getElementById(
+"myFriends"
+);
 
 if(!list.length){
 
-box.innerHTML=
+box.innerHTML =
 '<div class="empty">Поки немає друзів.</div>';
 
 return;
 }
 
-const ids=
+const ids =
 list.map(item=>
 item.user_id===currentUser.id
 ?item.friend_id
 :item.user_id
 );
 
-const {data:profiles}=
+const {data:profiles} =
 await supabaseClient
 .from("profiles")
-.select("id,username,bio")
+.select(
+"id,username,bio"
+)
 .in("id",ids);
 
-box.innerHTML=
+box.innerHTML =
 profiles.map(profile=>`
 
 <div class="friend-row">
 
 <div class="small-avatar">
+
 ${escapeHtml(
-profile.username.charAt(0).toUpperCase()
+profile.username
+.charAt(0)
+.toUpperCase()
 )}
+
 </div>
 
 <div class="friend-info">
 
 <b>
-${escapeHtml(profile.username)}
+${escapeHtml(
+profile.username
+)}
 </b>
 
 <div class="status">
@@ -1938,7 +2343,11 @@ ${escapeHtml(profile.username)}
 </div>
 
 <button
-style="width:auto;margin:0;background:#182130"
+style="
+width:auto;
+margin:0;
+background:#182130;
+"
 onclick="removeFriend('${profile.id}')"
 >
 ❌
@@ -1956,7 +2365,7 @@ incoming,
 outgoing
 ){
 
-const box=
+const box =
 document.getElementById(
 "friendRequests"
 );
@@ -1965,18 +2374,22 @@ let html="";
 
 if(incoming.length){
 
-const ids=
-incoming.map(x=>x.user_id);
+const ids =
+incoming.map(
+x=>x.user_id
+);
 
-const {data:profiles}=
+const {data:profiles} =
 await supabaseClient
 .from("profiles")
-.select("id,username")
+.select(
+"id,username"
+)
 .in("id",ids);
 
 profiles.forEach(profile=>{
 
-const request=
+const request =
 incoming.find(
 x=>x.user_id===profile.id
 );
@@ -1986,15 +2399,21 @@ html+=`
 <div class="friend-row">
 
 <div class="small-avatar">
+
 ${escapeHtml(
-profile.username.charAt(0).toUpperCase()
+profile.username
+.charAt(0)
+.toUpperCase()
 )}
+
 </div>
 
 <div class="friend-info">
 
 <b>
-${escapeHtml(profile.username)}
+${escapeHtml(
+profile.username
+)}
 </b>
 
 <div class="muted">
@@ -2031,13 +2450,17 @@ onclick="rejectFriend('${request.id}')"
 
 if(outgoing.length){
 
-const ids=
-outgoing.map(x=>x.friend_id);
+const ids =
+outgoing.map(
+x=>x.friend_id
+);
 
-const {data:profiles}=
+const {data:profiles} =
 await supabaseClient
 .from("profiles")
-.select("id,username")
+.select(
+"id,username"
+)
 .in("id",ids);
 
 profiles.forEach(profile=>{
@@ -2047,15 +2470,21 @@ html+=`
 <div class="friend-row">
 
 <div class="small-avatar">
+
 ${escapeHtml(
-profile.username.charAt(0).toUpperCase()
+profile.username
+.charAt(0)
+.toUpperCase()
 )}
+
 </div>
 
 <div class="friend-info">
 
 <b>
-${escapeHtml(profile.username)}
+${escapeHtml(
+profile.username
+)}
 </b>
 
 <div class="muted">
@@ -2074,7 +2503,7 @@ ${escapeHtml(profile.username)}
 
 if(!html){
 
-html=
+html =
 '<div class="empty">Поки немає запитів.</div>';
 
 }
@@ -2086,7 +2515,7 @@ box.innerHTML=html;
 
 async function acceptFriend(id){
 
-const {error}=
+const {error} =
 await supabaseClient
 .from("friendships")
 .update({
@@ -2101,19 +2530,22 @@ currentUser.id
 if(error){
 
 alert(error.message);
+
 return;
 }
 
 await loadFriends();
 
-alert("✅ Тепер ви друзі!");
+alert(
+"✅ Тепер ви друзі!"
+);
 
 }
 
 
 async function rejectFriend(id){
 
-const {error}=
+const {error} =
 await supabaseClient
 .from("friendships")
 .delete()
@@ -2126,6 +2558,7 @@ currentUser.id
 if(error){
 
 alert(error.message);
+
 return;
 }
 
@@ -2136,7 +2569,7 @@ await loadFriends();
 
 async function removeFriend(friendId){
 
-const {error}=
+const {error} =
 await supabaseClient
 .from("friendships")
 .delete()
@@ -2155,6 +2588,7 @@ currentUser.id+
 if(error){
 
 alert(error.message);
+
 return;
 }
 
@@ -2163,16 +2597,18 @@ await loadFriends();
 }
 
 
-/* ================= CHAT ================= */
+/* ================================================= */
+/* CHAT */
+/* ================================================= */
 
 async function loadChatFriends(){
 
-const box=
+const box =
 document.getElementById(
 "chatFriends"
 );
 
-const {data,error}=
+const {data,error} =
 await supabaseClient
 .from("friendships")
 .select("*")
@@ -2182,11 +2618,14 @@ currentUser.id+
 ",friend_id.eq."+
 currentUser.id
 )
-.eq("status","accepted");
+.eq(
+"status",
+"accepted"
+);
 
 if(error){
 
-box.innerHTML=
+box.innerHTML =
 '<div class="empty">Помилка.</div>';
 
 return;
@@ -2194,43 +2633,56 @@ return;
 
 if(!data.length){
 
-box.innerHTML=
+box.innerHTML =
 '<div class="empty">У тебе ще немає друзів.</div>';
 
 return;
 }
 
-const ids=
+const ids =
 data.map(item=>
 item.user_id===currentUser.id
 ?item.friend_id
 :item.user_id
 );
 
-const {data:profiles}=
+const {data:profiles} =
 await supabaseClient
 .from("profiles")
-.select("id,username")
+.select(
+"id,username"
+)
 .in("id",ids);
 
-box.innerHTML=
+box.innerHTML =
 profiles.map(friend=>`
 
 <div
 class="friend-row chat-friend"
-onclick="openChat('${friend.id}','${escapeHtml(friend.username)}')"
+onclick="
+openChat(
+'${friend.id}',
+'${escapeHtml(friend.username)}'
+)
+"
 >
 
 <div class="small-avatar">
+
 ${escapeHtml(
-friend.username.charAt(0).toUpperCase()
+friend.username
+.charAt(0)
+.toUpperCase()
 )}
+
 </div>
 
 <div class="friend-info">
 
 <b>
-${escapeHtml(friend.username)}
+${escapeHtml(
+friend.username
+)}
 </b>
 
 <div class="muted">
@@ -2253,16 +2705,20 @@ friendId,
 friendName
 ){
 
-selectedFriend=friendId;
+selectedFriend =
+friendId;
 
 document.getElementById(
 "chatWindow"
-).style.display="block";
+)
+.style.display="block";
 
 document.getElementById(
 "chatTitle"
-).textContent=
-"💬 "+friendName;
+)
+.textContent =
+"💬 " +
+friendName;
 
 await loadMessages();
 
@@ -2271,9 +2727,11 @@ await loadMessages();
 
 async function loadMessages(){
 
-if(!selectedFriend)return;
+if(!selectedFriend){
+return;
+}
 
-const {data,error}=
+const {data,error} =
 await supabaseClient
 .from("messages")
 .select("*")
@@ -2290,33 +2748,39 @@ currentUser.id+
 )
 .order(
 "created_at",
-{ascending:true}
+{
+ascending:true
+}
 );
 
-if(error)return;
+if(error){
+return;
+}
 
-const box=
+const box =
 document.getElementById(
 "chatMessages"
 );
 
 if(!data.length){
 
-box.innerHTML=
+box.innerHTML =
 '<div class="empty">Поки немає повідомлень 👋</div>';
 
 return;
 }
 
-box.innerHTML=
+box.innerHTML =
 data.map(message=>{
 
-const mine=
-message.sender_id===
+const mine =
+message.sender_id ===
 currentUser.id;
 
-const time=
-new Date(message.created_at)
+const time =
+new Date(
+message.created_at
+)
 .toLocaleTimeString(
 "uk-UA",
 {
@@ -2328,13 +2792,17 @@ minute:"2-digit"
 return `
 
 <div class="${
-mine?"my-message":"other-message"
+mine
+?"my-message"
+:"other-message"
 }">
 
 <div class="message-bubble">
 
 <div>
-${escapeHtml(message.content)}
+${escapeHtml(
+message.content
+)}
 </div>
 
 <div class="message-time">
@@ -2349,32 +2817,42 @@ ${time}
 
 }).join("");
 
-box.scrollTop=box.scrollHeight;
+box.scrollTop =
+box.scrollHeight;
 
 }
 
 
 async function sendMessage(){
 
-if(!selectedFriend)return;
+if(!selectedFriend){
+return;
+}
 
-const input=
+const input =
 document.getElementById(
 "messageInput"
 );
 
-const content=
+const content =
 input.value.trim();
 
-if(!content)return;
+if(!content){
+return;
+}
 
-const {error}=
+const {error} =
 await supabaseClient
 .from("messages")
 .insert({
 
-sender_id:currentUser.id,
-receiver_id:selectedFriend,
+sender_id:
+currentUser.id,
+
+receiver_id:
+selectedFriend,
+
+content:
 content
 
 });
@@ -2382,6 +2860,7 @@ content
 if(error){
 
 alert(error.message);
+
 return;
 }
 
@@ -2405,20 +2884,92 @@ sendMessage();
 }
 
 
-/* ================= NAVIGATION ================= */
+/* ================================================= */
+/* UKR GTA */
+/* ================================================= */
+
+function openUkrGTA(){
+
+alert(
+"🎮 Запуск Укр GTA буде підключено, коли матимемо офіційний спосіб запуску гри."
+);
+
+}
+
+
+async function refreshGameData(){
+
+const nickname =
+document.getElementById(
+"gameNickname"
+);
+
+const status =
+document.getElementById(
+"gameStatus"
+);
+
+const online =
+document.getElementById(
+"gameOnline"
+);
+
+const level =
+document.getElementById(
+"gameLevel"
+);
+
+const money =
+document.getElementById(
+"gameMoney"
+);
+
+nickname.textContent =
+"Пошук даних...";
+
+status.textContent =
+"Перевіряємо підключення...";
+
+online.textContent =
+"—";
+
+level.textContent =
+"—";
+
+money.textContent =
+"—";
+
+setTimeout(()=>{
+
+nickname.textContent =
+"API не підключено";
+
+status.textContent =
+"Потрібен доступ до API Укр GTA";
+
+},700);
+
+}
+
+
+/* ================================================= */
+/* NAVIGATION */
+/* ================================================= */
 
 function openPage(page){
 
 document
 .querySelectorAll(".page")
 .forEach(
-element=>
-element.classList.remove("active")
+element =>
+element.classList
+.remove("active")
 );
 
 document
 .getElementById(page)
-.classList.add("active");
+.classList
+.add("active");
 
 if(page==="friends"){
 loadFriends();
@@ -2432,21 +2983,16 @@ if(page==="home"){
 loadFeed();
 }
 
+if(page==="mta"){
+refreshGameData();
 }
-
-
-/* ================= MTA ================= */
-
-function mtaConnect(){
-
-alert(
-"🎮 Підключення MTA-сервера додамо наступним етапом."
-);
 
 }
 
 
-/* ================= LOGOUT ================= */
+/* ================================================= */
+/* LOGOUT */
+/* ================================================= */
 
 async function logout(){
 
@@ -2459,21 +3005,45 @@ location.reload();
 }
 
 
-/* ================= SECURITY ================= */
+/* ================================================= */
+/* SECURITY */
+/* ================================================= */
 
 function escapeHtml(text){
 
 return String(text)
-.replaceAll("&","&amp;")
-.replaceAll("<","&lt;")
-.replaceAll(">","&gt;")
-.replaceAll('"',"&quot;")
-.replaceAll("'","&#039;");
+
+.replaceAll(
+"&",
+"&amp;"
+)
+
+.replaceAll(
+"<",
+"&lt;"
+)
+
+.replaceAll(
+">",
+"&gt;"
+)
+
+.replaceAll(
+'"',
+"&quot;"
+)
+
+.replaceAll(
+"'",
+"&#039;"
+);
 
 }
 
 
-/* ================= REALTIME ================= */
+/* ================================================= */
+/* REALTIME */
+/* ================================================= */
 
 supabaseClient
 .channel("posts-live")
@@ -2485,7 +3055,9 @@ schema:"public",
 table:"posts"
 },
 ()=>{
-if(currentUser)loadFeed();
+if(currentUser){
+loadFeed();
+}
 }
 )
 .subscribe();
@@ -2501,7 +3073,9 @@ schema:"public",
 table:"post_likes"
 },
 ()=>{
-if(currentUser)loadFeed();
+if(currentUser){
+loadFeed();
+}
 }
 )
 .subscribe();
@@ -2517,7 +3091,9 @@ schema:"public",
 table:"post_comments"
 },
 ()=>{
-if(currentUser)loadFeed();
+if(currentUser){
+loadFeed();
+}
 }
 )
 .subscribe();
@@ -2534,19 +3110,26 @@ table:"messages"
 },
 payload=>{
 
-if(!currentUser)return;
+if(!currentUser){
+return;
+}
 
-const msg=payload.new;
+const msg =
+payload.new;
 
 if(
 (
-msg.sender_id===currentUser.id&&
-msg.receiver_id===selectedFriend
+msg.sender_id===
+currentUser.id &&
+msg.receiver_id===
+selectedFriend
 )
 ||
 (
-msg.sender_id===selectedFriend&&
-msg.receiver_id===currentUser.id
+msg.sender_id===
+selectedFriend &&
+msg.receiver_id===
+currentUser.id
 )
 ){
 
@@ -2559,13 +3142,17 @@ loadMessages();
 .subscribe();
 
 
-/* ================= SESSION ================= */
+/* ================================================= */
+/* SESSION */
+/* ================================================= */
 
 async function checkUser(){
 
 const {
-data:{user}
-}=
+data:{
+user
+}
+} =
 await supabaseClient
 .auth
 .getUser();
