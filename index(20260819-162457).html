@@ -1,0 +1,2742 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MTA Social</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+const UKR_GTA_SERVERS = [
+  {name:"Центральна Україна", online:601, max:900},
+  {name:"Західна Україна", online:524, max:900},
+  {name:"Східна Україна", online:446, max:900},
+  {name:"Північна Україна", online:366, max:900},
+  {name:"Чорноморський край", online:369, max:900}
+];
+
+const UKR_GTA_NEWS = [
+  {title:"4 РОКИ | UKRAINE GTA 4.0", date:"28.06.2026"},
+  {title:"Оновлення 3.9 | Свіжий подих", date:"29.04.2026"},
+  {title:"Оновлення 3.8 | ПАСХАЛЬНА ДОЛИНА", date:"10.04.2026"},
+  {title:"Оновлення 3.7 | Весняний BATTLEPASS", date:"06.03.2026"},
+  {title:"Оновлення 3.6 | Формула Кохання", date:"13.02.2026"}
+];
+
+function renderUkrGtaDashboard(){
+  const box = document.getElementById("ugtServers");
+  const news = document.getElementById("ugtNews");
+  const updated = document.getElementById("ugtUpdated");
+
+  if(!box || !news) return;
+
+  box.innerHTML = UKR_GTA_SERVERS.map(s=>{
+    const percent = Math.round((s.online/s.max)*100);
+    return `
+      <div class="ugt-server">
+        <div class="ugt-server-head">
+          <div class="ugt-server-name">${escapeHtml(s.name)}</div>
+          <div class="ugt-server-count">${s.online}/${s.max}</div>
+        </div>
+        <div class="ugt-bar">
+          <div class="ugt-fill" style="width:${percent}%"></div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  news.innerHTML = UKR_GTA_NEWS.map(n=>`
+    <div class="ugt-news">
+      <div class="ugt-news-title">${escapeHtml(n.title)}</div>
+      <div class="ugt-news-date">${escapeHtml(n.date)}</div>
+    </div>
+  `).join("");
+
+  updated.textContent =
+    "Дані взяті з офіційної сторінки Ukraine GTA; для автоматичного оновлення потрібен офіційний API.";
+}
+
+const oldRefreshGameData = refreshGameData;
+refreshGameData = async function(){
+  renderUkrGtaDashboard();
+  await oldRefreshGameData();
+};
+
+renderUkrGtaDashboard();
+
+</script>
+<style>
+*{box-sizing:border-box}
+:root{
+  --bg:#f2f5f9;--card:#fff;--line:#e2e8f0;--text:#172033;
+  --muted:#718096;--blue:#2878f0;--blue2:#e9f2ff;--dark:#0f172a;
+  --shadow:0 6px 24px rgba(15,23,42,.07)
+}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}
+body{min-height:100vh}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.auth{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#eaf3ff,#f7f9fc)}
+.auth-box{width:410px;max-width:100%;background:#fff;border:1px solid var(--line);border-radius:24px;padding:32px;box-shadow:var(--shadow)}
+.logo{color:var(--blue);font-size:26px;font-weight:900;letter-spacing:.3px}
+.muted{color:var(--muted)}
+input,textarea{width:100%;padding:13px 14px;margin-top:12px;background:#fff;border:1px solid #d8e0ea;border-radius:12px;color:var(--text);outline:none}
+input:focus,textarea:focus{border-color:#8bb8ff;box-shadow:0 0 0 3px rgba(40,120,240,.1)}
+textarea{min-height:100px;resize:none}
+.main-btn{width:100%;padding:13px 16px;margin-top:12px;border:0;border-radius:12px;background:var(--blue);color:#fff;font-weight:750;transition:.15s}
+.main-btn:hover{filter:brightness(.96);transform:translateY(-1px)}
+.dark-btn{background:#edf2f7;color:#243047}
+#message{margin-top:15px;color:var(--blue)}
+#app{display:none}
+header{height:64px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(20px,calc((100vw - 1240px)/2));position:sticky;top:0;z-index:30;box-shadow:0 2px 12px rgba(15,23,42,.04)}
+header button{width:auto;margin:0;padding:9px 14px}
+.layout{max-width:1240px;margin:auto;display:grid;grid-template-columns:210px minmax(0,650px) 250px;gap:18px;padding:20px 15px}
+.menu{background:transparent;border:0;padding:0;height:max-content;position:sticky;top:84px}
+.menu:before{content:"MTA SOCIAL";display:block;font-size:12px;font-weight:800;color:#9aa6b7;padding:8px 12px 10px}
+.menu button{width:100%;background:transparent;color:#516074;text-align:left;border:0;padding:12px 14px;border-radius:12px;margin:2px 0;font-weight:650}
+.menu button:hover{background:#e9f2ff;color:var(--blue)}
+.page{display:none}
+.page.active{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 3px 14px rgba(15,23,42,.035)}
+h1,h2{margin-top:0}
+.cover{height:185px;background:linear-gradient(135deg,#1769d5,#63a8ff);border-radius:14px 14px 0 0}
+.profile-body{padding:0 20px 20px}
+.avatar{width:92px;height:92px;border-radius:50%;background:var(--blue);border:5px solid #fff;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:bold;margin-top:-46px;box-shadow:0 3px 12px rgba(15,23,42,.15)}
+.profile-name{font-size:27px;font-weight:800;margin-top:10px}
+.stats{display:flex;gap:35px;border-top:1px solid var(--line);margin-top:18px;padding-top:18px}
+.stat b{font-size:20px}
+.result,.friend-row{background:#f7f9fc;border:1px solid #e5ebf2;border-radius:13px;padding:13px;margin-top:10px;display:flex;align-items:center;gap:12px}
+.result-info,.friend-info{flex:1}
+.result button{width:auto;margin:0;padding:9px 13px}
+.small-avatar{width:46px;height:46px;min-width:46px;border-radius:50%;background:var(--blue2);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:800}
+.status{color:#16a05d;font-size:13px}
+.empty{padding:20px;text-align:center;color:var(--muted)}
+.request-buttons{display:flex;gap:7px}
+.request-buttons button{width:auto;margin:0;padding:8px 11px;border:0;border-radius:9px;color:#fff}
+.post{background:#fff;border:1px solid var(--line);border-radius:16px;margin-bottom:16px;overflow:hidden;box-shadow:0 3px 14px rgba(15,23,42,.035)}
+.post-head{display:flex;align-items:center;gap:12px;padding:16px}
+.post-avatar{width:45px;height:45px;border-radius:50%;background:var(--blue2);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:800}
+.post-image{width:100%;max-height:600px;object-fit:cover;display:block}
+.post-content{padding:16px;line-height:1.55;white-space:pre-wrap}
+.post-actions{display:flex;gap:24px;padding:0 16px 15px;border-bottom:1px solid var(--line)}
+.post-actions button{background:none;border:0;color:#64748b;padding:0;width:auto}
+.post-actions button:hover{color:var(--blue)}
+.preview{margin-top:12px;position:relative}
+.preview img{width:100%;max-height:400px;object-fit:cover;border-radius:12px}
+.remove-photo{position:absolute;right:10px;top:10px;width:35px;height:35px;border:0;border-radius:50%;background:rgba(15,23,42,.8);color:#fff}
+.comments{padding:0 16px 16px}
+.comment{background:#f4f7fa;padding:10px;border-radius:10px;margin-top:8px}
+.comment-form{display:flex;gap:8px;margin-top:10px}
+.comment-form input{margin:0;flex:1}
+.comment-form button{width:auto;margin:0;padding:10px 15px}
+#chatMessages{height:380px;overflow-y:auto;background:#f4f7fa;border-radius:12px;padding:15px}
+.chat-input{display:flex;gap:10px;margin-top:12px}
+.chat-input input{margin:0;flex:1}
+.chat-input button{width:auto;margin:0;padding:12px 18px;border:0;border-radius:11px;background:var(--blue);color:#fff}
+.chat-friend{cursor:pointer}
+.chat-friend:hover{background:#eaf2ff}
+.my-message{display:flex;justify-content:flex-end;margin:8px 0}
+.other-message{display:flex;justify-content:flex-start;margin:8px 0}
+.message-bubble{max-width:75%;padding:10px 14px;border-radius:14px;word-break:break-word}
+.my-message .message-bubble{background:var(--blue);color:#fff}
+.other-message .message-bubble{background:#fff;border:1px solid var(--line)}
+.message-time{font-size:10px;opacity:.65;margin-top:4px}
+.game-hero{background:linear-gradient(135deg,#0f1f3a,#2368c7);border-radius:15px;padding:25px;color:#fff}
+.game-title{font-size:34px;font-weight:900;margin-bottom:8px}
+.game-subtitle{color:#dbeafe;margin-bottom:20px}
+.game-online{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#b8ffd7;padding:8px 13px;border-radius:20px}
+.game-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.game-stat{background:#f7f9fc;border:1px solid #e5ebf2;border-radius:14px;padding:18px}
+.game-stat-icon{font-size:25px}.game-stat-value{font-size:22px;font-weight:bold;margin-top:8px}.game-stat-name{color:var(--muted);font-size:13px;margin-top:4px}
+.rightbar{position:sticky;top:84px;height:max-content}
+.right-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px}
+.right-card h3{margin:0 0 12px}
+.online-dot{display:inline-block;width:8px;height:8px;background:#20b66b;border-radius:50%;margin-right:5px}
+@media(max-width:1000px){.layout{grid-template-columns:190px minmax(0,1fr)}.rightbar{display:none}}
+@media(max-width:700px){header{padding:0 12px}.layout{grid-template-columns:1fr;padding:10px}.menu{position:sticky;top:64px;z-index:20;background:#fff;border:1px solid var(--line);border-radius:13px;padding:5px;display:flex;overflow-x:auto;box-shadow:0 3px 12px rgba(15,23,42,.05)}.menu:before{display:none}.menu button{min-width:105px;white-space:nowrap;padding:10px}.game-grid{grid-template-columns:1fr}.stats{gap:18px}.result{flex-wrap:wrap}.result button{width:100%}}
+
+.ugt-dashboard{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px}
+.ugt-server{background:#fff;border:1px solid #e5ebf2;border-radius:14px;padding:15px}
+.ugt-server-head{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.ugt-server-name{font-weight:800}
+.ugt-server-count{color:#2878f0;font-weight:800}
+.ugt-bar{height:8px;background:#e9eef5;border-radius:99px;overflow:hidden;margin-top:10px}
+.ugt-fill{height:100%;background:#2878f0;border-radius:99px}
+.ugt-news{border-top:1px solid #e5ebf2;padding:13px 0}
+.ugt-news:first-child{border-top:0}
+.ugt-news-title{font-weight:800}
+.ugt-news-date{font-size:12px;color:#718096;margin-top:4px}
+.ugt-links{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.ugt-link{display:block;text-decoration:none;background:#f7f9fc;border:1px solid #e5ebf2;color:#172033;border-radius:12px;padding:12px;font-weight:700}
+.ugt-link:hover{background:#eaf2ff;color:#2878f0}
+@media(max-width:700px){.ugt-dashboard,.ugt-links{grid-template-columns:1fr}}
+
+</style>
+</head>
+
+<body>
+<div id="auth" class="auth">
+  <div class="auth-box">
+    <div class="logo">MTA SOCIAL</div>
+    <h1>Ласкаво просимо 👋</h1>
+    <p class="muted">Твоя соціальна мережа для спільноти.</p>
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Пароль">
+    <button class="main-btn" onclick="register()">Створити акаунт</button>
+    <button class="main-btn dark-btn" onclick="login()">Увійти</button>
+    <p id="message"></p>
+  </div>
+</div>
+
+<div id="app">
+<header>
+  <div class="logo">MTA SOCIAL</div>
+  <button class="main-btn dark-btn" onclick="logout()">Вийти</button>
+</header>
+
+<div class="layout">
+  <div class="menu">
+    <button onclick="openPage('home')">🏠 Головна</button>
+    <button onclick="openPage('profile')">👤 Моя сторінка</button>
+    <button onclick="openPage('friends')">👥 Друзі</button>
+    <button onclick="openPage('messages')">💬 Повідомлення</button>
+    <button onclick="openPage('notifications')">🔔 Сповіщення</button>
+    <button onclick="openPage('mta')">🎮 Укр GTA</button>
+  </div>
+
+  <div>
+    <!-- ================= HOME ================= -->
+
+<div
+id="home"
+class="page active"
+>
+
+<div class="card">
+
+<h1>
+🏠 MTA Social
+</h1>
+
+<p class="muted">
+Що нового?
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+✍️ Створити пост
+</h2>
+
+<textarea
+id="postText"
+placeholder="Що нового?"
+></textarea>
+
+<input
+id="postImage"
+type="file"
+accept="image/*"
+onchange="previewImage()"
+>
+
+<div
+id="imagePreview"
+class="preview"
+style="display:none"
+>
+
+<img id="preview">
+
+<button
+class="remove-photo"
+onclick="removePhoto()"
+>
+×
+</button>
+
+</div>
+
+<button
+class="main-btn"
+onclick="createPost()"
+>
+📤 Опублікувати
+</button>
+
+<p
+id="postMessage"
+class="muted"
+></p>
+
+</div>
+
+
+<div id="feed">
+
+<div class="empty">
+Завантаження постів...
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================= PROFILE ================= -->
+
+<div
+id="profile"
+class="page"
+>
+
+<div class="card">
+
+<div class="cover"></div>
+
+<div class="profile-body">
+
+<div
+id="avatar"
+class="avatar"
+>
+A
+</div>
+
+<div
+id="profileName"
+class="profile-name"
+>
+Користувач
+</div>
+
+<div
+id="profileEmail"
+class="muted"
+>
+email
+</div>
+
+<p
+id="profileBio"
+class="muted"
+>
+Тут поки немає опису.
+</p>
+
+<div class="stats">
+
+<div class="stat">
+
+<b id="postsCount">
+0
+</b>
+
+<div class="muted">
+Пости
+</div>
+
+</div>
+
+<div class="stat">
+
+<b id="friendsCount">
+0
+</b>
+
+<div class="muted">
+Друзі
+</div>
+
+</div>
+
+<div class="stat">
+
+<b>
+0
+</b>
+
+<div class="muted">
+Підписники
+</div>
+
+</div>
+
+</div>
+
+<button
+class="main-btn"
+onclick="toggleEdit()"
+>
+✏️ Редагувати профіль
+</button>
+
+<div
+id="editProfile"
+style="display:none"
+>
+
+<input
+id="nickname"
+placeholder="Нік"
+>
+
+<textarea
+id="bio"
+placeholder="Опис профілю"
+></textarea>
+
+<button
+class="main-btn"
+onclick="saveProfile()"
+>
+💾 Зберегти
+</button>
+
+</div>
+
+</div>
+</div>
+
+</div>
+
+
+<!-- ================= FRIENDS ================= -->
+
+<div
+id="friends"
+class="page"
+>
+
+<div class="card">
+
+<h1>
+👥 Друзі
+</h1>
+
+<input
+id="friendSearch"
+placeholder="🔎 Введи нік..."
+oninput="searchUsers()"
+>
+
+<div id="searchResults"></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+📨 Запити в друзі
+</h2>
+
+<div id="friendRequests">
+
+<div class="empty">
+Поки немає запитів.
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+🤝 Мої друзі
+</h2>
+
+<div id="myFriends">
+
+<div class="empty">
+Поки немає друзів.
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================= MESSAGES ================= -->
+
+<div
+id="messages"
+class="page"
+>
+
+<div class="card">
+
+<h1>
+💬 Повідомлення
+</h1>
+
+<div id="chatFriends">
+
+<div class="empty">
+Завантаження друзів...
+</div>
+
+</div>
+
+</div>
+
+
+<div
+id="chatWindow"
+class="card"
+style="display:none"
+>
+
+<h2 id="chatTitle">
+💬 Чат
+</h2>
+
+<div id="chatMessages">
+
+<div class="empty">
+Поки немає повідомлень 👋
+</div>
+
+</div>
+
+<div class="chat-input">
+
+<input
+id="messageInput"
+placeholder="Напиши повідомлення..."
+onkeydown="handleMessageKey(event)"
+>
+
+<button onclick="sendMessage()">
+📤
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================= NOTIFICATIONS ================= -->
+
+<div
+id="notifications"
+class="page"
+>
+
+<div class="card">
+
+<h1>
+🔔 Сповіщення
+</h1>
+
+<p class="muted">
+Тут будуть нові події.
+</p>
+
+</div>
+
+</div>
+
+
+<!-- ================= UKR GTA ================= -->
+
+<div
+id="mta"
+class="page"
+>
+
+<div class="card">
+
+<div class="game-hero">
+
+<div class="game-title">
+🎮 Укр GTA
+</div>
+
+<div class="game-subtitle">
+Ігровий профіль
+</div>
+
+<div class="game-online">
+🟢 Сервер доступний
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="card">
+  <h2>🖥️ Сервери Ukraine GTA</h2>
+  <div class="muted">Показники, опубліковані на офіційному сайті Ukraine GTA.</div>
+  <div class="ugt-dashboard" id="ugtServers">
+    <div class="empty">Завантаження серверів...</div>
+  </div>
+  <div class="muted" id="ugtUpdated" style="margin-top:12px"></div>
+</div>
+
+<div class="card">
+  <h2>📰 Останні новини</h2>
+  <div id="ugtNews">
+    <div class="empty">Завантаження новин...</div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>🔗 Офіційні ресурси</h2>
+  <div class="ugt-links">
+    <a class="ugt-link" href="https://ukraine-gta.com.ua/uk/" target="_blank" rel="noopener">🌐 Сайт Ukraine GTA</a>
+    <a class="ugt-link" href="https://forum.ukraine-gta.com.ua/" target="_blank" rel="noopener">💬 Форум</a>
+    <a class="ugt-link" href="https://wiki.ukraine-gta.com.ua/" target="_blank" rel="noopener">📚 Wiki</a>
+    <a class="ugt-link" href="https://ukraine-gta.com.ua/uk/donate/" target="_blank" rel="noopener">🛒 Ігровий магазин</a>
+  </div>
+</div>
+
+<div class="card">
+
+<h2>
+👤 Профіль гравця
+</h2>
+
+<div class="friend-row">
+
+<div class="small-avatar">
+🎮
+</div>
+
+<div class="friend-info">
+
+<b id="gameNickname">
+Не підключено
+</b>
+
+<div
+id="gameStatus"
+class="muted"
+>
+Очікується підключення
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+📊 Статистика
+</h2>
+
+<div class="game-grid">
+
+<div class="game-stat">
+
+<div class="game-stat-icon">
+👥
+</div>
+
+<div
+id="gameOnline"
+class="game-stat-value"
+>
+—
+</div>
+
+<div class="game-stat-name">
+Онлайн
+</div>
+
+</div>
+
+
+<div class="game-stat">
+
+<div class="game-stat-icon">
+⭐
+</div>
+
+<div
+id="gameLevel"
+class="game-stat-value"
+>
+—
+</div>
+
+<div class="game-stat-name">
+Рівень
+</div>
+
+</div>
+
+
+<div class="game-stat">
+
+<div class="game-stat-icon">
+💰
+</div>
+
+<div
+id="gameMoney"
+class="game-stat-value"
+>
+—
+</div>
+
+<div class="game-stat-name">
+Гроші
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+🚗 Мої автомобілі
+</h2>
+
+<div id="gameCars">
+
+<div class="empty">
+Дані автомобілів поки недоступні.
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<button
+class="main-btn"
+onclick="openUkrGTA()"
+>
+▶️ Запустити Укр GTA
+</button>
+
+<button
+class="main-btn dark-btn"
+onclick="refreshGameData()"
+>
+🔄 Оновити дані
+</button>
+
+</div>
+
+</div>
+
+
+
+  </div>
+
+  <aside class="rightbar">
+    <div class="right-card">
+      <h3>👥 Спільнота</h3>
+      <div class="muted"><span class="online-dot"></span> MTA Social працює</div>
+      <div class="muted" style="margin-top:10px">Знаходь друзів, публікуй фото та спілкуйся.</div>
+    </div>
+    <div class="right-card">
+      <h3>🎮 Укр GTA</h3>
+      <div class="muted">Ігровий розділ готовий до підключення даних сервера.</div>
+      <button class="main-btn" onclick="openPage('mta')">Відкрити</button>
+    </div>
+  </aside>
+</div>
+</div>
+
+<script>
+
+/* ================================================= */
+/* SUPABASE */
+/* ================================================= */
+
+const SUPABASE_URL =
+"https://ifsqesikynpsdgucaljc.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_B3EZXy-9dWui5rDwEHEZhQ_HqfMIP4p";
+
+const supabaseClient =
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+let currentUser = null;
+let selectedFriend = null;
+
+
+/* ================================================= */
+/* REGISTER */
+/* ================================================= */
+
+async function register(){
+
+const email =
+document.getElementById("email").value.trim();
+
+const password =
+document.getElementById("password").value;
+
+const message =
+document.getElementById("message");
+
+if(!email || !password){
+
+message.textContent =
+"Введи email і пароль.";
+
+return;
+}
+
+if(password.length < 6){
+
+message.textContent =
+"Пароль має бути мінімум 6 символів.";
+
+return;
+}
+
+message.textContent =
+"Створюємо акаунт...";
+
+const {data,error} =
+await supabaseClient.auth.signUp({
+
+email:email,
+
+password:password,
+
+options:{
+data:{
+nickname:
+email.split("@")[0]
+}
+}
+
+});
+
+if(error){
+
+message.textContent =
+"Помилка: " +
+error.message;
+
+return;
+}
+
+message.textContent =
+"✅ Перевір email для підтвердження.";
+
+}
+
+
+/* ================================================= */
+/* LOGIN */
+/* ================================================= */
+
+async function login(){
+
+const email =
+document.getElementById("email").value.trim();
+
+const password =
+document.getElementById("password").value;
+
+if(!email || !password){
+
+document.getElementById("message")
+.textContent =
+"Введи email і пароль.";
+
+return;
+}
+
+const {data,error} =
+await supabaseClient.auth.signInWithPassword({
+
+email:email,
+
+password:password
+
+});
+
+if(error){
+
+document.getElementById("message")
+.textContent =
+"Помилка: " +
+error.message;
+
+return;
+}
+
+await showApp(data.user);
+
+}
+
+
+/* ================================================= */
+/* SHOW APP */
+/* ================================================= */
+
+async function showApp(user){
+
+currentUser = user;
+
+document.getElementById("auth")
+.style.display="none";
+
+document.getElementById("app")
+.style.display="block";
+
+await ensureProfile();
+
+await loadProfile();
+
+await loadFriends();
+
+await loadFeed();
+
+}
+
+
+/* ================================================= */
+/* PROFILE */
+/* ================================================= */
+
+async function ensureProfile(){
+
+const {data} =
+await supabaseClient
+.from("profiles")
+.select("id")
+.eq("id",currentUser.id)
+.maybeSingle();
+
+if(data){
+return;
+}
+
+const username =
+currentUser.user_metadata?.nickname ||
+currentUser.email.split("@")[0];
+
+await supabaseClient
+.from("profiles")
+.insert({
+
+id:currentUser.id,
+
+username:username,
+
+bio:""
+
+});
+
+}
+
+
+async function loadProfile(){
+
+const {data,error} =
+await supabaseClient
+.from("profiles")
+.select("*")
+.eq("id",currentUser.id)
+.maybeSingle();
+
+if(error || !data){
+return;
+}
+
+document.getElementById("profileName")
+.textContent=data.username;
+
+document.getElementById("profileEmail")
+.textContent=currentUser.email;
+
+document.getElementById("profileBio")
+.textContent=
+data.bio ||
+"Тут поки немає опису.";
+
+document.getElementById("nickname")
+.value=data.username;
+
+document.getElementById("bio")
+.value=data.bio || "";
+
+document.getElementById("avatar")
+.textContent=
+data.username.charAt(0).toUpperCase();
+
+}
+
+
+function toggleEdit(){
+
+const box =
+document.getElementById("editProfile");
+
+box.style.display =
+box.style.display === "block"
+? "none"
+: "block";
+
+}
+
+
+async function saveProfile(){
+
+const username =
+document.getElementById("nickname")
+.value.trim();
+
+const bio =
+document.getElementById("bio")
+.value.trim();
+
+if(!username){
+
+alert("Введи нік.");
+
+return;
+}
+
+const {error} =
+await supabaseClient
+.from("profiles")
+.update({
+
+username:username,
+
+bio:bio
+
+})
+.eq("id",currentUser.id);
+
+if(error){
+
+alert(error.message);
+
+return;
+}
+
+await loadProfile();
+
+document.getElementById("editProfile")
+.style.display="none";
+
+}
+
+
+/* ================================================= */
+/* POSTS */
+/* ================================================= */
+
+function previewImage(){
+
+const input =
+document.getElementById("postImage");
+
+const box =
+document.getElementById("imagePreview");
+
+const preview =
+document.getElementById("preview");
+
+if(!input.files.length){
+
+box.style.display="none";
+
+return;
+}
+
+preview.src =
+URL.createObjectURL(
+input.files[0]
+);
+
+box.style.display="block";
+
+}
+
+
+function removePhoto(){
+
+document.getElementById("postImage")
+.value="";
+
+document.getElementById("imagePreview")
+.style.display="none";
+
+}
+
+
+async function createPost(){
+
+const text =
+document.getElementById("postText")
+.value.trim();
+
+const file =
+document.getElementById("postImage")
+.files[0];
+
+const message =
+document.getElementById("postMessage");
+
+if(!text && !file){
+
+message.textContent =
+"Додай текст або фото.";
+
+return;
+}
+
+message.textContent =
+"Публікуємо...";
+
+let imageUrl = null;
+
+if(file){
+
+if(file.size > 8*1024*1024){
+
+message.textContent =
+"Фото має бути менше 8 МБ.";
+
+return;
+}
+
+const extension =
+file.name.split(".").pop();
+
+const path =
+currentUser.id +
+"/" +
+Date.now() +
+"." +
+extension;
+
+const {error} =
+await supabaseClient.storage
+.from("post-images")
+.upload(
+path,
+file
+);
+
+if(error){
+
+console.log(error);
+
+message.textContent =
+"Помилка завантаження фото.";
+
+return;
+}
+
+const {data} =
+supabaseClient.storage
+.from("post-images")
+.getPublicUrl(path);
+
+imageUrl =
+data.publicUrl;
+
+}
+
+const {error} =
+await supabaseClient
+.from("posts")
+.insert({
+
+user_id:currentUser.id,
+
+content:text,
+
+image_url:imageUrl
+
+});
+
+if(error){
+
+message.textContent =
+"Помилка: " +
+error.message;
+
+return;
+}
+
+document.getElementById("postText")
+.value="";
+
+removePhoto();
+
+message.textContent =
+"✅ Опубліковано!";
+
+await loadFeed();
+
+}
+
+
+async function loadFeed(){
+
+const feed =
+document.getElementById("feed");
+
+const {data:posts,error} =
+await supabaseClient
+.from("posts")
+.select("*")
+.order(
+"created_at",
+{ascending:false}
+);
+
+if(error){
+
+feed.innerHTML =
+'<div class="empty">Помилка завантаження.</div>';
+
+return;
+}
+
+if(!posts.length){
+
+feed.innerHTML =
+'<div class="card empty">Поки немає постів. Створи перший! 🚀</div>';
+
+return;
+}
+
+const ids =
+[...new Set(
+posts.map(p=>p.user_id)
+)];
+
+const {data:profiles} =
+await supabaseClient
+.from("profiles")
+.select("id,username")
+.in("id",ids);
+
+const profileMap={};
+
+(profiles || []).forEach(
+p => profileMap[p.id]=p
+);
+
+const postIds =
+posts.map(p=>p.id);
+
+const {data:likes} =
+await supabaseClient
+.from("post_likes")
+.select("post_id,user_id")
+.in("post_id",postIds);
+
+const {data:comments} =
+await supabaseClient
+.from("post_comments")
+.select("post_id")
+.in("post_id",postIds);
+
+feed.innerHTML =
+posts.map(post => {
+
+const author =
+profileMap[post.user_id];
+
+const username =
+author?.username ||
+"Користувач";
+
+const postLikes =
+(likes || [])
+.filter(
+x=>x.post_id===post.id
+);
+
+const liked =
+postLikes.some(
+x=>x.user_id===currentUser.id
+);
+
+const commentCount =
+(comments || [])
+.filter(
+x=>x.post_id===post.id
+).length;
+
+const date =
+new Date(
+post.created_at
+)
+.toLocaleString("uk-UA");
+
+return `
+
+<div class="post">
+
+<div class="post-head">
+
+<div class="post-avatar">
+
+${escapeHtml(
+username.charAt(0).toUpperCase()
+)}
+
+</div>
+
+<div>
+
+<b>
+${escapeHtml(username)}
+</b>
+
+<div class="muted">
+${date}
+</div>
+
+</div>
+
+</div>
+
+${
+post.image_url
+?
+`
+<img
+class="post-image"
+src="${escapeHtml(post.image_url)}"
+>
+`
+:""
+}
+
+${
+post.content
+?
+`
+<div class="post-content">
+${escapeHtml(post.content)}
+</div>
+`
+:""
+}
+
+<div class="post-actions">
+
+<button
+onclick="toggleLike('${post.id}')"
+>
+${liked ? "❤️" : "🤍"}
+${postLikes.length}
+</button>
+
+<button
+onclick="toggleComments('${post.id}')"
+>
+💬 ${commentCount}
+</button>
+
+${
+post.user_id===currentUser.id
+?
+`
+<button
+onclick="deletePost('${post.id}')"
+>
+🗑️
+</button>
+`
+:""
+}
+
+</div>
+
+<div
+id="comments-${post.id}"
+class="comments"
+style="display:none"
+>
+
+<div
+id="comment-list-${post.id}"
+>
+</div>
+
+<div class="comment-form">
+
+<input
+id="comment-input-${post.id}"
+placeholder="Напиши коментар..."
+>
+
+<button
+onclick="addComment('${post.id}')"
+>
+📤
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+}).join("");
+
+document.getElementById("postsCount")
+.textContent=posts.length;
+
+}
+
+
+/* ================================================= */
+/* LIKES */
+/* ================================================= */
+
+async function toggleLike(postId){
+
+const {data:existing} =
+await supabaseClient
+.from("post_likes")
+.select("id")
+.eq("post_id",postId)
+.eq("user_id",currentUser.id)
+.maybeSingle();
+
+if(existing){
+
+await supabaseClient
+.from("post_likes")
+.delete()
+.eq("id",existing.id);
+
+}else{
+
+const {error} =
+await supabaseClient
+.from("post_likes")
+.insert({
+
+post_id:postId,
+
+user_id:currentUser.id
+
+});
+
+if(error){
+
+alert(error.message);
+
+return;
+}
+
+}
+
+await loadFeed();
+
+}
+
+
+/* ================================================= */
+/* COMMENTS */
+/* ================================================= */
+
+async function toggleComments(postId){
+
+const box =
+document.getElementById(
+"comments-"+postId
+);
+
+if(box.style.display==="none"){
+
+box.style.display="block";
+
+await loadComments(postId);
+
+}else{
+
+box.style.display="none";
+
+}
+
+}
+
+
+async function loadComments(postId){
+
+const box =
+document.getElementById(
+"comment-list-"+postId
+);
+
+const {data,error} =
+await supabaseClient
+.from("post_comments")
+.select("*")
+.eq("post_id",postId)
+.order(
+"created_at",
+{ascending:true}
+);
+
+if(error){
+
+box.innerHTML =
+'<div class="muted">Помилка.</div>';
+
+return;
+}
+
+if(!data.length){
+
+box.innerHTML =
+'<div class="muted">Поки немає коментарів.</div>';
+
+return;
+}
+
+const ids =
+[...new Set(
+data.map(x=>x.user_id)
+)];
+
+const {data:profiles} =
+await supabaseClient
+.from("profiles")
+.select("id,username")
+.in("id",ids);
+
+const map={};
+
+(profiles || []).forEach(
+p=>map[p.id]=p.username
+);
+
+box.innerHTML =
+data.map(comment=>`
+
+<div class="comment">
+
+<b>
+${escapeHtml(
+map[comment.user_id] ||
+"Користувач"
+)}
+</b>
+
+<div>
+${escapeHtml(comment.content)}
+</div>
+
+<div class="muted">
+${new Date(
+comment.created_at
+).toLocaleString("uk-UA")}
+</div>
+
+</div>
+
+`).join("");
+
+}
+
+
+async function addComment(postId){
+
+const input =
+document.getElementById(
+"comment-input-"+postId
+);
+
+const content =
+input.value.trim();
+
+if(!content){
+return;
+}
+
+const {error} =
+await supabaseClient
+.from("post_comments")
+.insert({
+
+post_id:postId,
+
+user_id:currentUser.id,
+
+content:content
+
+});
+
+if(error){
+
+alert(error.message);
+
+return;
+}
+
+input.value="";
+
+await loadComments(postId);
+
+await loadFeed();
+
+}
+
+
+/* ================================================= */
+/* DELETE POST */
+/* ================================================= */
+
+async function deletePost(id){
+
+if(!confirm(
+"Видалити цей пост?"
+)){
+return;
+}
+
+const {error} =
+await supabaseClient
+.from("posts")
+.delete()
+.eq("id",id)
+.eq("user_id",currentUser.id);
+
+if(error){
+
+alert(error.message);
+
+return;
+}
+
+await loadFeed();
+
+}
+
+
+/* ================================================= */
+/* FRIEND SEARCH */
+/* ================================================= */
+
+async function searchUsers(){
+
+const text =
+document
+.getElementById("friendSearch")
+.value.trim();
+
+const results =
+document.getElementById("searchResults");
+
+if(text.length<2){
+
+results.innerHTML =
+'<div class="empty">Введи мінімум 2 символи.</div>';
+
+return;
+}
+
+const {data,error} =
+await supabaseClient
+.from("profiles")
+.select(
+"id,username,bio"
+)
+.ilike(
+"username",
+"%"+text+"%"
+)
+.neq(
+"id",
+currentUser.id
+)
+.limit(10);
+
+if(error){
+
+results.innerHTML =
+'<div class="empty">Помилка.</div>';
+
+return;
+}
+
+if(!data.length){
+
+results.innerHTML =
+'<div class="empty">Користувачів не знайдено.</div>';
+
+return;
+}
+
+results.innerHTML =
+data.map(user=>`
+
+<div class="result">
+
+<div class="small-avatar">
+
+${escapeHtml(
+user.username
+.charAt(0)
+.toUpperCase()
+)}
+
+</div>
+
+<div class="result-info">
+
+<b>
+${escapeHtml(user.username)}
+</b>
+
+<div class="muted">
+${escapeHtml(
+user.bio || "Без опису"
+)}
+</div>
+
+</div>
+
+<button
+class="main-btn"
+onclick="addFriend('${user.id}')"
+>
+➕ Додати
+</button>
+
+</div>
+
+`).join("");
+
+}
+
+
+/* ================================================= */
+/* FRIENDS */
+/* ================================================= */
+
+async function addFriend(friendId){
+
+const {data:existing} =
+await supabaseClient
+.from("friendships")
+.select("*")
+.or(
+"and(user_id.eq."+
+currentUser.id+
+",friend_id.eq."+
+friendId+
+"),and(user_id.eq."+
+friendId+
+",friend_id.eq."+
+currentUser.id+
+")"
+);
+
+if(existing?.length){
+
+alert(
+"Запит або дружба вже існує."
+);
+
+return;
+}
+
+const {error} =
+await supabaseClient
+.from("friendships")
+.insert({
+
+user_id:currentUser.id,
+
+friend_id:friendId,
+
+status:"pending"
+
+});
+
+if(error){
+
+alert(error.message);
+
+return;
+}
+
+alert(
+"✅ Запит відправлено!"
+);
+
+await loadFriends();
+
+}
+
+
+async function loadFriends(){
+
+const {data,error} =
+await supabaseClient
+.from("friendships")
+.select("*")
+.or(
+"user_id.eq."+
+currentUser.id+
+",friend_id.eq."+
+currentUser.id
+);
+
+if(error){
+return;
+}
+
+const accepted =
+data.filter(
+x=>x.status==="accepted"
+);
+
+const incoming =
+data.filter(
+x=>
+x.status==="pending" &&
+x.friend_id===currentUser.id
+);
+
+const outgoing =
+data.filter(
+x=>
+x.status==="pending" &&
+x.user_id===currentUser.id
+);
+
+document.getElementById(
+"friendsCount"
+)
+.textContent =
+accepted.length;
+
+await showFriends(
+accepted
+);
+
+await showRequests(
+incoming,
+outgoing
+);
+
+}
+
+
+async function showFriends(list){
+
+const box =
+document.getElementById(
+"myFriends"
+);
+
+if(!list.length){
+
+box.innerHTML =
+'<div class="empty">Поки немає друзів.</div>';
+
+return;
+}
+
+const ids =
+list.map(item=>
+item.user_id===currentUser.id
+?item.friend_id
+:item.user_id
+);
+
+const {data:profiles} =
+await supabaseClient
+.from("profiles")
+.select(
+"id,username,bio"
+)
+.in("id",ids);
+
+box.innerHTML =
+profiles.map(profile=>`
+
+<div class="friend-row">
+
+<div class="small-avatar">
+
+${escapeHtml(
+profile.username
+.charAt(0)
+.toUpperCase()
+)}
+
+</div>
+
+<div class="friend-info">
+
+<b>
+${escapeHtml(
+profile.username
+)}
+</b>
+
+<div class="status">
+● Друг
+</div>
+
+</div>
+
+<button
+style="
+width:auto;
+margin:0;
+background:#182130;
+"
+onclick="removeFriend('${profile.id}')"
+>
+❌
+</button>
+
+</div>
+
+`).join("");
+
+}
+
+
+async function showRequests(
+incoming,
+outgoing
+){
+
+const box =
+document.getElementById(
+"friendRequests"
+);
+
+let html="";
+
+if(incoming.length){
+
+const ids =
+incoming.map(
+x=>x.user_id
+);
+
+const {data:profiles} =
+await supabaseClient
+.from("profiles")
+.select(
+"id,username"
+)
+.in("id",ids);
+
+profiles.forEach(profile=>{
+
+const request =
+incoming.find(
+x=>x.user_id===profile.id
+);
+
+html+=`
+
+<div class="friend-row">
+
+<div class="small-avatar">
+
+${escapeHtml(
+profile.username
+.charAt(0)
+.toUpperCase()
+)}
+
+</div>
+
+<div class="friend-info">
+
+<b>
+${escapeHtml(
+profile.username
+)}
+</b>
+
+<div class="muted">
+Хоче додати тебе в друзі
+</div>
+
+</div>
+
+<div class="request-buttons">
+
+<button
+style="background:#4da3ff"
+onclick="acceptFriend('${request.id}')"
+>
+✅
+</button>
+
+<button
+style="background:#182130"
+onclick="rejectFriend('${request.id}')"
+>
+❌
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+if(outgoing.length){
+
+const ids =
+outgoing.map(
+x=>x.friend_id
+);
+
+const {data:profiles} =
+await supabaseClient
+.from("profiles")
+.select(
+"id,username"
+)
+.in("id",ids);
+
+profiles.forEach(profile=>{
+
+html+=`
+
+<div class="friend-row">
+
+<div class="small-avatar">
+
+${escapeHtml(
+profile.username
+.charAt(0)
+.toUpperCase()
+)}
+
+</div>
+
+<div class="friend-info">
+
+<b>
+${escapeHtml(
+profile.username
+)}
+</b>
+
+<div class="muted">
+🕐 Запит надіслано
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+if(!html){
+
+html =
+'<div class="empty">Поки немає запитів.</div>';
+
+}
+
+box.innerHTML=html;
+
+}
+
+
+async function acceptFriend(id){
+
+const {error} =
+await supabaseClient
+.from("friendships")
+.update({
+status:"accepted"
+})
+.eq("id",id)
+.eq(
+"friend_id",
+currentUser.id
+);
+
+if(error){
+
+alert(error.message);
+
+return;
+}
+
+await loadFriends();
+
+alert(
+"✅ Тепер ви друзі!"
+);
+
+}
+
+
+async function rejectFriend(id){
+
+const {error} =
+await supabaseClient
+.from("friendships")
+.delete()
+.eq("id",id)
+.eq(
+"friend_id",
+currentUser.id
+);
+
+if(error){
+
+alert(error.message);
+
+return;
+}
+
+await loadFriends();
+
+}
+
+
+async function removeFriend(friendId){
+
+const {error} =
+await supabaseClient
+.from("friendships")
+.delete()
+.or(
+"and(user_id.eq."+
+currentUser.id+
+",friend_id.eq."+
+friendId+
+"),and(user_id.eq."+
+friendId+
+",friend_id.eq."+
+currentUser.id+
+")"
+);
+
+if(error){
+
+alert(error.message);
+
+return;
+}
+
+await loadFriends();
+
+}
+
+
+/* ================================================= */
+/* CHAT */
+/* ================================================= */
+
+async function loadChatFriends(){
+
+const box =
+document.getElementById(
+"chatFriends"
+);
+
+const {data,error} =
+await supabaseClient
+.from("friendships")
+.select("*")
+.or(
+"user_id.eq."+
+currentUser.id+
+",friend_id.eq."+
+currentUser.id
+)
+.eq(
+"status",
+"accepted"
+);
+
+if(error){
+
+box.innerHTML =
+'<div class="empty">Помилка.</div>';
+
+return;
+}
+
+if(!data.length){
+
+box.innerHTML =
+'<div class="empty">У тебе ще немає друзів.</div>';
+
+return;
+}
+
+const ids =
+data.map(item=>
+item.user_id===currentUser.id
+?item.friend_id
+:item.user_id
+);
+
+const {data:profiles} =
+await supabaseClient
+.from("profiles")
+.select(
+"id,username"
+)
+.in("id",ids);
+
+box.innerHTML =
+profiles.map(friend=>`
+
+<div
+class="friend-row chat-friend"
+onclick="
+openChat(
+'${friend.id}',
+'${escapeHtml(friend.username)}'
+)
+"
+>
+
+<div class="small-avatar">
+
+${escapeHtml(
+friend.username
+.charAt(0)
+.toUpperCase()
+)}
+
+</div>
+
+<div class="friend-info">
+
+<b>
+${escapeHtml(
+friend.username
+)}
+</b>
+
+<div class="muted">
+Натисни, щоб написати
+</div>
+
+</div>
+
+💬
+
+</div>
+
+`).join("");
+
+}
+
+
+async function openChat(
+friendId,
+friendName
+){
+
+selectedFriend =
+friendId;
+
+document.getElementById(
+"chatWindow"
+)
+.style.display="block";
+
+document.getElementById(
+"chatTitle"
+)
+.textContent =
+"💬 " +
+friendName;
+
+await loadMessages();
+
+}
+
+
+async function loadMessages(){
+
+if(!selectedFriend){
+return;
+}
+
+const {data,error} =
+await supabaseClient
+.from("messages")
+.select("*")
+.or(
+"and(sender_id.eq."+
+currentUser.id+
+",receiver_id.eq."+
+selectedFriend+
+"),and(sender_id.eq."+
+selectedFriend+
+",receiver_id.eq."+
+currentUser.id+
+")"
+)
+.order(
+"created_at",
+{
+ascending:true
+}
+);
+
+if(error){
+return;
+}
+
+const box =
+document.getElementById(
+"chatMessages"
+);
+
+if(!data.length){
+
+box.innerHTML =
+'<div class="empty">Поки немає повідомлень 👋</div>';
+
+return;
+}
+
+box.innerHTML =
+data.map(message=>{
+
+const mine =
+message.sender_id ===
+currentUser.id;
+
+const time =
+new Date(
+message.created_at
+)
+.toLocaleTimeString(
+"uk-UA",
+{
+hour:"2-digit",
+minute:"2-digit"
+}
+);
+
+return `
+
+<div class="${
+mine
+?"my-message"
+:"other-message"
+}">
+
+<div class="message-bubble">
+
+<div>
+${escapeHtml(
+message.content
+)}
+</div>
+
+<div class="message-time">
+${time}
+</div>
+
+</div>
+
+</div>
+
+`;
+
+}).join("");
+
+box.scrollTop =
+box.scrollHeight;
+
+}
+
+
+async function sendMessage(){
+
+if(!selectedFriend){
+return;
+}
+
+const input =
+document.getElementById(
+"messageInput"
+);
+
+const content =
+input.value.trim();
+
+if(!content){
+return;
+}
+
+const {error} =
+await supabaseClient
+.from("messages")
+.insert({
+
+sender_id:
+currentUser.id,
+
+receiver_id:
+selectedFriend,
+
+content:
+content
+
+});
+
+if(error){
+
+alert(error.message);
+
+return;
+}
+
+input.value="";
+
+await loadMessages();
+
+}
+
+
+function handleMessageKey(event){
+
+if(event.key==="Enter"){
+
+event.preventDefault();
+
+sendMessage();
+
+}
+
+}
+
+
+/* ================================================= */
+/* UKR GTA */
+/* ================================================= */
+
+function openUkrGTA(){
+
+alert(
+"🎮 Запуск Укр GTA буде підключено, коли матимемо офіційний спосіб запуску гри."
+);
+
+}
+
+
+async function refreshGameData(){
+
+const nickname =
+document.getElementById(
+"gameNickname"
+);
+
+const status =
+document.getElementById(
+"gameStatus"
+);
+
+const online =
+document.getElementById(
+"gameOnline"
+);
+
+const level =
+document.getElementById(
+"gameLevel"
+);
+
+const money =
+document.getElementById(
+"gameMoney"
+);
+
+nickname.textContent =
+"Пошук даних...";
+
+status.textContent =
+"Перевіряємо підключення...";
+
+online.textContent =
+"—";
+
+level.textContent =
+"—";
+
+money.textContent =
+"—";
+
+setTimeout(()=>{
+
+nickname.textContent =
+"API не підключено";
+
+status.textContent =
+"Потрібен доступ до API Укр GTA";
+
+},700);
+
+}
+
+
+/* ================================================= */
+/* NAVIGATION */
+/* ================================================= */
+
+function openPage(page){
+
+document
+.querySelectorAll(".page")
+.forEach(
+element =>
+element.classList
+.remove("active")
+);
+
+document
+.getElementById(page)
+.classList
+.add("active");
+
+if(page==="friends"){
+loadFriends();
+}
+
+if(page==="messages"){
+loadChatFriends();
+}
+
+if(page==="home"){
+loadFeed();
+}
+
+if(page==="mta"){
+refreshGameData();
+}
+
+}
+
+
+/* ================================================= */
+/* LOGOUT */
+/* ================================================= */
+
+async function logout(){
+
+await supabaseClient
+.auth
+.signOut();
+
+location.reload();
+
+}
+
+
+/* ================================================= */
+/* SECURITY */
+/* ================================================= */
+
+function escapeHtml(text){
+
+return String(text)
+
+.replaceAll(
+"&",
+"&amp;"
+)
+
+.replaceAll(
+"<",
+"&lt;"
+)
+
+.replaceAll(
+">",
+"&gt;"
+)
+
+.replaceAll(
+'"',
+"&quot;"
+)
+
+.replaceAll(
+"'",
+"&#039;"
+);
+
+}
+
+
+/* ================================================= */
+/* REALTIME */
+/* ================================================= */
+
+supabaseClient
+.channel("posts-live")
+.on(
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"posts"
+},
+()=>{
+if(currentUser){
+loadFeed();
+}
+}
+)
+.subscribe();
+
+
+supabaseClient
+.channel("likes-live")
+.on(
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"post_likes"
+},
+()=>{
+if(currentUser){
+loadFeed();
+}
+}
+)
+.subscribe();
+
+
+supabaseClient
+.channel("comments-live")
+.on(
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"post_comments"
+},
+()=>{
+if(currentUser){
+loadFeed();
+}
+}
+)
+.subscribe();
+
+
+supabaseClient
+.channel("messages-live")
+.on(
+"postgres_changes",
+{
+event:"INSERT",
+schema:"public",
+table:"messages"
+},
+payload=>{
+
+if(!currentUser){
+return;
+}
+
+const msg =
+payload.new;
+
+if(
+(
+msg.sender_id===
+currentUser.id &&
+msg.receiver_id===
+selectedFriend
+)
+||
+(
+msg.sender_id===
+selectedFriend &&
+msg.receiver_id===
+currentUser.id
+)
+){
+
+loadMessages();
+
+}
+
+}
+)
+.subscribe();
+
+
+/* ================================================= */
+/* SESSION */
+/* ================================================= */
+
+async function checkUser(){
+
+const {
+data:{
+user
+}
+} =
+await supabaseClient
+.auth
+.getUser();
+
+if(user){
+
+await showApp(user);
+
+}
+
+}
+
+checkUser();
+
+</script>
+</body>
+</html>
